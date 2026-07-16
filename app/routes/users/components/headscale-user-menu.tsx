@@ -46,10 +46,10 @@ export default function HeadscaleUserMenu({ user }: HeadscaleUserMenuProps) {
           <Ellipsis className="h-5" />
         </MenuTrigger>
         <MenuContent>
-          {canRename && <MenuItem onClick={() => setModal("rename")}>Rename</MenuItem>}
+          {canRename && <MenuItem onClick={() => setModal("rename")}>重命名</MenuItem>}
           {canRename && <MenuSeparator />}
           <MenuItem variant="danger" onClick={() => setModal("delete")}>
-            Delete
+            删除用户
           </MenuItem>
         </MenuContent>
       </Menu>
