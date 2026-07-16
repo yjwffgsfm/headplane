@@ -49,11 +49,11 @@ export default function HeadscaleUserRow({ user, writable }: HeadscaleUserRowPro
           >
             <StatusCircle className="h-4 w-4" isOnline={isOnline} />
             <p suppressHydrationWarning>
-              {isOnline ? "Connected" : new Date(lastSeen).toLocaleString()}
+              {isOnline ? "已连接" : new Date(lastSeen).toLocaleString()}
             </p>
           </span>
         ) : (
-          <p className="text-sm text-mist-600 dark:text-mist-300">No machines</p>
+          <p className="text-sm text-mist-600 dark:text-mist-300">无设备</p>
         )}
       </td>
       <td className="py-2 pr-0.5">{writable ? <HeadscaleUserMenu user={user} /> : null}</td>

@@ -48,7 +48,7 @@ export default function HeadplaneUserRow({
             {displayUsername && <p className="text-sm opacity-50">{displayUsername}</p>}
             {displayEmail && <p className="text-sm opacity-50">{displayEmail}</p>}
             {!user.headscaleUserId && (
-              <p className="text-xs text-amber-600 dark:text-amber-400">Not linked</p>
+              <p className="text-xs text-amber-600 dark:text-amber-400">未关联</p>
             )}
           </div>
         </div>
@@ -58,7 +58,7 @@ export default function HeadplaneUserRow({
       </td>
       <td className="py-2 pl-0.5">
         <p className="text-sm text-mist-600 dark:text-mist-300" suppressHydrationWarning>
-          {user.lastLoginAt ? new Date(user.lastLoginAt).toLocaleDateString() : "Never"}
+          {user.lastLoginAt ? new Date(user.lastLoginAt).toLocaleDateString() : "从未登录"}
         </p>
       </td>
       <td className="py-2 pl-0.5">
@@ -68,11 +68,11 @@ export default function HeadplaneUserRow({
           >
             <StatusCircle className="h-4 w-4" isOnline={isOnline} />
             <p suppressHydrationWarning>
-              {isOnline ? "Connected" : new Date(lastSeen).toLocaleString()}
+              {isOnline ? "已连接" : new Date(lastSeen).toLocaleString()}
             </p>
           </span>
         ) : (
-          <p className="text-sm text-mist-600 dark:text-mist-300">No machines</p>
+          <p className="text-sm text-mist-600 dark:text-mist-300">无设备</p>
         )}
       </td>
       <td className="py-2 pr-0.5">
@@ -91,20 +91,20 @@ export default function HeadplaneUserRow({
 function mapRoleToName(role: Role) {
   switch (role) {
     case "owner":
-      return "Owner";
+      return "所有者";
     case "admin":
-      return "Admin";
+      return "管理员";
     case "network_admin":
-      return "Network Admin";
+      return "网络管理员";
     case "it_admin":
-      return "IT Admin";
+      return "IT 管理员";
     case "auditor":
-      return "Auditor";
+      return "审计员";
     case "viewer":
-      return "Viewer";
+      return "观察员";
     case "member":
-      return <p className="opacity-50">Member</p>;
+      return <p className="opacity-50">成员</p>;
     default:
-      return "Unknown";
+      return "未知";
   }
 }

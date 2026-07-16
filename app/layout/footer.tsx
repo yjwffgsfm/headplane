@@ -22,11 +22,11 @@ export default function Footer({ isDebug, baseUrl }: FooterProps) {
     >
       <div className="container flex items-center justify-between py-2">
         <p className="text-xs">
-          Headplane is free and open-source. Please consider{" "}
+          Headplane 是免费开源软件。请考虑{" "}
           <Link external styled to="https://tale.me/sponsor">
-            sponsoring
+            赞助
           </Link>{" "}
-          to support development.
+          以支持项目发展。
         </p>
         <div className="flex items-center gap-2 text-xs">
           {isDebug && (
@@ -37,7 +37,7 @@ export default function Footer({ isDebug, baseUrl }: FooterProps) {
                 "dark:bg-amber-900/50 dark:text-amber-300",
               )}
             >
-              Debug
+              调试模式
             </span>
           )}
           <p className="text-mist-500 dark:text-mist-400">
@@ -49,7 +49,7 @@ export default function Footer({ isDebug, baseUrl }: FooterProps) {
             )}
             <button
               type="button"
-              aria-label={urlVisible ? "Hide server URL" : "Show server URL"}
+              aria-label={urlVisible ? "隐藏服务器地址" : "显示服务器地址"}
               className={cn(
                 "ml-1 inline-flex align-middle rounded-xs p-0.5",
                 "text-mist-400 hover:text-mist-600",

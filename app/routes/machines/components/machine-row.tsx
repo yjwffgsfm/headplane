@@ -63,7 +63,7 @@ export default function MachineRow({
             {node.givenName}
           </p>
           <p className="text-sm opacity-50">
-            {node.user ? getUserDisplayName(node.user) : "Tag-owned"}
+            {node.user ? getUserDisplayName(node.user) : "标签拥有"}
           </p>
           <div className="mt-1.5 flex flex-wrap gap-1">
             {mapTagsToComponents(node, uiTags)}
@@ -86,7 +86,7 @@ export default function MachineRow({
                   key={ip}
                   onClick={async () => {
                     await navigator.clipboard.writeText(ip);
-                    toast("Copied IP address to clipboard");
+                    toast("已复制 IP 地址到剪贴板");
                   }}
                 >
                   <div
@@ -101,7 +101,7 @@ export default function MachineRow({
           </Menu>
         </div>
       </td>
-      {/* We pass undefined when agents are not enabled */}
+      {/* 当代理未启用时传入 undefined */}
       {isAgent !== undefined ? (
         <td className="py-2">
           {node.hostInfo !== undefined ? (
@@ -112,7 +112,7 @@ export default function MachineRow({
               </p>
             </>
           ) : (
-            <p className="text-sm opacity-50">Unknown</p>
+            <p className="text-sm opacity-50">未知</p>
           )}
         </td>
       ) : undefined}
@@ -125,7 +125,7 @@ export default function MachineRow({
               suppressHydrationWarning
             >
               {node.online && !node.expired
-                ? "Connected"
+                ? "已连接"
                 : new Date(node.lastSeen).toLocaleString()}
             </p>
             {!(node.online && !node.expired) && (
