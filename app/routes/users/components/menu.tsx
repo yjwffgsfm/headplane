@@ -94,16 +94,16 @@ export default function UserMenu({
             disabled={disabledKeys.includes("reassign")}
             onClick={() => setModal("reassign")}
           >
-            Change role
+            更改角色
           </MenuItem>
           <MenuItem onClick={() => setModal("link")}>
-            {isLinked ? "Change linked user" : "Link Headscale user"}
+            {isLinked ? "更改关联用户" : "关联 Headscale 用户"}
           </MenuItem>
           {isOwner && !isSelf && (
             <>
               <MenuSeparator />
               <MenuItem variant="danger" onClick={() => setModal("transfer")}>
-                Transfer ownership
+                转移所有权
               </MenuItem>
             </>
           )}
@@ -111,7 +111,7 @@ export default function UserMenu({
             <>
               <MenuSeparator />
               <MenuItem variant="danger" onClick={() => setModal("delete")}>
-                Delete
+                删除用户
               </MenuItem>
             </>
           )}
