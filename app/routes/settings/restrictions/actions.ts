@@ -20,13 +20,13 @@ export async function restrictionAction({ request, context }: Route.ActionArgs) 
   const check = auth.can(principal, Capabilities.configure_iam);
 
   if (!check) {
-    throw data("You do not have permission to modify IAM settings.", {
+    throw data("您没有权限修改 IAM 设置。", {
       status: 403,
     });
   }
 
   if (!headscaleConfig.writable()) {
-    throw data("The Headscale configuration file is not editable.", {
+    throw data("Headscale 配置文件不可编辑。", {
       status: 403,
     });
   }
@@ -34,7 +34,7 @@ export async function restrictionAction({ request, context }: Route.ActionArgs) 
   const formData = await request.formData();
   const action = formData.get("action_id")?.toString();
   if (!action) {
-    throw data("No action provided.", {
+    throw data("未提供操作。", {
       status: 400,
     });
   }
@@ -43,7 +43,7 @@ export async function restrictionAction({ request, context }: Route.ActionArgs) 
     case "add_domain": {
       const domain = formData.get("domain")?.toString()?.trim();
       if (!domain) {
-        throw data("No domain provided.", {
+        throw data("未提供域名。", {
           status: 400,
         });
       }
@@ -60,26 +60,26 @@ export async function restrictionAction({ request, context }: Route.ActionArgs) 
       ]);
 
       integration?.onConfigChange(headscale);
-      return data("Domain added successfully.");
+      return data("域名添加成功。");
     }
 
     case "remove_domain": {
       const domain = formData.get("domain")?.toString()?.trim();
       if (!domain) {
-        throw data("No domain provided.", {
+        throw data("未提供域名。", {
           status: 400,
         });
       }
 
       const storedDomains = headscaleConfig.getOIDCConfig()?.allowedDomains ?? [];
       if (!storedDomains.includes(domain)) {
-        // Domain not found in the list
-        throw data(`Domain "${domain}" not found in allowed domains.`, {
+        // 域名不在列表中
+        throw data(`在允许的域名中未找到 "${domain}"。`, {
           status: 400,
         });
       }
 
-      // Filter out the domain to remove it from the list
+      // 过滤掉该域名以将其从列表中移除
       const domains = storedDomains.filter((d: string) => d !== domain);
       await headscaleConfig.patch([
         {
@@ -88,13 +88,13 @@ export async function restrictionAction({ request, context }: Route.ActionArgs) 
         },
       ]);
       integration?.onConfigChange(headscale);
-      return data("Domain removed successfully.");
+      return data("域名移除成功。");
     }
 
     case "add_group": {
       const group = formData.get("group")?.toString()?.trim();
       if (!group) {
-        throw data("No group provided.", {
+        throw data("未提供群组。", {
           status: 400,
         });
       }
@@ -111,26 +111,26 @@ export async function restrictionAction({ request, context }: Route.ActionArgs) 
       ]);
 
       integration?.onConfigChange(headscale);
-      return data("Group added successfully.");
+      return data("群组添加成功。");
     }
 
     case "remove_group": {
       const group = formData.get("group")?.toString()?.trim();
       if (!group) {
-        throw data("No group provided.", {
+        throw data("未提供群组。", {
           status: 400,
         });
       }
 
       const storedGroups = headscaleConfig.getOIDCConfig()?.allowedGroups ?? [];
       if (!storedGroups.includes(group)) {
-        // Group not found in the list
-        throw data(`Group "${group}" not found in allowed groups.`, {
+        // 群组不在列表中
+        throw data(`在允许的群组中未找到 "${group}"。`, {
           status: 400,
         });
       }
 
-      // Filter out the group to remove it from the list
+      // 过滤掉该群组以将其从列表中移除
       const groups = storedGroups.filter((d: string) => d !== group);
       await headscaleConfig.patch([
         {
@@ -140,13 +140,13 @@ export async function restrictionAction({ request, context }: Route.ActionArgs) 
       ]);
 
       integration?.onConfigChange(headscale);
-      return data("Group removed successfully.");
+      return data("群组移除成功。");
     }
 
     case "add_user": {
       const user = formData.get("user")?.toString()?.trim();
       if (!user) {
-        throw data("No user provided.", {
+        throw data("未提供用户。", {
           status: 400,
         });
       }
@@ -161,26 +161,26 @@ export async function restrictionAction({ request, context }: Route.ActionArgs) 
       ]);
 
       integration?.onConfigChange(headscale);
-      return data("User added successfully.");
+      return data("用户添加成功。");
     }
 
     case "remove_user": {
       const user = formData.get("user")?.toString()?.trim();
       if (!user) {
-        throw data("No user provided.", {
+        throw data("未提供用户。", {
           status: 400,
         });
       }
 
       const storedUsers = headscaleConfig.getOIDCConfig()?.allowedUsers ?? [];
       if (!storedUsers.includes(user)) {
-        // User not found in the list
-        throw data(`User "${user}" not found in allowed users.`, {
+        // 用户不在列表中
+        throw data(`在允许的用户中未找到 "${user}"。`, {
           status: 400,
         });
       }
 
-      // Filter out the user to remove it from the list
+      // 过滤掉该用户以将其从列表中移除
       const users = storedUsers.filter((d: string) => d !== user);
       await headscaleConfig.patch([
         {
@@ -190,11 +190,11 @@ export async function restrictionAction({ request, context }: Route.ActionArgs) 
       ]);
 
       integration?.onConfigChange(headscale);
-      return data("User removed successfully.");
+      return data("用户移除成功。");
     }
 
     default: {
-      throw data("Invalid action provided.", {
+      throw data("提供了无效的操作。", {
         status: 400,
       });
     }

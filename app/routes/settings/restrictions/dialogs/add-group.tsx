@@ -24,7 +24,7 @@ export default function AddGroup({ groups, isDisabled }: AddGroupProps) {
       if (group.length === 0) return undefined;
 
       if (groups.includes(group)) {
-        return { group: "This group already exists in the list." };
+        return { group: "此群组已存在于列表中。" };
       }
 
       return undefined;
@@ -33,18 +33,18 @@ export default function AddGroup({ groups, isDisabled }: AddGroupProps) {
 
   return (
     <Dialog>
-      <Button disabled={isDisabled}>Add group</Button>
+      <Button disabled={isDisabled}>添加群组</Button>
       <DialogPanel>
-        <Title>Add group</Title>
+        <Title>添加群组</Title>
         <Text className="mb-4">
-          Add this group to a list of allowed groups that can authenticate with Headscale via OIDC.
+          将此群组添加到允许的群组列表中，这些群组可以通过 OIDC 在 Headscale 上进行认证。
         </Text>
         <input name="action_id" type="hidden" value="add_group" />
         <Input
           {...form.field("group")}
-          description="The group to allow for OIDC authentication."
+          description="允许进行 OIDC 认证的群组。"
           required
-          label="Group"
+          label="群组"
           placeholder="admin"
         />
       </DialogPanel>

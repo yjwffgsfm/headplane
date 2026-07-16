@@ -10,7 +10,7 @@ export default function Fallback() {
       <div className="flex h-full items-center justify-center">
         <div className="flex flex-col items-center gap-2 text-[var(--cm-gutter-fg)]">
           <Loader2 className="size-5 animate-spin" />
-          <p className="text-sm">Loading editor…</p>
+          <p className="text-sm">正在加载编辑器…</p>
         </div>
       </div>
     </div>

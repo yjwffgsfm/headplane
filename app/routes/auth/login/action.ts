@@ -21,7 +21,7 @@ export async function loginAction({ request, context }: Route.LoaderArgs) {
     );
     return {
       success: false,
-      message: "Missing API key. Please enter your API key.",
+      message: "缺少 API 密钥。请输入您的 API 密钥。",
     };
   }
 
@@ -33,7 +33,7 @@ export async function loginAction({ request, context }: Route.LoaderArgs) {
     );
     return {
       success: false,
-      message: "API key cannot be empty. Please enter a valid API key.",
+      message: "API 密钥不能为空。请输入有效的 API 密钥。",
     };
   }
 
@@ -52,7 +52,7 @@ export async function loginAction({ request, context }: Route.LoaderArgs) {
     if (!lookup) {
       return {
         success: false,
-        message: "API key was not found in the Headscale database",
+        message: "在 Headscale 数据库中未找到该 API 密钥",
       };
     }
 
@@ -60,7 +60,7 @@ export async function loginAction({ request, context }: Route.LoaderArgs) {
       log.error("auth", "Got an API key without an expiration");
       return {
         success: false,
-        message: "API key is malformed (missing expiration). Please generate a new API key.",
+        message: "API 密钥格式错误（缺少过期时间）。请生成一个新的 API 密钥。",
       };
     }
 
@@ -68,7 +68,7 @@ export async function loginAction({ request, context }: Route.LoaderArgs) {
     if (expiry.getTime() < Date.now()) {
       return {
         success: false,
-        message: "API key has expired",
+        message: "API 密钥已过期",
       };
     }
 
@@ -93,7 +93,7 @@ export async function loginAction({ request, context }: Route.LoaderArgs) {
       ) {
         return {
           success: false,
-          message: "API key is invalid (it may be incorrect or expired)",
+          message: "API 密钥无效（可能不正确或已过期）",
         };
       }
     }
@@ -102,7 +102,7 @@ export async function loginAction({ request, context }: Route.LoaderArgs) {
     log.debug("auth", "Error details: %o", error);
     return {
       success: false,
-      message: "Error while validating API key (see logs for details)",
+      message: "验证 API 密钥时出错（详情请查看日志）",
     };
   }
 }

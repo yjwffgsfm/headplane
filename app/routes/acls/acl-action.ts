@@ -16,7 +16,7 @@ export async function aclAction({ request, context }: Route.ActionArgs) {
   const principal = await auth.require(request);
   const check = auth.can(principal, Capabilities.write_policy);
   if (!check) {
-    throw data("You do not have permission to write to the ACL policy", {
+    throw data("您没有权限写入 ACL 策略", {
       status: 403,
     });
   }
@@ -25,7 +25,7 @@ export async function aclAction({ request, context }: Route.ActionArgs) {
   const formData = await request.formData();
   const policyData = formData.get("policy")?.toString();
   if (!policyData) {
-    throw data("Missing `policy` in the form data.", {
+    throw data("表单数据中缺少 `policy`。", {
       status: 400,
     });
   }
@@ -44,7 +44,7 @@ export async function aclAction({ request, context }: Route.ActionArgs) {
       const rawData = error.data.rawData;
       // https://github.com/juanfont/headscale/blob/c4600346f9c29b514dc9725ac103efb9d0381f23/hscontrol/types/policy.go#L11
       if (rawData.includes("update is disabled")) {
-        throw data("Policy is not writable", { status: 403 });
+        throw data("策略不可写入", { status: 403 });
       }
 
       const message =
@@ -64,7 +64,7 @@ export async function aclAction({ request, context }: Route.ActionArgs) {
       if (message.includes("parsing HuJSON:")) {
         const cutIndex = message.indexOf("parsing HuJSON:");
         const trimmed =
-          cutIndex > -1 ? `Syntax error: ${message.slice(cutIndex + 16).trim()}` : message;
+          cutIndex > -1 ? `语法错误：${message.slice(cutIndex + 16).trim()}` : message;
 
         return data(
           { success: false, error: trimmed, policy: undefined, updatedAt: undefined },
@@ -75,7 +75,7 @@ export async function aclAction({ request, context }: Route.ActionArgs) {
       if (message.includes("parsing policy from bytes:")) {
         const cutIndex = message.indexOf("parsing policy from bytes:");
         const trimmed =
-          cutIndex > -1 ? `Syntax error: ${message.slice(cutIndex + 26).trim()}` : message;
+          cutIndex > -1 ? `语法错误：${message.slice(cutIndex + 26).trim()}` : message;
 
         return data(
           { success: false, error: trimmed, policy: undefined, updatedAt: undefined },

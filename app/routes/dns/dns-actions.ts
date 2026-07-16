@@ -48,7 +48,7 @@ export async function dnsAction({ request, context }: Route.ActionArgs) {
       ]);
 
       await integration?.onConfigChange(headscale);
-      return { message: "Tailnet renamed successfully" };
+      return { message: "Tailnet 重命名成功" };
     }
     case "toggle_magic": {
       const newState = formData.get("new_state")?.toString();
@@ -64,7 +64,7 @@ export async function dnsAction({ request, context }: Route.ActionArgs) {
       ]);
 
       await integration?.onConfigChange(headscale);
-      return { message: "Magic DNS state updated successfully" };
+      return { message: "Magic DNS 状态更新成功" };
     }
     case "remove_ns": {
       const config = headscaleConfig.getDNSConfig();
@@ -97,7 +97,7 @@ export async function dnsAction({ request, context }: Route.ActionArgs) {
       }
 
       await integration?.onConfigChange(headscale);
-      return { message: "Nameserver removed successfully" };
+      return { message: "名称服务器移除成功" };
     }
     case "add_ns": {
       const config = headscaleConfig.getDNSConfig();
@@ -130,7 +130,7 @@ export async function dnsAction({ request, context }: Route.ActionArgs) {
       }
 
       await integration?.onConfigChange(headscale);
-      return { message: "Nameserver added successfully" };
+      return { message: "名称服务器添加成功" };
     }
     case "remove_domain": {
       const config = headscaleConfig.getDNSConfig();
@@ -148,7 +148,7 @@ export async function dnsAction({ request, context }: Route.ActionArgs) {
       ]);
 
       await integration?.onConfigChange(headscale);
-      return { message: "Domain removed successfully" };
+      return { message: "搜索域移除成功" };
     }
     case "add_domain": {
       const config = headscaleConfig.getDNSConfig();
@@ -167,7 +167,7 @@ export async function dnsAction({ request, context }: Route.ActionArgs) {
       ]);
 
       await integration?.onConfigChange(headscale);
-      return { message: "Domain added successfully" };
+      return { message: "搜索域添加成功" };
     }
     case "remove_record": {
       const recordName = formData.get("record_name")?.toString();
@@ -189,7 +189,7 @@ export async function dnsAction({ request, context }: Route.ActionArgs) {
       }
 
       await integration?.onConfigChange(headscale);
-      return { message: "DNS record removed successfully" };
+      return { message: "DNS 记录移除成功" };
     }
     case "add_record": {
       const recordName = formData.get("record_name")?.toString();
@@ -211,7 +211,7 @@ export async function dnsAction({ request, context }: Route.ActionArgs) {
       }
 
       await integration?.onConfigChange(headscale);
-      return { message: "DNS record added successfully" };
+      return { message: "DNS 记录添加成功" };
     }
     case "override_dns": {
       const override = formData.get("override_dns")?.toString();
@@ -228,7 +228,7 @@ export async function dnsAction({ request, context }: Route.ActionArgs) {
       ]);
 
       await integration?.onConfigChange(headscale);
-      return { message: "DNS override updated successfully" };
+      return { message: "DNS 覆盖更新成功" };
     }
     default:
       return data({ success: false }, 400);

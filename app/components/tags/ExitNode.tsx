@@ -14,17 +14,14 @@ export function ExitNodeTag({ isEnabled }: ExitNodeTagProps) {
     <Tooltip
       content={
         isEnabled ? (
-          <>This machine is acting as an exit node.</>
+          <>此机器正在作为出口节点运行。</>
         ) : (
-          <>
-            This machine is requesting to be used as an exit node. Review this from the "Edit route
-            settings..." option in the machine's menu.
-          </>
+          <>此机器正在请求作为出口节点使用。请从机器菜单中的“编辑路由设置...”选项进行审核。</>
         )
       }
     >
       <Chip
-        text="Exit Node"
+        text="出口节点"
         className={cn("bg-blue-300 text-blue-900 dark:bg-blue-900 dark:text-blue-300")}
         rightIcon={isEnabled ? undefined : <Info className="h-full w-fit" />}
       />

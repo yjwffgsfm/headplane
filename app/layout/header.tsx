@@ -41,17 +41,17 @@ export interface HeaderProps {
 }
 
 const tabs = [
-  { to: "/machines", icon: Server, label: "Machines", key: "machines" },
-  { to: "/users", icon: Users, label: "Users", key: "users" },
-  { to: "/acls", icon: Lock, label: "Access Control", key: "policy" },
+  { to: "/machines", icon: Server, label: "机器", key: "machines" },
+  { to: "/users", icon: Users, label: "用户", key: "users" },
+  { to: "/acls", icon: Lock, label: "访问控制", key: "policy" },
   { to: "/dns", icon: Globe, label: "DNS", key: "dns" },
-  { to: "/settings", icon: Settings, label: "Settings", key: "settings" },
+  { to: "/settings", icon: Settings, label: "设置", key: "settings" },
 ] as const;
 
 const colorSchemes = [
-  { value: "system", label: "System", icon: Monitor },
-  { value: "light", label: "Light", icon: Sun },
-  { value: "dark", label: "Dark", icon: Moon },
+  { value: "system", label: "跟随系统", icon: Monitor },
+  { value: "light", label: "浅色", icon: Sun },
+  { value: "dark", label: "深色", icon: Moon },
 ] as const satisfies ReadonlyArray<{
   value: ColorScheme;
   label: string;
@@ -125,7 +125,7 @@ export default function Header({ user, access, configAvailable }: HeaderProps) {
             <MenuContent align="end">
               <MenuItem>
                 <Link external to="https://headplane.net">
-                  Docs
+                  文档
                 </Link>
               </MenuItem>
               <MenuItem>
@@ -135,7 +135,7 @@ export default function Header({ user, access, configAvailable }: HeaderProps) {
               </MenuItem>
               <MenuItem>
                 <Link external to="https://tailscale.com/download">
-                  Download
+                  下载 Tailscale
                 </Link>
               </MenuItem>
             </MenuContent>
@@ -153,7 +153,7 @@ export default function Header({ user, access, configAvailable }: HeaderProps) {
                 <div className="text-mist-900 dark:text-mist-50">
                   {user.subject === "api_key" ? (
                     <>
-                      <p className="font-bold">API Key</p>
+                      <p className="font-bold">API 密钥</p>
                       <p>{user.name}</p>
                     </>
                   ) : (
@@ -187,7 +187,7 @@ export default function Header({ user, access, configAvailable }: HeaderProps) {
                 variant="danger"
                 onClick={() => submit({}, { action: "/logout", method: "POST" })}
               >
-                Logout
+                登出
               </MenuItem>
             </MenuContent>
           </Menu>

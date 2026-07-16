@@ -18,7 +18,7 @@ export async function authKeysAction({ request, context }: Route.ActionArgs) {
   const canGenerateOwn = auth.can(principal, Capabilities.generate_own_authkeys);
 
   if (!canGenerateAny && !canGenerateOwn) {
-    throw data("You do not have permission to manage pre-auth keys", {
+    throw data("您没有权限管理预认证密钥", {
       status: 403,
     });
   }
@@ -27,14 +27,14 @@ export async function authKeysAction({ request, context }: Route.ActionArgs) {
     if (canGenerateAny || !canGenerateOwn) return;
     const [targetUser] = await api.users.list({ id: userId });
     if (!targetUser) {
-      throw data("User not found.", { status: 404 });
+      throw data("未找到用户。", { status: 404 });
     }
     const targetSubject = getOidcSubject(targetUser);
     const ownsTarget =
       isUserPrincipal(principal) &&
       (principal.user.headscaleUserId === userId || targetSubject === principal.user.subject);
     if (!ownsTarget) {
-      throw data("You do not have permission to manage this user's pre-auth keys", {
+      throw data("您没有权限管理此用户的预认证密钥", {
         status: 403,
       });
     }
@@ -43,7 +43,7 @@ export async function authKeysAction({ request, context }: Route.ActionArgs) {
   const formData = await request.formData();
   const action = formData.get("action_id")?.toString();
   if (!action) {
-    throw data("Missing `action_id` in the form data.", {
+    throw data("表单数据中缺少 `action_id`。", {
       status: 400,
     });
   }
@@ -58,7 +58,7 @@ export async function authKeysAction({ request, context }: Route.ActionArgs) {
         .filter((t) => t.length > 0);
 
       if (!user && aclTags.length === 0) {
-        return data("Must specify either a user or ACL tags.", {
+        return data("必须指定用户或 ACL 标签。", {
           status: 400,
         });
       }
@@ -69,21 +69,21 @@ export async function authKeysAction({ request, context }: Route.ActionArgs) {
 
       const expiry = formData.get("expiry")?.toString();
       if (!expiry) {
-        return data("Missing `expiry` in the form data.", {
+        return data("表单数据中缺少 `expiry`。", {
           status: 400,
         });
       }
 
       const reusable = formData.get("reusable")?.toString();
       if (!reusable) {
-        return data("Missing `reusable` in the form data.", {
+        return data("表单数据中缺少 `reusable`。", {
           status: 400,
         });
       }
 
       const ephemeral = formData.get("ephemeral")?.toString();
       if (!ephemeral) {
-        return data("Missing `ephemeral` in the form data.", {
+        return data("表单数据中缺少 `ephemeral`。", {
           status: 400,
         });
       }
@@ -107,14 +107,14 @@ export async function authKeysAction({ request, context }: Route.ActionArgs) {
       const keyId = formData.get("key_id")?.toString();
       const key = formData.get("key")?.toString();
       if (!keyId || !key) {
-        return data("Missing `key_id` or `key` in the form data.", {
+        return data("表单数据中缺少 `key_id` 或 `key`。", {
           status: 400,
         });
       }
 
       const user = formData.get("user_id")?.toString();
       if (!user) {
-        return data("Missing `user_id` in the form data.", {
+        return data("表单数据中缺少 `user_id`。", {
           status: 400,
         });
       }
@@ -129,11 +129,11 @@ export async function authKeysAction({ request, context }: Route.ActionArgs) {
         key,
         user: { id: user },
       } as unknown as PreAuthKey);
-      return data("Pre-auth key expired");
+      return data("预认证密钥已过期");
     }
 
     default:
-      return data("Invalid action", {
+      return data("无效操作", {
         status: 400,
       });
   }

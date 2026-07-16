@@ -19,14 +19,14 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const principal = await auth.require(request);
   const check = auth.can(principal, Capabilities.read_users);
   if (!check) {
-    throw data("You do not have permission to view IAM settings.", {
+    throw data("您没有权限查看 IAM 设置。", {
       status: 403,
     });
   }
 
   const oidc = headscaleConfig.getOIDCConfig();
   if (!oidc) {
-    throw data("OIDC is not configured on this Headscale instance.", {
+    throw data("此 Headscale 实例未配置 OIDC。", {
       status: 501,
     });
   }
@@ -52,30 +52,26 @@ export default function Page({ loaderData: { access, writable, settings } }: Rou
       <div className="flex w-full flex-col sm:w-2/3">
         <p className="text-md mb-4">
           <Link className="font-medium" to="/settings">
-            Settings
+            设置
           </Link>
-          <span className="mx-2">/</span> Authentication Restrictions
+          <span className="mx-2">/</span> 认证限制
         </p>
         {!access ? (
-          <Notice title="Authentication permissions restricted" variant="warning">
-            You do not have the necessary permissions to edit the Authentication Restrictions
-            settings. Please contact your administrator to request access or to make changes to
-            these settings.
+          <Notice title="认证权限受限" variant="warning">
+            您没有编辑认证限制设置所需的权限。请联系管理员申请权限或进行更改。
           </Notice>
         ) : !writable ? (
-          <Notice title="Configuration Locked" variant="error">
-            The Headscale configuration file is not editable through the web interface. Please
-            ensure that you have correctly given Headplane write access to the file.
+          <Notice title="配置已锁定" variant="error">
+            Headscale 配置文件无法通过 Web 界面编辑。请确保您已正确授予 Headplane
+            对该文件的写入权限。
           </Notice>
         ) : undefined}
-        <h1 className="mt-4 mb-2 text-2xl font-medium">Authentication Restrictions</h1>
+        <h1 className="mt-4 mb-2 text-2xl font-medium">认证限制</h1>
         <p>
-          Headscale supports restricting OIDC authentication to only allow certain email domains,
-          groups, or users to authenticate. This can be used to limit access to your Tailnet to only
-          certain users or groups and Headplane will also respect these settings when
-          authenticating.{" "}
+          Headscale 支持限制 OIDC 认证，仅允许特定邮箱域名、群组或用户进行认证。这可以用于将 Tailnet
+          的访问权限限制为特定用户或群组，Headplane 在认证时也会尊重这些设置。{" "}
           <Link external styled to="https://headscale.net/stable/ref/oidc/#basic-configuration">
-            Learn More
+            了解更多
           </Link>
         </p>
       </div>

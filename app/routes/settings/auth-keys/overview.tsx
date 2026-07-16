@@ -191,33 +191,32 @@ export default function Page({
     <div className="flex flex-col md:w-2/3">
       <p className="text-md mb-8">
         <Link className="font-medium" to="/settings">
-          Settings
+          设置
         </Link>
-        <span className="mx-2">/</span> Pre-Auth Keys
+        <span className="mx-2">/</span> 预认证密钥
       </p>
       {!access ? (
-        <Notice title="Pre-auth key permissions restricted" variant="warning">
-          You do not have the necessary permissions to generate pre-auth keys. Please contact your
-          administrator to request access or to generate a pre-auth key for you.
+        <Notice title="预认证密钥权限受限" variant="warning">
+          您没有生成预认证密钥所需的权限。请联系管理员申请权限或为您生成预认证密钥。
         </Notice>
       ) : missing.length > 0 ? (
-        <Notice title="Missing authentication keys" variant="error">
-          An error occurred while fetching the authentication keys for the following users:{" "}
+        <Notice title="获取认证密钥失败" variant="error">
+          获取以下用户的认证密钥时发生错误：{" "}
           {missing.map(({ user }, index) => (
             <>
               <Code key={user.id}>{getUserDisplayName(user)}</Code>
               {index < missing.length - 1 ? ", " : ". "}
             </>
           ))}
-          Their keys may not be listed correctly. Please check the server logs for more information.
+          他们的密钥可能无法正确列出。请查看服务器日志了解更多信息。
         </Notice>
       ) : undefined}
-      <h1 className="mb-2 text-2xl font-medium">Pre-Auth Keys</h1>
+      <h1 className="mb-2 text-2xl font-medium">预认证密钥</h1>
       <p className="mb-4">
-        Headscale fully supports pre-authentication keys in order to easily add devices to your
-        Tailnet. To learn more about using pre-authentication keys, visit the{" "}
+        Headscale 完全支持预认证密钥，方便您将设备添加到
+        Tailnet。要了解有关使用预认证密钥的更多信息，请访问{" "}
         <Link external styled to="https://tailscale.com/kb/1085/auth-keys/">
-          Tailscale documentation
+          Tailscale 文档
         </Link>
       </p>
       <AddAuthKey
@@ -232,16 +231,16 @@ export default function Page({
           className="w-full"
           defaultValue="__headplane_all"
           disabled={isDisabled}
-          label="User"
+          label="用户"
           onValueChange={(value) => setSelectedUser(value ?? "")}
-          placeholder="Select a user"
+          placeholder="选择用户"
           items={[
-            { value: "__headplane_all", label: "All" },
+            { value: "__headplane_all", label: "全部" },
             ...keys
               .filter((k): k is { user: User; preAuthKeys: PreAuthKey[] } => k.user !== null)
               .map(({ user }) => ({ value: user.id, label: getUserDisplayName(user) })),
             ...(keys.some(({ user }) => user === null)
-              ? [{ value: "__headplane_tag_only", label: "Tag Only" }]
+              ? [{ value: "__headplane_tag_only", label: "仅标签" }]
               : []),
           ]}
         />
@@ -249,15 +248,15 @@ export default function Page({
           className="w-full"
           defaultValue="active"
           disabled={isDisabled}
-          label="Status"
+          label="状态"
           onValueChange={(value) => setStatus((value ?? "active") as Status)}
-          placeholder="Select a status"
+          placeholder="选择状态"
           items={[
-            { value: "all", label: "All" },
-            { value: "active", label: "Active" },
-            { value: "expired", label: "Used/Expired" },
-            { value: "reusable", label: "Reusable" },
-            { value: "ephemeral", label: "Ephemeral" },
+            { value: "all", label: "全部" },
+            { value: "active", label: "有效" },
+            { value: "expired", label: "已使用/已过期" },
+            { value: "reusable", label: "可重复使用" },
+            { value: "ephemeral", label: "临时" },
           ]}
         />
       </div>
@@ -265,12 +264,12 @@ export default function Page({
         {keys.flatMap(({ preAuthKeys }) => preAuthKeys).length === 0 ? (
           <TableList.Item className="flex flex-col items-center gap-2.5 py-4 opacity-70">
             <FileKey2 />
-            <p className="font-semibold">No pre-auth keys have been created yet.</p>
+            <p className="font-semibold">尚未创建任何预认证密钥。</p>
           </TableList.Item>
         ) : filteredKeys.length === 0 ? (
           <TableList.Item className="flex flex-col items-center gap-2.5 py-4 opacity-70">
             <FileKey2 />
-            <p className="font-semibold">No pre-auth keys match the selected filters.</p>
+            <p className="font-semibold">没有预认证密钥匹配当前筛选条件。</p>
           </TableList.Item>
         ) : (
           filteredKeys.map((key) => {

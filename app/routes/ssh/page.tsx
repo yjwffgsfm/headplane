@@ -155,14 +155,14 @@ export default function Page({ loaderData }: Route.ComponentProps) {
         <div className="flex h-screen w-screen items-center justify-center bg-black">
           <Card className="w-screen" variant="flat">
             <div className="flex items-center justify-between gap-4">
-              <Card.Title>Node Offline</Card.Title>
+              <Card.Title>节点离线</Card.Title>
               <WifiOff className="mb-2 h-6 w-6 text-red-500" />
             </div>
             <Card.Text>
-              <Code>{hostname}</Code> is not currently connected to the Tailnet.
+              <Code>{hostname}</Code> 当前未连接到 Tailnet。
             </Card.Text>
             <Button className="mt-8 w-full" onClick={() => window.location.reload()}>
-              Retry Connection
+              重试连接
             </Button>
           </Card>
         </div>
@@ -196,13 +196,10 @@ function BrowserSSHCompatibilityBanner({
 
   return (
     <div className="fixed inset-x-4 top-4 z-[60] mx-auto max-w-2xl">
-      <StatusBanner
-        variant="warning"
-        title={`Browser SSH is broken on Headscale ${warning.version}`}
-      >
-        Headscale 0.29 beta releases through 0.29.1 reject Tailscale's browser/WASM{" "}
-        <Code>/ts2021</Code> WebSocket request with <Code>405 Method Not Allowed</Code>. Upgrade
-        Headscale to 0.29.2 or newer, or use Headscale 0.28.x.
+      <StatusBanner variant="warning" title={`浏览器 SSH 在 Headscale ${warning.version} 上不可用`}>
+        Headscale 0.29 beta 版本至 0.29.1 会拒绝 Tailscale 的浏览器/WASM <Code>/ts2021</Code>{" "}
+        WebSocket 请求，返回 <Code>405 Method Not Allowed</Code>。请将 Headscale 升级到 0.29.2
+        或更高版本，或使用 Headscale 0.28.x 版本。
       </StatusBanner>
     </div>
   );
@@ -219,7 +216,7 @@ function SSHConsole({
 }) {
   const [ssh, setSsh] = useState<HeadplaneSSH | null>(null);
   const [connected, setConnected] = useState(false);
-  const [status, setStatus] = useState("Starting tunnel…");
+  const [status, setStatus] = useState("正在启动隧道…");
 
   useEffect(() => {
     let cancelled = false;
@@ -232,7 +229,7 @@ function SSHConsole({
         return;
       }
 
-      setStatus("Joining Tailnet…");
+      setStatus("正在加入 Tailnet…");
       const instance = create({
         controlURL: node.controlURL,
         preAuthKey: node.preAuthKey,
@@ -240,14 +237,14 @@ function SSHConsole({
         onReady: () => {
           console.log("[ssh] IPN ready (Running)");
           if (!cancelled) {
-            setStatus(`Connecting to ${hostname}…`);
+            setStatus(`正在连接到 ${hostname}…`);
             setSsh(instance);
           }
         },
         onError: (msg) => {
           console.error("[ssh] IPN error:", msg);
           if (!cancelled) {
-            setStatus(`Failed to join Tailnet: ${msg}`);
+            setStatus(`加入 Tailnet 失败：${msg}`);
           }
         },
       });

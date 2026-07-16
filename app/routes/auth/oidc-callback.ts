@@ -23,7 +23,7 @@ export async function loader({ request, context, url }: Route.LoaderArgs) {
   const oidc = context.get(oidcContext);
 
   if (oidc.state !== "enabled") {
-    throw data(`OIDC is unavailable: ${oidc.reason}`, { status: 501 });
+    throw data(`OIDC 不可用：${oidc.reason}`, { status: 501 });
   }
   const service = oidc.value;
 

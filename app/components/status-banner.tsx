@@ -65,7 +65,7 @@ export default function StatusBanner({
       {dismissable && (
         <button
           type="button"
-          aria-label="Dismiss"
+          aria-label="关闭"
           onClick={() => setDismissed(true)}
           className={cn(
             "shrink-0 rounded p-0.5 transition-colors",

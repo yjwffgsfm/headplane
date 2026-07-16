@@ -10,7 +10,7 @@ export async function action({ request }: Route.ActionArgs) {
   const returnTo = safeRedirect(formData.get("returnTo"));
 
   if (!colorScheme || !isValidColorScheme(colorScheme)) {
-    throw data("Bad Request", { status: 400 });
+    throw data("错误请求", { status: 400 });
   }
 
   return redirect(returnTo, {

@@ -14,19 +14,17 @@ export default function UserPrompt({ hostname }: UserPromptProps) {
   return (
     <div className="flex h-screen items-center justify-center">
       <Card>
-        <Card.Title>Enter Username</Card.Title>
+        <Card.Title>输入用户名</Card.Title>
         <Card.Text className="mb-4">
-          Enter the username you want to use to connect to <Code>{hostname}</Code>
-          {". "}
-          SSH via the web follows the same ACL rules as regular SSH access in Headscale, so only
-          permitted usernames will work.
+          输入您要用于连接 <Code>{hostname}</Code> 的用户名。 通过 Web 的 SSH 遵循与 Headscale
+          中常规 SSH 访问相同的 ACL 规则，因此只有被允许的用户名才能工作。
           <br />
           <br />
-          See the{" "}
+          有关常见错误，请参阅{" "}
           <Link external styled to="https://headplane.net/features/ssh#troubleshooting">
-            troubleshooting guide
-          </Link>{" "}
-          for common errors.
+            故障排除指南
+          </Link>
+          。
         </Card.Text>
         <Form
           method="GET"
@@ -49,14 +47,14 @@ export default function UserPrompt({ hostname }: UserPromptProps) {
           <Input
             labelHidden
             type="text"
-            label="Username"
+            label="用户名"
             name="user"
-            placeholder="Username"
+            placeholder="用户名"
             className="mb-2"
             required
           />
           <Button type="submit" variant="heavy" className="w-full">
-            Connect
+            连接
           </Button>
         </Form>
       </Card>

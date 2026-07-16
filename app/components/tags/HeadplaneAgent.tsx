@@ -5,9 +5,9 @@ import Tooltip from "../tooltip";
 
 export function HeadplaneAgentTag() {
   return (
-    <Tooltip content="This machine is running the Headplane agent, which allows it to provide host information in the web UI.">
+    <Tooltip content="此机器正在运行 Headplane 代理，可在 Web 界面中提供主机信息。">
       <Chip
-        text="Headplane Agent"
+        text="Headplane 代理"
         className={cn("bg-purple-300 text-purple-900 dark:bg-purple-900 dark:text-purple-300")}
       />
     </Tooltip>

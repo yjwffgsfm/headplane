@@ -55,7 +55,7 @@ function loadGoHelper(): Promise<void> {
     script.src = WASM_HELPER_URL;
     script.crossOrigin = "anonymous";
     script.onload = () => resolve();
-    script.onerror = () => reject(new Error("Failed to load Go WASM helper"));
+    script.onerror = () => reject(new Error("加载 Go WASM 助手失败"));
     document.head.appendChild(script);
   });
 }

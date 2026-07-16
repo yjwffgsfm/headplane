@@ -53,10 +53,10 @@ export default function NumberInput(props: NumberInputProps) {
           name={name}
           className="w-full rounded-l-md bg-transparent py-2 pl-3 text-sm focus:outline-hidden"
         />
-        <NumberField.Decrement aria-label="Decrement" className="h-7.5 w-7.5 rounded-lg p-1">
+        <NumberField.Decrement aria-label="减少" className="h-7.5 w-7.5 rounded-lg p-1">
           <Minus className="h-4 w-4" />
         </NumberField.Decrement>
-        <NumberField.Increment aria-label="Increment" className="h-7.5 w-7.5 rounded-lg p-1">
+        <NumberField.Increment aria-label="增加" className="h-7.5 w-7.5 rounded-lg p-1">
           <Plus className="h-4 w-4" />
         </NumberField.Increment>
       </NumberField.Group>

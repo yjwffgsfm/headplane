@@ -14,17 +14,14 @@ export function SubnetTag({ isEnabled }: SubnetTagProps) {
     <Tooltip
       content={
         isEnabled ? (
-          <>This machine advertises subnet routes.</>
+          <>此机器正在通告子网路由。</>
         ) : (
-          <>
-            This machine has unadvertised subnet routes. Review this from the "Edit route
-            settings..." option in the machine's menu.
-          </>
+          <>此机器有未通告的子网路由。请从机器菜单中的“编辑路由设置...”选项进行审核。</>
         )
       }
     >
       <Chip
-        text="Subnets"
+        text="子网"
         className={cn("bg-blue-300 text-blue-900 dark:bg-blue-900 dark:text-blue-300")}
         rightIcon={isEnabled ? undefined : <Info className="h-full w-fit" />}
       />

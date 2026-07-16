@@ -52,9 +52,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const principal = await auth.require(request);
   const check = await auth.can(principal, Capabilities.read_users);
   if (!check) {
-    throw new Error(
-      "You do not have permission to view this page. Please contact your administrator.",
-    );
+    throw new Error("您没有权限查看此页面。请联系管理员。");
   }
 
   const writablePermission = await auth.can(principal, Capabilities.write_users);
@@ -77,8 +75,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     apiUsers = usersSnap.data;
   } catch (error) {
     log.warn("api", "Failed to fetch Headscale API data: %s", String(error));
-    apiError =
-      "Could not connect to the Headscale API. Headscale user data and machine information are unavailable.";
+    apiError = "无法连接到 Headscale API。Headscale 用户数据和机器信息不可用。";
   }
 
   const useGravatar = config.oidc?.profile_picture_source === "gravatar";
@@ -160,8 +157,8 @@ export const action = userAction;
 export default function Page({ loaderData }: Route.ComponentProps) {
   return (
     <>
-      <h1 className="mb-1.5 text-2xl font-medium">Users</h1>
-      <p className="text-md mb-8">Manage the users in your network and their permissions.</p>
+      <h1 className="mb-1.5 text-2xl font-medium">用户</h1>
+      <p className="text-md mb-8">管理您网络中的用户及其权限。</p>
       <ManageBanner isDisabled={!loaderData.writable} oidc={loaderData.oidc} />
 
       {loaderData.apiError && (
@@ -177,22 +174,20 @@ export default function Page({ loaderData }: Route.ComponentProps) {
       )}
 
       <section>
-        <h2 className="mb-3 text-lg font-medium">Headplane Users</h2>
+        <h2 className="mb-3 text-lg font-medium">Headplane 用户</h2>
         {loaderData.headplaneUsers.length === 0 ? (
-          <p className="text-sm text-mist-600 dark:text-mist-300">
-            No users have signed into Headplane yet.
-          </p>
+          <p className="text-sm text-mist-600 dark:text-mist-300">尚未有用户登录 Headplane。</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[640px] table-auto rounded-lg">
               <thead className="text-mist-600 dark:text-mist-300">
                 <tr className="px-0.5 text-left">
-                  <th className="pb-2 text-xs font-bold uppercase">User</th>
-                  <th className="pb-2 text-xs font-bold uppercase">Role</th>
-                  <th className="pb-2 text-xs font-bold uppercase">Last Login</th>
-                  <th className="pb-2 text-xs font-bold uppercase">Status</th>
+                  <th className="pb-2 text-xs font-bold uppercase">用户</th>
+                  <th className="pb-2 text-xs font-bold uppercase">角色</th>
+                  <th className="pb-2 text-xs font-bold uppercase">最后登录</th>
+                  <th className="pb-2 text-xs font-bold uppercase">状态</th>
                   <th className="w-12 pb-2">
-                    <span className="sr-only">Actions</span>
+                    <span className="sr-only">操作</span>
                   </th>
                 </tr>
               </thead>
@@ -219,20 +214,19 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 
       {!loaderData.apiError && loaderData.unlinkedHeadscaleUsers.length > 0 && (
         <section className="mt-10">
-          <h2 className="mb-1 text-lg font-medium">Unlinked Headscale Users</h2>
+          <h2 className="mb-1 text-lg font-medium">未关联的 Headscale 用户</h2>
           <p className="mb-3 text-sm text-mist-600 dark:text-mist-300">
-            These Headscale users are not linked to a Headplane account and cannot be managed
-            through Headplane.
+            这些 Headscale 用户未关联到 Headplane 账户，无法通过 Headplane 进行管理。
           </p>
           <div className="overflow-x-auto">
             <table className="w-full min-w-[640px] table-auto rounded-lg">
               <thead className="text-mist-600 dark:text-mist-300">
                 <tr className="px-0.5 text-left">
-                  <th className="pb-2 text-xs font-bold uppercase">User</th>
-                  <th className="pb-2 text-xs font-bold uppercase">Created At</th>
-                  <th className="pb-2 text-xs font-bold uppercase">Status</th>
+                  <th className="pb-2 text-xs font-bold uppercase">用户</th>
+                  <th className="pb-2 text-xs font-bold uppercase">创建时间</th>
+                  <th className="pb-2 text-xs font-bold uppercase">状态</th>
                   <th className="w-12 pb-2">
-                    <span className="sr-only">Actions</span>
+                    <span className="sr-only">操作</span>
                   </th>
                 </tr>
               </thead>
@@ -255,5 +249,5 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  return <PageError error={error} page="Users" />;
+  return <PageError error={error} page="用户" />;
 }

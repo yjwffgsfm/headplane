@@ -57,11 +57,11 @@ export default function Page({ loaderData }: Route.ComponentProps) {
   if (!loaderData.enabled) {
     return (
       <div className="flex max-w-(--breakpoint-lg) flex-col gap-8">
-        <Title>Headplane Agent</Title>
-        <Notice title="Agent Not Enabled">
-          {loaderData.reason}. To learn how to set up the agent, visit the{" "}
+        <Title>Headplane 代理</Title>
+        <Notice title="代理未启用">
+          {loaderData.reason}。要了解如何设置代理，请访问{" "}
           <Link external styled to="https://headplane.net/features/agent">
-            documentation
+            文档
           </Link>
         </Notice>
       </div>
@@ -74,55 +74,51 @@ export default function Page({ loaderData }: Route.ComponentProps) {
   return (
     <div className="flex max-w-(--breakpoint-lg) flex-col gap-8">
       <div className="flex w-full flex-col sm:w-2/3">
-        <Title>Headplane Agent</Title>
-        <Text>
-          The Headplane Agent syncs node information like OS version and connectivity details from
-          your Tailnet.
-        </Text>
+        <Title>Headplane 代理</Title>
+        <Text>Headplane 代理会从您的 Tailnet 同步节点信息，如操作系统版本和连接详情。</Text>
       </div>
 
       <div className="flex items-center gap-3">
         <StatusCircle isOnline={!hasError && !isPending} className="h-5 w-5" />
         <span className="text-lg font-medium">
-          {hasError ? "Error" : isPending ? "Waiting for approval" : "Healthy"}
+          {hasError ? "错误" : isPending ? "等待批准" : "健康"}
         </span>
       </div>
 
       <div className="flex flex-col gap-2">
         <Text>
-          <span className="font-medium">Last synced: </span>
+          <span className="font-medium">最后同步：</span>
           {loaderData.syncedAt ? (
             <span suppressHydrationWarning>{formatTimeDelta(new Date(loaderData.syncedAt))}</span>
           ) : (
-            "Never"
+            "从未"
           )}
         </Text>
         <Text>
-          <span className="font-medium">Nodes synced: </span>
+          <span className="font-medium">已同步节点：</span>
           {loaderData.nodeCount}
         </Text>
       </div>
 
       {isPending ? (
-        <Notice variant="warning" title="Agent Needs Approval">
-          The agent is waiting for its Tailnet registration to be approved. Headplane will attempt
-          to auto-approve it, but if that fails, you can complete approval by visiting{" "}
+        <Notice variant="warning" title="代理需要批准">
+          代理正在等待其 Tailnet 注册获得批准。Headplane 将尝试自动批准，但如果失败，您可以通过访问{" "}
           <Link external styled to={loaderData.authUrl!}>
-            this link
+            此链接
           </Link>
-          .
+          来完成批准。
         </Notice>
       ) : undefined}
 
       {loaderData.error ? (
-        <Notice variant="error" title="Sync Error">
+        <Notice variant="error" title="同步错误">
           {loaderData.error}
         </Notice>
       ) : undefined}
 
       <fetcher.Form method="post">
         <Button type="submit" variant="heavy" disabled={isSyncing}>
-          {isSyncing ? "Syncing…" : "Sync Now"}
+          {isSyncing ? "同步中…" : "立即同步"}
         </Button>
       </fetcher.Form>
     </div>

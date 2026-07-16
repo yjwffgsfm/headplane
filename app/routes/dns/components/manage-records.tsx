@@ -16,19 +16,19 @@ interface Props {
 export default function ManageRecords({ records, isDisabled }: Props) {
   return (
     <div className="flex w-full flex-col sm:w-2/3">
-      <h1 className="mb-4 text-2xl font-medium">DNS Records</h1>
+      <h1 className="mb-4 text-2xl font-medium">DNS 记录</h1>
       <p>
-        Headscale supports adding custom DNS records to your Tailnet. As of now, only <Code>A</Code>{" "}
-        and <Code>AAAA</Code> records are supported.{" "}
+        Headscale 支持为您的 Tailnet 添加自定义 DNS 记录。目前仅支持 <Code>A</Code> 和{" "}
+        <Code>AAAA</Code> 记录。{" "}
         <Link external styled to="https://headscale.net/stable/ref/dns">
-          Learn More
+          了解更多
         </Link>
       </p>
       <div className="mt-4">
         <TableList className="mb-8">
           {records.length === 0 ? (
             <TableList.Item>
-              <p className="mx-auto opacity-50">No DNS records found</p>
+              <p className="mx-auto opacity-50">未找到 DNS 记录</p>
             </TableList.Item>
           ) : (
             records.map((record) => (
@@ -58,7 +58,7 @@ export default function ManageRecords({ records, isDisabled }: Props) {
                     disabled={isDisabled}
                     type="submit"
                   >
-                    Remove
+                    移除
                   </Button>
                 </Form>
               </TableList.Item>
