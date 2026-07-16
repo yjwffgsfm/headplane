@@ -27,20 +27,19 @@ export default function Routes({ node, isOpen, setIsOpen }: RoutesProps) {
   return (
     <Dialog isOpen={isOpen} onOpenChange={setIsOpen}>
       <DialogPanel variant="unactionable">
-        <Title>Edit route settings of {node.givenName}</Title>
-        <Text className="font-bold">Subnet routes</Text>
+        <Title>编辑 {node.givenName} 的路由设置</Title>
+        <Text className="font-bold">子网路由</Text>
         <Text>
-          Connect to devices you can&apos;t install Tailscale on by advertising IP ranges as subnet
-          routes.{" "}
+          通过将IP范围通告为子网路由，连接到无法安装Tailscale客户端的设备。{" "}
           <Link external styled to="https://tailscale.com/kb/1019/subnets">
-            Learn More
+            了解更多
           </Link>
         </Text>
         <TableList className="mt-4">
           {subnets.length === 0 ? (
             <TableList.Item className="flex flex-col items-center gap-2.5 py-4 opacity-70">
               <RouteOff />
-              <p className="font-semibold">No routes are advertised by this machine</p>
+              <p className="font-semibold">该设备未通告任何路由</p>
             </TableList.Item>
           ) : undefined}
           {subnets.map((route) => (
@@ -48,7 +47,7 @@ export default function Routes({ node, isOpen, setIsOpen }: RoutesProps) {
               <p>{route}</p>
               <Switch
                 defaultChecked={node.approvedRoutes.includes(route)}
-                label="Enabled"
+                label="已启用"
                 onCheckedChange={(checked) => {
                   const form = new FormData();
                   form.set("action_id", "update_routes");
@@ -64,25 +63,25 @@ export default function Routes({ node, isOpen, setIsOpen }: RoutesProps) {
             </TableList.Item>
           ))}
         </TableList>
-        <Text className="mt-8 font-bold">Exit nodes</Text>
+        <Text className="mt-8 font-bold">出口节点</Text>
         <Text>
-          Allow your network to route internet traffic through this machine.{" "}
+          允许您的网络通过该设备路由互联网流量。{" "}
           <Link external styled to="https://tailscale.com/kb/1103/exit-nodes">
-            Learn More
+            了解更多
           </Link>
         </Text>
         <TableList className="mt-4">
           {node.customRouting.exitRoutes.length === 0 ? (
             <TableList.Item className="flex flex-col items-center gap-2.5 py-4 opacity-70">
               <GlobeLock />
-              <p className="font-semibold">This machine is not an exit node</p>
+              <p className="font-semibold">该设备未配置为出口节点</p>
             </TableList.Item>
           ) : (
             <TableList.Item>
-              <p>Use as exit node</p>
+              <p>用作出口节点</p>
               <Switch
                 defaultChecked={node.customRouting.exitApproved}
-                label="Enabled"
+                label="已启用"
                 onCheckedChange={(checked) => {
                   const form = new FormData();
                   form.set("action_id", "update_routes");

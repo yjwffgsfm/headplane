@@ -25,21 +25,20 @@ export default function ReassignUser({
   return (
     <Dialog isOpen={isOpen} onOpenChange={setIsOpen}>
       <DialogPanel variant={role === "owner" ? "unactionable" : "normal"}>
-        <Title>Change role for {displayName}?</Title>
+        <Title>更改 {displayName} 的角色？</Title>
         <Text className="mb-6">
-          Roles control what the user can access in Headplane. Each role grants a specific set of
-          capabilities.{" "}
+          角色控制用户在 Headplane 中的访问权限。每个角色授予一组特定的功能。{" "}
           <Link external styled to="https://tailscale.com/kb/1138/user-roles">
-            Learn More
+            了解更多
           </Link>
         </Text>
         {role === "owner" ? (
-          <Notice>The Tailnet owner cannot be reassigned.</Notice>
+          <Notice>Tailnet 所有者不能被重新分配。</Notice>
         ) : (
           <>
             <input name="action_id" type="hidden" value="reassign_user" />
             <input name="headplane_user_id" type="hidden" value={headplaneUserId} />
-            <RadioGroup className="gap-4" defaultValue={role} label="Role" name="new_role">
+            <RadioGroup className="gap-4" defaultValue={role} label="角色" name="new_role">
               {Object.keys(Roles)
                 .filter((r) => r !== "owner")
                 .map((r) => {

@@ -18,7 +18,7 @@ function validateMachineName(values: Record<string, unknown>) {
   const name = String(values.name ?? "").toLowerCase();
   if (!dnsLabelPattern.test(name)) {
     return {
-      name: "Use a valid DNS label: lowercase letters, numbers, and hyphens only. It must start and end with a letter or number.",
+      name: "请输入有效的DNS标签：仅限小写字母、数字和连字符，且必须以字母或数字开头和结尾。",
     };
   }
 }
@@ -41,27 +41,24 @@ export default function Rename({ machine, magic, isOpen, setIsOpen }: RenameProp
   return (
     <Dialog isOpen={isOpen} onOpenChange={setIsOpen}>
       <DialogPanel isDisabled={!form.canSubmit}>
-        <Title>Edit machine name for {machine.givenName}</Title>
+        <Title>编辑 "{machine.givenName}" 的设备名称</Title>
         <Text className="mb-6">
-          This name is shown in the admin panel, in Tailscale clients, and used when generating
-          MagicDNS names.
+          该名称会显示在管理面板和Tailscale客户端中，并用于生成MagicDNS域名。
         </Text>
         <input name="action_id" type="hidden" value="rename" />
         <input name="node_id" type="hidden" value={machine.id} />
-        <Input {...form.field("name")} required label="Machine name" placeholder="Machine name" />
+        <Input {...form.field("name")} required label="设备名称" placeholder="设备名称" />
         {magic ? (
           name.length > 0 && name !== machine.givenName ? (
             <p className="mt-2 text-sm leading-tight text-mist-600 dark:text-mist-300">
-              This machine will be accessible by the hostname{" "}
+              该设备将通过主机名{" "}
               <Code className="text-sm">{name.toLowerCase().replaceAll(/\s+/g, "-")}</Code>
-              {". "}
-              The hostname <Code className="text-sm">{machine.givenName}</Code> will no longer point
-              to this machine.
+              {" 进行访问。"}
+              主机名 <Code className="text-sm">{machine.givenName}</Code> 将不再指向该设备。
             </p>
           ) : (
             <p className="mt-2 text-sm leading-tight text-mist-600 dark:text-mist-300">
-              This machine is accessible by the hostname{" "}
-              <Code className="text-sm">{machine.givenName}</Code>.
+              该设备可通过主机名 <Code className="text-sm">{machine.givenName}</Code> 进行访问。
             </p>
           )
         ) : undefined}

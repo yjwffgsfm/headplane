@@ -74,13 +74,13 @@ export default function Tags({ machine, isOpen, setIsOpen, existingTags }: TagsP
         }}
         isDisabled={fetcher.state !== "idle"}
       >
-        <Title>Edit ACL tags for {machine.givenName}</Title>
+        <Title>编辑 {machine.givenName} 的ACL标签</Title>
         <Text>
-          ACL tags can be used to reference machines in your ACL policies. See the{" "}
+          ACL标签可用于在ACL策略中引用设备。有关更多信息，请参阅{" "}
           <Link external styled to="https://tailscale.com/kb/1068/acl-tags">
-            Tailscale documentation
-          </Link>{" "}
-          for more information.
+            Tailscale文档
+          </Link>
+          。
         </Text>
         {error ? (
           <p className="mt-2 rounded-lg bg-red-50 p-3 text-sm text-red-700 dark:bg-red-900/20 dark:text-red-400">
@@ -91,7 +91,7 @@ export default function Tags({ machine, isOpen, setIsOpen, existingTags }: TagsP
           {tags.length === 0 ? (
             <TableList.Item className="flex flex-col items-center gap-2.5 py-4 opacity-70">
               <TagsIcon />
-              <p className="font-semibold">No tags are set on this machine</p>
+              <p className="font-semibold">该设备未设置任何标签</p>
             </TableList.Item>
           ) : (
             tags.map((item) => (
@@ -113,13 +113,13 @@ export default function Tags({ machine, isOpen, setIsOpen, existingTags }: TagsP
 
         <div className="mt-2 flex items-center gap-2">
           <Input
-            aria-label="Add a tag"
+            aria-label="添加标签"
             className="w-full"
             value={tag}
             onChange={setTag}
             invalid={tag.length > 0 && tagIsInvalid}
             placeholder="tag:example"
-            label="Tag"
+            label="标签"
             labelHidden
           />
           <Button
@@ -150,8 +150,7 @@ export default function Tags({ machine, isOpen, setIsOpen, existingTags }: TagsP
           </div>
         ) : null}
         <p className="mt-2 text-sm opacity-50">
-          Not seeing the tags you expect? Tags need to be defined in your access control policy
-          before they can be assigned to machines.
+          没有看到预期的标签？标签需要先在访问控制策略中定义，然后才能分配给设备。
         </p>
       </DialogPanel>
     </Dialog>
