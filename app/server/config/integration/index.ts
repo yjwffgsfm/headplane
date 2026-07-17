@@ -14,12 +14,12 @@ export async function loadIntegration(context: HeadplaneConfig["integration"]) {
   try {
     const res = await integration.isAvailable();
     if (!res) {
-      log.error("config", "Integration %s is not available", integration.name);
+      log.error("config", "集成 %s 不可用", integration.name);
       return;
     }
   } catch (error) {
-    log.error("config", "Failed to load integration %s: %s", integration, error);
-    log.debug("config", "Loading error: %o", error);
+    log.error("config", "加载集成 %s 失败：%s", integration, error);
+    log.debug("config", "加载错误：%o", error);
     return;
   }
 
@@ -32,27 +32,27 @@ function getIntegration(integration: HeadplaneConfig["integration"]) {
   const proc = integration?.proc;
 
   if (!docker?.enabled && !k8s?.enabled && !proc?.enabled) {
-    log.debug("config", "No integrations enabled");
+    log.debug("config", "未启用任何集成");
     return;
   }
 
   if (docker?.enabled && k8s?.enabled && proc?.enabled) {
-    log.error("config", "Multiple integrations enabled, please pick one only");
+    log.error("config", "启用了多个集成，请仅选择一个");
     return;
   }
 
   if (docker?.enabled) {
-    log.info("config", "Using Docker integration");
+    log.info("config", "正在使用 Docker 集成");
     return new dockerIntegration(integration!.docker!);
   }
 
   if (k8s?.enabled) {
-    log.info("config", "Using Kubernetes integration");
+    log.info("config", "正在使用 Kubernetes 集成");
     return new kubernetesIntegration(integration!.kubernetes!);
   }
 
   if (proc?.enabled) {
-    log.info("config", "Using Proc integration");
+    log.info("config", "正在使用进程集成");
     return new procIntegration(integration!.proc!);
   }
 }

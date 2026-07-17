@@ -81,11 +81,11 @@ export async function createHeadscale(opts: CreateHeadscaleOptions): Promise<Hea
     if (parsed.unknown) {
       log.warn(
         "api",
-        "Could not parse Headscale version %s, assuming newest known capabilities",
+        "无法解析 Headscale 版本 %s，假设使用最新的已知功能",
         parsed.raw,
       );
     } else {
-      log.info("api", "Connected to Headscale %s", formatServerVersion(parsed));
+      log.info("api", "已连接到 Headscale %s", formatServerVersion(parsed));
     }
   }
 
@@ -102,12 +102,12 @@ export async function createHeadscale(opts: CreateHeadscaleOptions): Promise<Hea
       if (isDataWithApiError(error) && error.data.statusCode === 404) {
         log.error(
           "api",
-          "Headscale /version returned 404; Headplane requires Headscale %s or newer",
+          "Headscale /version 返回 404；Headplane 需要 Headscale %s 或更高版本",
           MIN_SUPPORTED_VERSION,
         );
         return false;
       }
-      log.debug("api", "Headscale /version probe failed: %s", String(error));
+      log.debug("api", "Headscale /version 探测失败：%s", String(error));
       return false;
     }
   }
@@ -128,7 +128,7 @@ export async function createHeadscale(opts: CreateHeadscaleOptions): Promise<Hea
   if (!(await detectOnce())) {
     log.warn(
       "api",
-      "Headscale unreachable at boot; defaulting to newest-known capabilities and retrying every %dms",
+      "启动时 Headscale 不可达；默认使用最新的已知功能，每 %dms 重试一次",
       retryIntervalMs,
     );
     scheduleRetry();

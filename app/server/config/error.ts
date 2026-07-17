@@ -22,30 +22,30 @@ const translationsWithVars: {
   [K in keyof ErrorCodes]: (vars: ErrorCodes[K]) => string;
 } = {
   CONFLICTING_SECRET_PATH_FIELD: ({ fieldName }) =>
-    `Both "${fieldName}" and "${fieldName}_path" are set; please provide only one of these fields.`,
+    `同时设置了 "${fieldName}" 和 "${fieldName}_path"，请仅提供其中一个字段。`,
   INVALID_REQUIRED_FIELDS: ({ messages }) =>
-    `The configuration is missing required fields or has invalid values:\n- ${messages.join("\n- ")}`,
+    `配置缺少必填字段或包含无效值：\n- ${messages.join("\n- ")}`,
   MISSING_INTERPOLATION_VARIABLE: ({ pathKey, variableName }) =>
-    `Could not resolve environment variable "${variableName}" for configuration key "${pathKey}".`,
+    `无法解析配置键 "${pathKey}" 的环境变量 "${variableName}"。`,
 
   MISSING_SECRET_FILE: ({ pathKey, filePath }) =>
-    `The secret file specified in "${pathKey}" could not be accessed at path "${filePath}". Please ensure the file exists and is readable.`,
+    `无法访问 "${pathKey}" 中指定的密钥文件，路径为 "${filePath}"。请确保文件存在且可读。`,
 } as const;
 
 /**
- * Custom error class for configuration-related errors.
+ * 配置相关错误的自定义错误类。
  */
 export class ConfigError extends Error {
   /**
-   * The error code representing the type of configuration error.
+   * 表示配置错误类型的错误代码。
    */
   code: keyof ErrorCodes;
 
   /**
-   * Creates a new ConfigError instance.
+   * 创建一个新的 ConfigError 实例。
    *
-   * @param code The error code
-   * @param vars The variables to interpolate into the error message
+   * @param code 错误代码
+   * @param vars 要插入到错误消息中的变量
    */
   constructor(code: keyof ErrorCodes, vars: unknown) {
     super(
@@ -60,11 +60,11 @@ export class ConfigError extends Error {
   }
 
   /**
-   * Factory method to create a ConfigError instance.
+   * 工厂方法，用于创建 ConfigError 实例。
    *
-   * @param code The error code
-   * @param vars The variables to interpolate into the error message
-   * @returns A new ConfigError instance
+   * @param code 错误代码
+   * @param vars 要插入到错误消息中的变量
+   * @returns 一个新的 ConfigError 实例
    */
   static from<K extends keyof ErrorCodes>(code: K, vars: ErrorCodes[K]) {
     return new ConfigError(code, vars);

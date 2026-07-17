@@ -43,9 +43,9 @@ const serverConfig = type({
   cookie_domain: "string.lower?",
   cookie_max_age: "number.integer = 86400",
 
-  // TLS termination. When both `tls_cert_path` and `tls_key_path`
-  // are provided, Headplane serves HTTPS on `server.port`. When
-  // either is set, `cookie_secure` is forced to `true`.
+  // TLS 终止。当同时提供了 `tls_cert_path` 和 `tls_key_path` 时，
+  // Headplane 在 `server.port` 上提供 HTTPS 服务。
+  // 当设置了其中任意一个时，`cookie_secure` 会被强制设为 `true`。
   tls_cert_path: "string?",
   tls_key_path: "string?",
 
@@ -123,14 +123,14 @@ const oidcConfig = type({
   client_secret: "string",
   headscale_api_key: type("string")
     .pipe((value, ctx) => {
-      log.warn("config", "%s is deprecated, use headscale.api_key instead", ctx.propString);
+      log.warn("config", "%s 已弃用，请改用 headscale.api_key", ctx.propString);
       return value;
     })
     .optional(),
   use_pkce: "boolean = false",
   redirect_uri: type("string.url")
     .pipe((value, ctx) => {
-      log.warn("config", "%s is deprecated and will be removed in 0.7.0", ctx.propString);
+      log.warn("config", "%s 已弃用，将在 0.7.0 中移除", ctx.propString);
 
       const cleanedValue = new URL(value.trim());
       if (cleanedValue.pathname.endsWith(`${__PREFIX__}/oidc/callback`)) {
@@ -138,7 +138,7 @@ const oidcConfig = type({
 
         log.warn(
           "config",
-          'Please migrate to using `server.base_url` with a value of "%s"',
+          '请迁移至使用 `server.base_url`，值为 "%s"',
           cleanedValue.toString(),
         );
       }
@@ -163,7 +163,7 @@ const oidcConfig = type({
   use_end_session: "boolean = false",
   token_endpoint_auth_method: '"client_secret_basic" | "client_secret_post" | "client_secret_jwt"?',
 
-  // Old/deprecated options
+  // 旧版/已弃用选项
   strict_validation: type("unknown").narrow(deprecatedField()).optional(),
 });
 
@@ -192,7 +192,7 @@ const partialOidcConfig = type({
   use_end_session: "boolean?",
   token_endpoint_auth_method: '"client_secret_basic" | "client_secret_post" | "client_secret_jwt"?',
 
-  // Old/deprecated options
+  // 旧版/已弃用选项
   strict_validation: type("unknown").narrow(deprecatedField()).optional(),
 });
 

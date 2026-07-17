@@ -115,7 +115,7 @@ interface TargetVersion {
 function parseTarget(target: string): TargetVersion {
   const match = SEMVER_RE.exec(target);
   if (!match) {
-    throw new Error(`Invalid capability target version: ${target}`);
+    throw new Error(`无效的功能目标版本：${target}`);
   }
   return {
     major: Number(match[1]),

@@ -44,96 +44,96 @@ export default class KubernetesIntegration extends Integration<typeof configSche
 
   async isAvailable() {
     if (platform() !== "linux") {
-      log.error("config", "Kubernetes is only available on Linux");
+      log.error("config", "Kubernetes 仅支持 Linux 平台");
       return false;
     }
 
     try {
-      log.debug("config", "Checking Kubernetes service account at %s", svcRoot);
+      log.debug("config", "正在检查 Kubernetes 服务账号：%s", svcRoot);
       const files = await readdir(svcRoot);
       if (files.length === 0) {
-        log.error("config", "Kubernetes service account not found");
+        log.error("config", "未找到 Kubernetes 服务账号");
         return false;
       }
 
       const mappedFiles = new Set(files.map((file) => join(svcRoot, file)));
       const expectedFiles = [svcCaPath, svcTokenPath, svcNamespacePath];
 
-      log.debug("config", "Looking for %s", expectedFiles.join(", "));
+      log.debug("config", "正在查找：%s", expectedFiles.join(", "));
       if (!expectedFiles.every((file) => mappedFiles.has(file))) {
-        log.error("config", "Malformed Kubernetes service account");
+        log.error("config", "Kubernetes 服务账号不完整");
         return false;
       }
     } catch (error) {
-      log.error("config", "Failed to access %s: %s", svcRoot, error);
+      log.error("config", "无法访问 %s：%s", svcRoot, error);
       return false;
     }
 
-    log.debug("config", "Reading Kubernetes service account at %s", svcRoot);
+    log.debug("config", "正在读取 Kubernetes 服务账号：%s", svcRoot);
     const namespace = await readFile(svcNamespacePath, "utf8");
 
-    // Some very ugly nesting but it's necessary
+    // 嵌套较深，但这是必要的
     if (this.context.validate_manifest === false) {
-      log.warn("config", "Skipping strict Pod status check");
+      log.warn("config", "已跳过严格的 Pod 状态检查");
     } else {
       const pod = this.context.pod_name;
       if (!pod) {
-        log.error("config", "Missing POD_NAME variable");
+        log.error("config", "缺少 POD_NAME 环境变量");
         return false;
       }
 
       if (pod.trim().length === 0) {
-        log.error("config", "Pod name is empty");
+        log.error("config", "Pod 名称为空");
         return false;
       }
 
-      log.debug("config", "Checking Kubernetes pod %s in namespace %s", pod, namespace);
+      log.debug("config", "正在检查命名空间 %s 中的 Kubernetes Pod %s", namespace, pod);
 
       try {
-        log.debug("config", "Attempgin to get cluster KubeConfig");
+        log.debug("config", "正在尝试获取集群 KubeConfig");
         const kc = new KubeConfig();
         kc.loadFromCluster();
 
         const cluster = kc.getCurrentCluster();
         if (!cluster) {
-          log.error("config", "Malformed kubeconfig");
+          log.error("config", "kubeconfig 不完整");
           return false;
         }
 
-        log.info("config", "Service account connected to %s (%s)", cluster.name, cluster.server);
+        log.info("config", "服务账号已连接到 %s（%s）", cluster.name, cluster.server);
 
         const kCoreV1Api = kc.makeApiClient(CoreV1Api);
 
-        log.info("config", "Checking pod %s in namespace %s", pod, namespace);
-        log.debug("config", "Reading pod info for %s", pod);
+        log.info("config", "正在检查命名空间 %s 中的 Pod %s", namespace, pod);
+        log.debug("config", "正在读取 Pod %s 的信息", pod);
         const body = await kCoreV1Api.readNamespacedPod({
           name: pod,
           namespace,
         });
 
         if (!body.spec) {
-          log.error("config", "Missing spec in pod info for %s/%s", pod, namespace);
+          log.error("config", "Pod %s/%s 的信息中缺少 spec 字段", pod, namespace);
 
           return false;
         }
 
-        log.debug("config", "Got pod info: %o", body.spec);
+        log.debug("config", "获取到 Pod 信息：%o", body.spec);
         const shared = body.spec.shareProcessNamespace;
         if (shared === undefined) {
-          log.error("config", "Pod does not have spec.shareProcessNamespace set");
+          log.error("config", "Pod 未设置 spec.shareProcessNamespace");
 
           return false;
         }
 
         if (!shared) {
-          log.error("config", "Pod has set but disabled spec.shareProcessNamespace");
+          log.error("config", "Pod 已设置 spec.shareProcessNamespace 但值为 false");
 
           return false;
         }
 
-        log.info("config", "Pod %s enabled shared processes", pod);
+        log.info("config", "Pod %s 已启用共享进程命名空间", pod);
       } catch (error) {
-        log.error("config", "Failed to read pod info: %s", error);
+        log.error("config", "读取 Pod 信息失败：%s", error);
         return false;
       }
     }
@@ -141,15 +141,15 @@ export default class KubernetesIntegration extends Integration<typeof configSche
     try {
       const result = await findHeadscaleServe();
       if (!result) {
-        log.error("config", "Could not find headscale serve process");
+        log.error("config", "未找到 headscale serve 进程");
         return false;
       }
 
       this.pid = result;
-      log.info("config", "Found headscale serve (PID %d)", this.pid);
+      log.info("config", "找到 headscale serve（PID %d）", this.pid);
       return true;
     } catch (error) {
-      log.error("config", "Failed to scan /proc: %s", error);
+      log.error("config", "扫描 /proc 失败：%s", error);
       return false;
     }
   }

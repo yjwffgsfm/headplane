@@ -22,7 +22,7 @@ export default class ProcIntegration extends Integration<typeof configSchema.ful
   private pid: number | undefined;
 
   get name() {
-    return "Native Linux (/proc)";
+    return "原生 Linux（/proc）";
   }
 
   static get configSchema() {
@@ -31,22 +31,22 @@ export default class ProcIntegration extends Integration<typeof configSchema.ful
 
   async isAvailable() {
     if (platform() !== "linux") {
-      log.error("config", "/proc is only available on Linux");
+      log.error("config", "/proc 仅支持 Linux 平台");
       return false;
     }
 
     try {
       const result = await findHeadscaleServe();
       if (!result) {
-        log.error("config", "Could not find headscale serve process");
+        log.error("config", "未找到 headscale serve 进程");
         return false;
       }
 
       this.pid = result;
-      log.info("config", "Found headscale serve (PID %d)", this.pid);
+      log.info("config", "找到 headscale serve（PID %d）", this.pid);
       return true;
     } catch (error) {
-      log.error("config", "Failed to scan /proc: %s", error);
+      log.error("config", "扫描 /proc 失败：%s", error);
       return false;
     }
   }

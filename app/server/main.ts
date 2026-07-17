@@ -1,12 +1,11 @@
-// MARK: Production Bootstrap
+// MARK: 生产环境启动脚本
 //
-// The production SSR build entry. Imports the React Router request
-// listener from `./app`, wraps it with static-asset serving (out of
-// `build/client`) and basename redirect, then binds an http(s) server.
+// 生产环境 SSR 构建入口。从 `./app` 导入 React Router 请求监听器，
+// 为其包装静态资源服务（来自 `build/client`）和基路径重定向，
+// 然后绑定 http(s) 服务器。
 //
-// This file is NOT loaded in dev — `react-router dev` boots through
-// Vite, and the dev-only `runtime/vite-plugin.ts` dispatches requests
-// straight to `./app`'s default export.
+// 此文件在开发模式下 *不会* 被加载 —— `react-router dev` 通过 Vite 启动，
+// 而仅用于开发的 `runtime/vite-plugin.ts` 会将请求直接分发给 `./app` 的默认导出。
 
 import { readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
@@ -18,8 +17,8 @@ import log from "~/utils/log";
 import { type StartOptions, composeListener, startHttpServer } from "../../runtime/http";
 import requestListener, { config, dispose } from "./app";
 
-// `import.meta.url` resolves to `build/server/index.js`; the built
-// client lives next to it at `build/client/`.
+// `import.meta.url` 解析为 `build/server/index.js`；构建后的客户端
+// 位于其旁边的 `build/client/` 目录。
 const clientDir = resolve(dirname(fileURLToPath(import.meta.url)), "../client");
 
 let tls: StartOptions["tls"];
@@ -28,7 +27,7 @@ if (certPath || keyPath) {
   if (!certPath || !keyPath) {
     log.error(
       "server",
-      "TLS misconfigured: both `server.tls_cert_path` and `server.tls_key_path` must be provided",
+      "TLS 配置错误：必须同时提供 `server.tls_cert_path` 和 `server.tls_key_path`",
     );
     exit(1);
   }
@@ -37,22 +36,21 @@ if (certPath || keyPath) {
     const [cert, key] = await Promise.all([readFile(certPath), readFile(keyPath)]);
     tls = { cert, key };
   } catch (err) {
-    log.error("server", "Failed to read TLS material: %s", err);
+    log.error("server", "读取 TLS 材料失败：%s", err);
     exit(1);
   }
 }
 
-// `HEADPLANE_LISTEN_FILE` is a Docker-specific contract: the
-// Dockerfile sets it to `/tmp/headplane-listen` so the bundled
-// `hp_healthcheck` binary can discover the URL to probe. Native
-// installs don't ship a consumer, so we just skip writing anything
-// if the var isn't set.
+// `HEADPLANE_LISTEN_FILE` 是 Docker 特定的约定：
+// Dockerfile 将其设置为 `/tmp/headplane-listen`，以便打包的
+// `hp_healthcheck` 二进制文件能够发现需要探测的 URL。
+// 原生安装不会附带消费者，因此如果未设置该变量，则跳过写入。
 const listenFilePath = process.env.HEADPLANE_LISTEN_FILE;
 const listenFile = listenFilePath
   ? {
       path: listenFilePath,
-      // Full URL including `__PREFIX__` so the Go binary can GET it
-      // verbatim — no path joining, no basename knowledge needed.
+      // 包含 `__PREFIX__` 的完整 URL，以便 Go 二进制文件可以直接 GET
+      // —— 无需路径拼接，也无需了解基路径。
       url: `${tls ? "https" : "http"}://127.0.0.1:${config.server.port}${__PREFIX__}/healthz`,
     }
   : undefined;

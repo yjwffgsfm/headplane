@@ -14,18 +14,15 @@ import {
 import { ConfigError } from "./error";
 
 /**
- * Main entrypoint that attempts to load and merge configuration from both
- * a YAML config file (if available) and environment variables. Importantly,
- * the environment variables will override any values set in the config file.
+ * 主入口函数，尝试从 YAML 配置文件（如果可用）和环境变量中加载并合并配置。
+ * 重要说明：环境变量会覆盖配置文件中的任何值。
  *
- * The function also supports loading secret values from file paths for
- * specific configuration keys (e.g., certificates, private keys) by checking
- * for corresponding `_path` suffixed environment variables or config file
- * entries.
+ * 该函数还支持通过检查对应的 `_path` 后缀的环境变量或配置文件条目，
+ * 从文件路径加载特定配置键的密钥值（例如证书、私钥）。
  *
- * @param configPathOverride Used for testing to override the config file path
- * @returns @ref{HeadplaneConfig} The fully validated configuration
- * @throws {Error} If there are validation errors in the final configuration
+ * @param configPathOverride 用于测试时覆盖配置文件路径
+ * @returns @ref{HeadplaneConfig} 经过完全验证的配置
+ * @throws {Error} 如果最终配置存在验证错误
  */
 export async function loadConfig(configPathOverride?: string) {
   const configPath =
@@ -52,18 +49,18 @@ export async function loadConfig(configPathOverride?: string) {
 }
 
 /**
- * Attempts to load configuration from a YAML file at the specified path.
- * If the file is not accessible, it returns undefined.
+ * 尝试从指定路径的 YAML 文件加载配置。
+ * 如果文件不可访问，则返回 undefined。
  *
- * @param path The file path to load the configuration from
- * @returns A partial configuration object or undefined
- * @throws {Error} If there are validation errors in the loaded configuration
+ * @param path 要加载配置的文件路径
+ * @returns 部分配置对象或 undefined
+ * @throws {Error} 如果加载的配置存在验证错误
  */
 export async function loadConfigFile(path: string) {
   try {
     await access(path, constants.R_OK);
   } catch {
-    log.info("config", "Could not access config file at path: %s", path);
+    log.info("config", "无法访问配置文件：%s", path);
     return;
   }
 
@@ -80,23 +77,22 @@ export async function loadConfigFile(path: string) {
 }
 
 /**
- * Loads configuration overrides from environment variables prefixed with
- * `HEADPLANE_`. Nested configuration keys can be represented using double
- * underscores (`__`). For example, `HEADPLANE_SERVER__PORT=8080` would set
- * the `server.port` configuration key to `8080`.
+ * 从以 `HEADPLANE_` 为前缀的环境变量加载配置覆盖项。
+ * 嵌套配置键可以使用双下划线（`__`）表示。
+ * 例如，`HEADPLANE_SERVER__PORT=8080` 会将 `server.port` 配置键设置为 `8080`。
  *
- * @returns A partial configuration object or undefined
- * @throws {Error} If there are validation errors in the loaded configuration
+ * @returns 部分配置对象或 undefined
+ * @throws {Error} 如果加载的配置存在验证错误
  */
 export async function loadConfigEnv() {
   if (process.env.HEADPLANE_LOAD_ENV_OVERRIDES != null) {
     log.warn(
       "config",
-      "HEADPLANE_LOAD_ENV_OVERRIDES is deprecated and will be removed in future versions",
+      "HEADPLANE_LOAD_ENV_OVERRIDES 已弃用，将在未来版本中移除",
     );
     log.warn(
       "config",
-      "Environment variables are always loaded and `.env` files are no longer supported",
+      "环境变量始终会被加载，不再支持 `.env` 文件",
     );
   }
 
@@ -122,11 +118,10 @@ export async function loadConfigEnv() {
 }
 
 /**
- * Deeply merges multiple objects together. Later objects in the arguments
- * list will override properties of earlier objects.
+ * 深度合并多个对象。参数列表中较靠后的对象会覆盖较靠前对象的属性。
  *
- * @param objects The objects to merge
- * @returns The merged object
+ * @param objects 要合并的对象
+ * @returns 合并后的对象
  */
 function deepMerge<T>(...objects: (T | undefined)[]): T {
   const result: { [key: string]: unknown } = {};
@@ -151,11 +146,11 @@ function deepMerge<T>(...objects: (T | undefined)[]): T {
 }
 
 /**
- * Sets a value deeply within an object based on the provided path.
+ * 根据提供的路径在对象中深度设置值。
  *
- * @param obj The object to set the value in
- * @param path An array of keys representing the path to set
- * @param value The value to set at the specified path
+ * @param obj 要设置值的对象
+ * @param path 表示要设置路径的键数组
+ * @param value 要在指定路径设置的值
  */
 function deepSet(obj: { [key: string]: unknown }, path: string[], value: unknown): void {
   let current = obj;
@@ -172,11 +167,11 @@ function deepSet(obj: { [key: string]: unknown }, path: string[], value: unknown
 }
 
 /**
- * Parses an environment variable string value into an appropriate type.
- * Supports booleans, null, undefined, and numbers. Falls back to string.
+ * 将环境变量字符串值解析为适当的类型。
+ * 支持布尔值、null、undefined 和数字。否则回退为字符串。
  *
- * @param value The environment variable string value
- * @returns The parsed value
+ * @param value 环境变量字符串值
+ * @returns 解析后的值
  */
 function parseEnvValue(value: string): unknown {
   const v = value.trim().toLowerCase();
@@ -194,12 +189,10 @@ function parseEnvValue(value: string): unknown {
 }
 
 /**
- * For configuration keys that support loading from file paths (e.g.,
- * certificates, private keys), this function checks for corresponding
- * `_path` suffixed keys and loads the file content if the main key is
- * not already set.
+ * 对于支持从文件路径加载的配置键（例如证书、私钥），
+ * 该函数检查对应的 `_path` 后缀键，并在主键未设置时加载文件内容。
  *
- * @param partial The partial configuration object to update
+ * @param partial 要更新的部分配置对象
  */
 export async function loadConfigKeyPaths(partial: PartialHeadplaneConfig) {
   for (const key of pathSupportedKeys) {
@@ -242,11 +235,11 @@ export async function loadConfigKeyPaths(partial: PartialHeadplaneConfig) {
 }
 
 /**
- * Deeply retrieves a value from an object based on the provided path.
+ * 根据提供的路径从对象中深度获取值。
  *
- * @param obj The object to retrieve the value from
- * @param path An array of keys representing the path to retrieve
- * @returns The value at the specified path or undefined if not found
+ * @param obj 要获取值的对象
+ * @param path 表示要获取路径的键数组
+ * @returns 指定路径的值，如果未找到则返回 undefined
  */
 function deepGet(obj: { [key: string]: unknown }, path: string[]): unknown {
   let current = obj;

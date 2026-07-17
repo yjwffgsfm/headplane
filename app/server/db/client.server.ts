@@ -13,11 +13,11 @@ export async function createDbClient(path: string) {
   } catch (error) {
     log.error(
       "server",
-      "Failed to create directory for database at %s: %s",
+      "无法在 %s 创建数据库目录：%s",
       realPath,
       error instanceof Error ? error.message : String(error),
     );
-    throw new Error(`Could not create directory for database at ${realPath}`);
+    throw new Error(`无法在 ${realPath} 创建数据库目录`);
   }
 
   const db = drizzle(realPath);

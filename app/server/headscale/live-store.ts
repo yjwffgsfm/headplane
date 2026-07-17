@@ -84,7 +84,7 @@ export function createLiveStore(resources: ResourceDefinition<unknown>[]): LiveS
     const previousJson = serializedCache.get(resource.key);
 
     if (previousJson === json) {
-      log.debug("api", "Live store: %s unchanged", resource.key);
+      log.debug("api", "实时存储：%s 未发生变化", resource.key);
       return;
     }
 
@@ -98,7 +98,7 @@ export function createLiveStore(resources: ResourceDefinition<unknown>[]): LiveS
     };
 
     snapshots.set(resource.key, snapshot);
-    log.debug("api", "Live store: %s updated (v%s)", resource.key, version);
+    log.debug("api", "实时存储：%s 已更新（v%s）", resource.key, version);
 
     if (previousJson !== undefined) {
       notifyListeners(resource.key, version);
@@ -118,14 +118,14 @@ export function createLiveStore(resources: ResourceDefinition<unknown>[]): LiveS
       try {
         await fetchResource(resource, storedApiClient);
       } catch (error) {
-        log.error("api", "Live store: failed to poll %s", resource.key, error);
+        log.error("api", "实时存储：轮询 %s 失败", resource.key, error);
       }
     }, resource.pollInterval);
 
     intervals.set(resource.key, interval);
     log.debug(
       "api",
-      "Live store: started polling %s every %dms",
+      "实时存储：已开始每 %dms 轮询 %s",
       resource.key,
       resource.pollInterval,
     );
@@ -143,7 +143,7 @@ export function createLiveStore(resources: ResourceDefinition<unknown>[]): LiveS
       storedApiClient = apiClient;
       const def = findResource(resource.key);
       if (!def) {
-        throw new Error(`LiveStore: unknown resource "${resource.key}"`);
+        throw new Error(`实时存储：未知资源 "${resource.key}"`);
       }
 
       if (!snapshots.has(resource.key)) {
@@ -158,7 +158,7 @@ export function createLiveStore(resources: ResourceDefinition<unknown>[]): LiveS
       storedApiClient = apiClient;
       const def = findResource(resource.key);
       if (!def) {
-        throw new Error(`LiveStore: unknown resource "${resource.key}"`);
+        throw new Error(`实时存储：未知资源 "${resource.key}"`);
       }
 
       await fetchResource(def, apiClient);

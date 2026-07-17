@@ -61,15 +61,15 @@ export async function createAgentManager(
   }
 
   if (!supportsTagOnlyKeys) {
-    log.error("agent", "The Headplane agent requires Headscale 0.28 or newer");
-    log.error("agent", "The agent will not run without support for tag-only keys");
+    log.error("agent", "Headplane Agent 需要 Headscale 0.28 或更高版本");
+    log.error("agent", "在不支持仅标签密钥的情况下，Agent 将无法运行");
     return;
   }
 
   try {
     await access(agentConfig.executable_path, constants.X_OK);
   } catch {
-    log.error("agent", "Agent executable not accessible at %s", agentConfig.executable_path);
+    log.error("agent", "无法访问 Agent 可执行文件：%s", agentConfig.executable_path);
     return;
   }
 
@@ -78,11 +78,11 @@ export async function createAgentManager(
   } catch {
     try {
       await mkdir(agentConfig.work_dir, { recursive: true });
-      log.info("agent", "Created agent work dir at %s", agentConfig.work_dir);
+      log.info("agent", "已创建 Agent 工作目录：%s", agentConfig.work_dir);
     } catch (innerError) {
       log.error(
         "agent",
-        "Failed to create agent work dir at %s: %s",
+        "无法创建 Agent 工作目录 %s：%s",
         agentConfig.work_dir,
         innerError instanceof Error ? innerError.message : String(innerError),
       );
@@ -129,9 +129,9 @@ export async function createAgentManager(
 
     if (authKey) {
       env.HEADPLANE_AGENT_TS_AUTHKEY = authKey;
-      log.info("agent", "Spawning agent with pre-auth key (prefix: %s)", authKey.slice(0, 16));
+      log.info("agent", "正在使用预授权密钥启动 Agent（前缀：%s）", authKey.slice(0, 16));
     } else {
-      log.info("agent", "Spawning agent without pre-auth key (reusing existing state)");
+      log.info("agent", "正在启动 Agent（不使用预授权密钥，将复用现有状态）");
     }
 
     const child = spawn(executablePath, [], {
@@ -147,29 +147,29 @@ export async function createAgentManager(
 
       log.debug("agent", "%s", text);
 
-      // tsnet prints an auth URL when it falls back to interactive login.
-      // Capture it so the UI can surface the approval link if needed, and try
-      // to auto-approve the agent using Headplane's admin API access.
+      // tsnet 在回退到交互式登录时会输出认证 URL。
+      // 捕获该 URL 以便 UI 在需要时展示批准链接，并尝试使用
+      // Headplane 的管理 API 自动批准 Agent。
       const authMatch = text.match(
         /To start this tsnet server, restart with TS_AUTHKEY set, or go to: (https:\/\/\S+)/,
       );
       if (authMatch) {
         state.authUrl = authMatch[1];
-        log.warn("agent", "Agent is waiting for interactive approval; visit: %s", state.authUrl);
+        log.warn("agent", "Agent 正在等待交互式批准；请访问：%s", state.authUrl);
 
         const authId = state.authUrl.split("/").pop();
         if (authId && authId !== approvingAuthId) {
           approvingAuthId = authId;
-          log.info("agent", "Attempting to auto-approve auth request %s", authId);
+          log.info("agent", "正在尝试自动批准认证请求 %s", authId);
           apiClient.auth
             .approve(authId)
             .then(() => {
-              log.info("agent", "Auto-approved auth request %s", authId);
+              log.info("agent", "已自动批准认证请求 %s", authId);
             })
             .catch((error) => {
               log.warn(
                 "agent",
-                "Failed to auto-approve auth request %s: %s",
+                "自动批准认证请求 %s 失败：%s",
                 authId,
                 error instanceof Error ? error.message : String(error),
               );
@@ -189,18 +189,18 @@ export async function createAgentManager(
 
     child.on("exit", (code, signal) => {
       if (!disposed) {
-        log.warn("agent", "Agent process exited (code=%s, signal=%s)", code, signal);
+        log.warn("agent", "Agent 进程已退出（code=%s, signal=%s）", code, signal);
       } else {
         log.info(
           "agent",
-          "Agent process exited during disposal (code=%s, signal=%s)",
+          "Agent 进程在释放期间退出（code=%s, signal=%s）",
           code,
           signal,
         );
       }
       proc = null;
 
-      // Reject any pending sync request
+      // 拒绝任何待处理的同步请求
       if (responseHandler) {
         const handler = responseHandler;
         responseHandler = null;
@@ -220,13 +220,13 @@ export async function createAgentManager(
     const stateExists = await hasExistingState(workDir);
     const authKey = await generateAuthKey();
     if (stateExists) {
-      log.debug("agent", "Reusing existing tsnet identity");
+      log.debug("agent", "正在复用现有的 tsnet 身份");
       log.info(
         "agent",
-        "Existing state found; agent will use it and fall back to the pre-auth key if needed",
+        "检测到现有状态；Agent 将复用该状态，并在需要时回退使用预授权密钥",
       );
     } else {
-      log.info("agent", "No tsnet state found, agent will register with a pre-auth key");
+      log.info("agent", "未检测到 tsnet 状态，Agent 将使用预授权密钥进行注册");
     }
 
     return spawnAgent(authKey);
@@ -242,7 +242,7 @@ export async function createAgentManager(
   async function requestSync(child: ChildProcess): Promise<AgentOutput> {
     const line = await sendSync(child);
     if (!line) {
-      throw new Error("Agent process closed unexpectedly");
+      throw new Error("Agent 进程意外关闭");
     }
     return JSON.parse(line) as AgentOutput;
   }
@@ -253,7 +253,7 @@ export async function createAgentManager(
   async function sync() {
     if (isSyncing) {
       pendingResync = true;
-      log.debug("agent", "Sync already in progress, queued resync");
+      log.debug("agent", "同步进行中，已排队等待重新同步");
       return;
     }
 
@@ -265,10 +265,10 @@ export async function createAgentManager(
       if (output.error) {
         consecutiveErrors++;
         state.error = output.error;
-        log.error("agent", "Sync error from agent (%d/5): %s", consecutiveErrors, output.error);
+        log.error("agent", "Agent 同步出错（%d/5）：%s", consecutiveErrors, output.error);
 
         if (consecutiveErrors >= 5 && proc) {
-          log.warn("agent", "Too many consecutive errors, killing agent process for retry");
+          log.warn("agent", "连续错误次数过多，正在终止 Agent 进程以重试");
           proc.kill("SIGTERM");
           proc = null;
         }
@@ -303,17 +303,17 @@ export async function createAgentManager(
       state.selfKey = output.self || undefined;
       state.error = undefined;
 
-      log.info("agent", "Sync complete: %d nodes updated", keys.length);
+      log.info("agent", "同步完成：已更新 %d 个节点", keys.length);
     } catch (error) {
       consecutiveErrors++;
       const message = error instanceof Error ? error.message : String(error);
       state.error = message;
-      log.error("agent", "Sync failed (%d/5): %s", consecutiveErrors, message);
+      log.error("agent", "同步失败（%d/5）：%s", consecutiveErrors, message);
 
       if (consecutiveErrors >= 5) {
         log.warn(
           "agent",
-          "Too many consecutive failures; agent state is being preserved to avoid creating a new host",
+          "连续失败次数过多；将保留 Agent 状态以避免创建新主机",
         );
       }
     } finally {
@@ -326,8 +326,8 @@ export async function createAgentManager(
   }
 
   /**
-   * Prunes any offline nodes marked as ephemeral. This is due to a Headscale
-   * bug where ephemeral nodes wouldn't be automatically removed on disconnect.
+   * 清理被标记为临时节点的离线节点。这是由于 Headscale 的一个缺陷：
+   * 临时节点在断开连接后不会自动被移除。
    */
   async function pruneStaleHostInfo() {
     try {
@@ -344,12 +344,12 @@ export async function createAgentManager(
         .returning();
 
       if (deleted.length > 0) {
-        log.info("agent", "Pruned %d stale hostinfo entries", deleted.length);
+        log.info("agent", "已清理 %d 条过期的 hostinfo 记录", deleted.length);
       }
     } catch (error) {
       log.debug(
         "agent",
-        "Failed to prune stale hostinfo: %s",
+        "清理过期 hostinfo 失败：%s",
         error instanceof Error ? error.message : String(error),
       );
     }
@@ -362,12 +362,12 @@ export async function createAgentManager(
 
       for (const node of toPrune) {
         await apiClient.nodes.delete(node.id);
-        log.info("agent", "Pruned offline ephemeral node %s", node.givenName);
+        log.info("agent", "已清理离线临时节点 %s", node.givenName);
       }
     } catch (error) {
       log.debug(
         "agent",
-        "Failed to prune ephemeral nodes: %s",
+        "清理临时节点失败：%s",
         error instanceof Error ? error.message : String(error),
       );
     }
