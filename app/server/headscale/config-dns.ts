@@ -45,7 +45,7 @@ export class HeadscaleDNSConfig {
     }
 
     this.records = records;
-    log.debug("config", "正在更新 DNS 记录（%d -> %d）", this.records.length, records.length);
+    log.debug("config", "Patching DNS records (%d -> %d)", this.records.length, records.length);
 
     return this.write();
   }
@@ -60,7 +60,7 @@ export class HeadscaleDNSConfig {
     }
 
     this.writeLock = true;
-    log.debug("config", "正在将更新后的 DNS 配置写入 %s", this.path);
+    log.debug("config", "Writing updated DNS configuration to %s", this.path);
     const data = JSON.stringify(this.records, null, 4);
     await writeFile(this.path, data);
     this.writeLock = false;
@@ -72,7 +72,7 @@ export async function loadHeadscaleDNS(path?: string) {
     return;
   }
 
-  log.debug("config", "正在加载 Headscale DNS 配置文件：%s", path);
+  log.debug("config", "Loading Headscale DNS configuration file: %s", path);
   const { w, r } = await validateConfigPath(path);
   if (!r) {
     return new HeadscaleDNSConfig("no");
@@ -89,9 +89,9 @@ export async function loadHeadscaleDNS(path?: string) {
 async function validateConfigPath(path: string) {
   try {
     await access(path, constants.F_OK | constants.R_OK);
-    log.info("config", "在 %s 找到有效的 Headscale DNS 文件", path);
+    log.info("config", "Found a valid Headscale DNS file at %s", path);
   } catch (error) {
-    log.error("config", "无法读取 %s 处的 Headscale DNS 文件", path);
+    log.error("config", "Unable to read a Headscale DNS file at %s", path);
     log.error("config", "%s", error);
     return { w: false, r: false };
   }
@@ -100,19 +100,19 @@ async function validateConfigPath(path: string) {
     await access(path, constants.F_OK | constants.W_OK);
     return { w: true, r: true };
   } catch {
-    log.warn("config", "%s 处的 Headscale DNS 文件不可写", path);
+    log.warn("config", "Headscale DNS file at %s is not writable", path);
     return { w: false, r: true };
   }
 }
 
 async function loadConfigFile(path: string) {
-  log.debug("config", "正在读取 %s 处的 Headscale DNS 文件", path);
+  log.debug("config", "Reading Headscale DNS file at %s", path);
   try {
     const data = await readFile(path, "utf8");
     const records = JSON.parse(data) as DNSRecord[];
     return records;
   } catch (e) {
-    log.error("config", "读取 %s 处的 Headscale DNS 文件时出错", path);
+    log.error("config", "Error reading Headscale DNS file at %s", path);
     log.error("config", "%s", e);
     return false;
   }

@@ -52,7 +52,7 @@ export default function Attribute({ name, value, tooltip, isCopyable }: Attribut
               }
 
               await navigator.clipboard.writeText(value);
-              toast(`已复制 ${name} 到剪贴板`);
+              toast(`已复制${name}到剪贴板`);
 
               setTimeout(() => {
                 for (const svg of svgs) {

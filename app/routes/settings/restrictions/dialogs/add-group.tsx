@@ -24,7 +24,7 @@ export default function AddGroup({ groups, isDisabled }: AddGroupProps) {
       if (group.length === 0) return undefined;
 
       if (groups.includes(group)) {
-        return { group: "此群组已存在于列表中。" };
+        return { group: "该组已存在于列表中。" };
       }
 
       return undefined;
@@ -33,18 +33,18 @@ export default function AddGroup({ groups, isDisabled }: AddGroupProps) {
 
   return (
     <Dialog>
-      <Button disabled={isDisabled}>添加群组</Button>
+      <Button disabled={isDisabled}>添加组</Button>
       <DialogPanel>
-        <Title>添加群组</Title>
+        <Title>添加组</Title>
         <Text className="mb-4">
-          将此群组添加到允许的群组列表中，这些群组可以通过 OIDC 在 Headscale 上进行认证。
+          将此组添加到允许通过 OIDC 使用 Headscale 认证的组列表中。
         </Text>
         <input name="action_id" type="hidden" value="add_group" />
         <Input
           {...form.field("group")}
-          description="允许进行 OIDC 认证的群组。"
+          description="允许用于 OIDC 认证的组。"
           required
-          label="群组"
+          label="组"
           placeholder="admin"
         />
       </DialogPanel>

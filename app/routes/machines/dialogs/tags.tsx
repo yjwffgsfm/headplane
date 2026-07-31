@@ -74,11 +74,11 @@ export default function Tags({ machine, isOpen, setIsOpen, existingTags }: TagsP
         }}
         isDisabled={fetcher.state !== "idle"}
       >
-        <Title>编辑 {machine.givenName} 的ACL标签</Title>
+        <Title>编辑 {machine.givenName} 的 ACL 标签</Title>
         <Text>
-          ACL标签可用于在ACL策略中引用设备。有关更多信息，请参阅{" "}
+          ACL 标签可用于在你的 ACL 策略中引用机器。有关更多信息，请参阅{" "}
           <Link external styled to="https://tailscale.com/kb/1068/acl-tags">
-            Tailscale文档
+            Tailscale 文档
           </Link>
           。
         </Text>
@@ -91,7 +91,7 @@ export default function Tags({ machine, isOpen, setIsOpen, existingTags }: TagsP
           {tags.length === 0 ? (
             <TableList.Item className="flex flex-col items-center gap-2.5 py-4 opacity-70">
               <TagsIcon />
-              <p className="font-semibold">该设备未设置任何标签</p>
+              <p className="font-semibold">这台机器没有设置任何标签</p>
             </TableList.Item>
           ) : (
             tags.map((item) => (
@@ -150,7 +150,7 @@ export default function Tags({ machine, isOpen, setIsOpen, existingTags }: TagsP
           </div>
         ) : null}
         <p className="mt-2 text-sm opacity-50">
-          没有看到预期的标签？标签需要先在访问控制策略中定义，然后才能分配给设备。
+          没有看到你期望的标签？标签需要先在访问控制策略中定义，然后才能分配给机器。
         </p>
       </DialogPanel>
     </Dialog>

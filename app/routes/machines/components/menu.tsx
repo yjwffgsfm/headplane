@@ -155,7 +155,7 @@ export default function MachineMenu({
           )}
         </MenuTrigger>
         <MenuContent>
-          <MenuItem onClick={() => setModal("rename")}>编辑设备名称</MenuItem>
+          <MenuItem onClick={() => setModal("rename")}>编辑机器名称</MenuItem>
           <MenuItem onClick={() => setModal("routes")}>编辑路由设置</MenuItem>
           <MenuItem onClick={() => setModal("tags")}>编辑 ACL 标签</MenuItem>
           {supportsNodeOwnerChange && (
@@ -163,10 +163,10 @@ export default function MachineMenu({
           )}
           <MenuSeparator />
           <MenuItem variant="danger" disabled={node.expired} onClick={() => setModal("expire")}>
-            设置过期
+            过期
           </MenuItem>
           <MenuItem variant="danger" onClick={() => setModal("remove")}>
-            移除设备
+            移除
           </MenuItem>
         </MenuContent>
       </Menu>

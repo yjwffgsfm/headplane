@@ -16,15 +16,15 @@ export default function UserPrompt({ hostname }: UserPromptProps) {
       <Card>
         <Card.Title>输入用户名</Card.Title>
         <Card.Text className="mb-4">
-          输入您要用于连接 <Code>{hostname}</Code> 的用户名。 通过 Web 的 SSH 遵循与 Headscale
-          中常规 SSH 访问相同的 ACL 规则，因此只有被允许的用户名才能工作。
+          输入你想用于连接到 <Code>{hostname}</Code>{" "}
+          的用户名。通过 Web 的 SSH 与 Headscale 中的常规 SSH 访问遵循相同的 ACL 规则，因此只有被允许的用户名才有效。
           <br />
           <br />
-          有关常见错误，请参阅{" "}
+          请参阅{" "}
           <Link external styled to="https://headplane.net/features/ssh#troubleshooting">
-            故障排除指南
-          </Link>
-          。
+            故障排查指南
+          </Link>{" "}
+          以了解常见错误。
         </Card.Text>
         <Form
           method="GET"

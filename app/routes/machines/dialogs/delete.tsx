@@ -19,7 +19,7 @@ export default function Delete({ machine, isOpen, setIsOpen }: DeleteProps) {
       <DialogPanel onSubmit={() => navigate("/machines")} variant="destructive">
         <Title>移除 {machine.givenName}</Title>
         <Text>
-          该设备将从您的网络中永久移除。要重新添加，您需要在该设备上重新向您的Tailnet进行身份验证。
+          这台机器将被永久从你的网络中移除。要重新添加它，你需要从设备上重新认证到你的 tailnet。
         </Text>
         <input name="action_id" type="hidden" value="delete" />
         <input name="node_id" type="hidden" value={machine.id} />

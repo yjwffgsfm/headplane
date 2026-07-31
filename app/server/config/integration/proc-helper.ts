@@ -7,12 +7,13 @@ import type { Headscale } from "~/server/headscale/api";
 import log from "~/utils/log";
 
 /**
- * 对 /proc 进行两阶段扫描，以查找正在运行 "serve" 子命令的 headscale 进程。
- * 首先扫描所有进程的 comm 文件以查找 headscale 进程，
- * 然后检查其 cmdline 文件以确认 "serve" 是否为第二个参数。
+ * Does a two-stage scan of /proc to find the headscale process that is running
+ * a "serve" subcommand. It first scans all processes' comm files to find
+ * headscale processes, then checks their cmdline files to see if "serve" is
+ * the second argument.
  *
- * @param procPath proc 文件系统路径（默认：/proc）
- * @returns headscale serve 进程的 PID，若未找到则返回 undefined
+ * @param procPath The path to the proc filesystem (default: /proc)
+ * @returns The PID of the headscale serve process, or undefined if not found
  */
 export async function findHeadscaleServe(procPath = "/proc"): Promise<number | undefined> {
   const subdirs = await readdir(procPath);
@@ -45,7 +46,7 @@ export async function findHeadscaleServe(procPath = "/proc"): Promise<number | u
     return undefined;
   }
 
-  log.debug("config", "找到 %d 个 headscale 进程，正在检查 serve", headscalePids.length);
+  log.debug("config", "Found %d headscale process(es), checking for serve", headscalePids.length);
   for (const pid of headscalePids) {
     try {
       const cmdline = await readFile(join(procPath, pid.toString(), "cmdline"), "utf8");
@@ -55,7 +56,7 @@ export async function findHeadscaleServe(procPath = "/proc"): Promise<number | u
         return pid;
       }
     } catch {
-      // 进程可能在两次扫描之间退出了
+      // Process may have exited between stages
     }
   }
 
@@ -63,7 +64,7 @@ export async function findHeadscaleServe(procPath = "/proc"): Promise<number | u
 }
 
 /**
- * 向 headscale 进程发送信号的选项。
+ * Options for signaling the headscale process.
  */
 export interface SignalHeadscaleOptions {
   pid: number;
@@ -73,10 +74,10 @@ export interface SignalHeadscaleOptions {
 }
 
 /**
- * 向 headscale 进程发送信号，并等待其恢复健康状态。
- * @param headscale Headscale 实例，用于健康检查
- * @param options 信号发送和等待选项
- * @returns 如果 headscale 恢复健康则返回 true，否则返回 false
+ * Sends a signal to the headscale process and waits for it to become healthy.
+ * @param headscale The Headscale instance to health-check
+ * @param options Options for signaling and waiting
+ * @returns True if headscale became healthy, false otherwise
  */
 export async function signalAndWaitHealthy(
   headscale: Headscale,
@@ -86,9 +87,9 @@ export async function signalAndWaitHealthy(
 
   try {
     kill(pid, signal);
-    log.info("config", "已向 Headscale（PID %d）发送 %s 信号", pid, signal);
+    log.info("config", "Sent %s to Headscale (PID %d)", signal, pid);
   } catch (error) {
-    log.error("config", "向 PID %d 发送 %s 信号失败：%s", pid, signal, error);
+    log.error("config", "Failed to send %s to PID %d: %s", signal, pid, error);
     return false;
   }
 
@@ -97,11 +98,11 @@ export async function signalAndWaitHealthy(
     try {
       const healthy = await headscale.health();
       if (healthy) {
-        log.info("config", "重启后 Headscale 已恢复正常");
+        log.info("config", "Headscale is healthy after restart");
         return true;
       }
     } catch {
-      // 仍在重启中
+      // Still restarting
     }
 
     if (attempt < maxAttempts) {
@@ -109,6 +110,6 @@ export async function signalAndWaitHealthy(
     }
   }
 
-  log.error("config", "Headscale 在 %d 次尝试后仍未恢复健康", maxAttempts);
+  log.error("config", "Headscale did not become healthy after %d attempts", maxAttempts);
   return false;
 }

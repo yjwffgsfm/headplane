@@ -13,7 +13,7 @@ export function OidcDiscoveryFailedNotice() {
         <CloudOff className="mb-2 h-6 w-6 text-yellow-500" />
       </div>
       <Card.Text className="text-sm">
-        无法连接到身份提供商。单点登录将在提供商恢复访问后可用。您仍然可以使用 API 密钥登录。
+        无法连接到身份提供者。一旦提供者可再次访问，单点登录即可使用。你仍然可以使用 API 密钥登录。
       </Card.Text>
     </Card>
   );
@@ -27,7 +27,7 @@ export function OidcConfigErrorNotice({ errors }: { errors: OidcErrorCode[] }) {
         <AlertCircle className="mb-2 h-6 w-6 text-red-500" />
       </div>
       <Card.Text className="text-sm">
-        OpenID Connect（OIDC）单点登录（SSO）配置存在问题：
+        OpenID Connect (OIDC) 单点登录 (SSO) 配置存在问题：{" "}
         <ul className="mt-2 mb-1 list-inside list-disc">
           {mapOidcErrorsToMessages(errors).map((code) => (
             <li key={code.key}>{code.node}</li>
@@ -54,8 +54,8 @@ function mapOidcErrorsToMessages(errors: OidcErrorCode[]) {
           key: error,
           node: (
             <Card.Text className="inline">
-              为 OIDC 认证提供的 API 密钥无效。请确保 <Code>headscale.api_key</Code> 是一个有效的
-              API 密钥。
+              OIDC 认证使用的 API 密钥无效。请确保{" "}
+              <Code>headscale.api_key</Code> 是有效的 API 密钥。
             </Card.Text>
           ),
         });
@@ -67,7 +67,7 @@ function mapOidcErrorsToMessages(errors: OidcErrorCode[]) {
           key: error,
           node: (
             <Card.Text className="inline">
-              OIDC 提供商缺少必需的端点。请确保发现 URL 正确，或在配置中提供手动端点覆盖。
+              OIDC 提供者缺少必需的端点。请确保发现 URL 正确，或在配置中提供手动端点覆盖。
             </Card.Text>
           ),
         });
@@ -79,7 +79,7 @@ function mapOidcErrorsToMessages(errors: OidcErrorCode[]) {
           key: error,
           node: (
             <Card.Text className="inline">
-              无法连接 OIDC 提供商进行发现。SSO 将在下次登录尝试时重试。
+              无法连接 OIDC 提供者进行发现。SSO 将在下次登录尝试时重试。
             </Card.Text>
           ),
         });

@@ -24,10 +24,10 @@ export async function machineAction({ request, context }: Route.ActionArgs) {
     });
   }
 
-  // 快速通道：注册不需要现有机器
+  // Fast track register since it doesn't require an existing machine
   if (action === "register") {
     if (!auth.can(principal, Capabilities.write_machines)) {
-      throw data("您没有权限管理机器", {
+      throw data("你没有权限管理机器", {
         status: 403,
       });
     }
@@ -58,7 +58,7 @@ export async function machineAction({ request, context }: Route.ActionArgs) {
     return redirect(`/machines/${node.id}`);
   }
 
-  // 检查用户是否有权限管理此机器
+  // Check if the user has permission to manage this machine
   const nodeId = formData.get("node_id")?.toString();
   if (!nodeId) {
     throw data("表单数据中缺少 `node_id`。", {
@@ -74,7 +74,7 @@ export async function machineAction({ request, context }: Route.ActionArgs) {
   }
 
   if (!auth.canManageNode(principal, node)) {
-    throw data("您没有权限对此机器执行操作", {
+    throw data("你没有权限对此机器进行操作", {
       status: 403,
     });
   }
@@ -136,7 +136,7 @@ export async function machineAction({ request, context }: Route.ActionArgs) {
               success: false as const,
               error:
                 extractApiErrorMessage(error.data) ??
-                "一个或多个标签未在您的 ACL 策略中定义。请在分配给机器之前将其添加到策略中。",
+                "有一个或多个标签未在你的 ACL 策略中定义。请先将它们添加到你的策略中，再分配给机器。",
             },
             { status: 400 },
           );
@@ -171,7 +171,7 @@ export async function machineAction({ request, context }: Route.ActionArgs) {
 
       if (enabled === "true") {
         for (const route of allRoutes) {
-          // 如果已批准则跳过，否则添加到已批准列表
+          // If already approved, skip, otherwise add to approved
           if (newApproved.includes(route)) {
             continue;
           }
@@ -180,7 +180,7 @@ export async function machineAction({ request, context }: Route.ActionArgs) {
         }
       } else {
         for (const route of allRoutes) {
-          // 如果未批准则跳过，否则从已批准列表中移除
+          // If not approved, skip, otherwise remove from approved
           if (!newApproved.includes(route)) {
             continue;
           }
@@ -216,7 +216,7 @@ export async function machineAction({ request, context }: Route.ActionArgs) {
     }
 
     default:
-      throw data("无效操作", {
+      throw data("无效的操作", {
         status: 400,
       });
   }

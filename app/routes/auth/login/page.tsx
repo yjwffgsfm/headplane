@@ -131,7 +131,7 @@ export default function Page({ loaderData, actionData }: Route.ComponentProps) {
             </div>
             {showCookieWarning ? (
               <Card.Text className="text-sm">
-                Headplane 配置为使用安全 Cookie，但当前通过不安全的连接访问，登录将无法正常工作。{" "}
+                Headplane 已配置为使用安全 Cookie，但当前站点通过不安全的连接提供服务，登录将无法正常工作。{" "}
                 <Link
                   external
                   styled
@@ -147,8 +147,8 @@ export default function Page({ loaderData, actionData }: Route.ComponentProps) {
           <Card.Title>欢迎使用 Headplane</Card.Title>
           <Form method="POST">
             <Card.Text>
-              请输入 API 密钥进行身份验证，可通过运行 <Code>headscale apikeys create</Code>{" "}
-              命令生成。
+              输入 API 密钥以使用 Headplane 进行认证。你可以通过在终端中运行{" "}
+              <Code>headscale apikeys create</Code> 生成一个。
             </Card.Text>
             <Input
               className="mt-8 mb-2"

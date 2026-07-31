@@ -27,7 +27,7 @@ export default function ReassignUser({
       <DialogPanel variant={role === "owner" ? "unactionable" : "normal"}>
         <Title>更改 {displayName} 的角色？</Title>
         <Text className="mb-6">
-          角色控制用户在 Headplane 中的访问权限。每个角色授予一组特定的功能。{" "}
+          角色控制用户在 Headplane 中可以访问的内容。每个角色授予一组特定的能力。{" "}
           <Link external styled to="https://tailscale.com/kb/1138/user-roles">
             了解更多
           </Link>
@@ -64,38 +64,38 @@ function mapRoleToName(role: string) {
   switch (role) {
     case "admin":
       return {
-        name: "Admin",
-        desc: "Can view the admin console, manage network, machine, and user settings.",
+        name: "管理员",
+        desc: "可以查看管理控制台，管理网络、机器和用户设置。",
       };
     case "network_admin":
       return {
-        name: "Network Admin",
-        desc: "Can view the admin console and manage ACLs and network settings. Cannot manage machines or users.",
+        name: "网络管理员",
+        desc: "可以查看管理控制台并管理 ACL 和网络设置。不能管理机器或用户。",
       };
     case "it_admin":
       return {
-        name: "IT Admin",
-        desc: "Can view the admin console and manage machines and users. Cannot manage ACLs or network settings.",
+        name: "IT 管理员",
+        desc: "可以查看管理控制台并管理机器和用户。不能管理 ACL 或网络设置。",
       };
     case "auditor":
       return {
-        name: "Auditor",
-        desc: "Can view the admin console.",
+        name: "审计员",
+        desc: "可以查看管理控制台。",
       };
     case "viewer":
       return {
-        name: "Viewer",
-        desc: "Can view machines, users, and generate their own auth keys.",
+        name: "查看者",
+        desc: "可以查看机器、用户，并生成自己的认证密钥。",
       };
     case "member":
       return {
-        name: "Member",
-        desc: "Cannot view the admin console.",
+        name: "成员",
+        desc: "无法查看管理控制台。",
       };
     default:
       return {
         name: role,
-        desc: "No description available.",
+        desc: "无可用描述。",
       };
   }
 }

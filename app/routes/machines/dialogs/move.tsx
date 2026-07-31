@@ -21,7 +21,7 @@ export default function Move({ machine, users, isOpen, setIsOpen }: MoveProps) {
     <Dialog isOpen={isOpen} onOpenChange={setIsOpen}>
       <DialogPanel isDisabled={userId === machine.user?.id}>
         <Title>更改 {machine.givenName} 的所有者</Title>
-        <Text>设备的所有者是与该设备关联的用户。</Text>
+        <Text>机器的所有者是与它关联的用户。</Text>
         <input name="action_id" type="hidden" value="reassign" />
         <input name="node_id" type="hidden" value={machine.id} />
         <input name="user_id" type="hidden" value={userId?.toString()} />
@@ -33,7 +33,7 @@ export default function Move({ machine, users, isOpen, setIsOpen }: MoveProps) {
           onValueChange={(key) => {
             setUserId(key);
           }}
-          placeholder="选择用户"
+          placeholder="选择一个用户"
           items={users.map((user) => ({
             value: user.id,
             label: getUserDisplayName(user),

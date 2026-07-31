@@ -19,7 +19,7 @@ export function Editor(props: EditorProps) {
         fallback={
           <div className="flex flex-col items-center gap-2.5 py-8">
             <CircleX />
-            <p className="text-lg font-semibold">加载编辑器失败。</p>
+            <p className="text-lg font-semibold">编辑器加载失败。</p>
           </div>
         }
       >
@@ -57,7 +57,7 @@ export function Differ(props: DifferProps) {
             fallback={
               <div className="flex flex-col items-center gap-2.5 py-8">
                 <CircleX />
-                <p className="text-lg font-semibold">加载编辑器失败。</p>
+                <p className="text-lg font-semibold">编辑器加载失败。</p>
               </div>
             }
           >

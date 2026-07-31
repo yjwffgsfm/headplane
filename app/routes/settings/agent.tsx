@@ -75,7 +75,9 @@ export default function Page({ loaderData }: Route.ComponentProps) {
     <div className="flex max-w-(--breakpoint-lg) flex-col gap-8">
       <div className="flex w-full flex-col sm:w-2/3">
         <Title>Headplane 代理</Title>
-        <Text>Headplane 代理会从您的 Tailnet 同步节点信息，如操作系统版本和连接详情。</Text>
+        <Text>
+          Headplane 代理会同步来自你的 Tailnet 的节点信息，例如操作系统版本和连接详情。
+        </Text>
       </div>
 
       <div className="flex items-center gap-3">
@@ -87,7 +89,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 
       <div className="flex flex-col gap-2">
         <Text>
-          <span className="font-medium">最后同步：</span>
+          <span className="font-medium">上次同步： </span>
           {loaderData.syncedAt ? (
             <span suppressHydrationWarning>{formatTimeDelta(new Date(loaderData.syncedAt))}</span>
           ) : (
@@ -95,18 +97,18 @@ export default function Page({ loaderData }: Route.ComponentProps) {
           )}
         </Text>
         <Text>
-          <span className="font-medium">已同步节点：</span>
+          <span className="font-medium">已同步节点： </span>
           {loaderData.nodeCount}
         </Text>
       </div>
 
       {isPending ? (
         <Notice variant="warning" title="代理需要批准">
-          代理正在等待其 Tailnet 注册获得批准。Headplane 将尝试自动批准，但如果失败，您可以通过访问{" "}
+          代理正在等待其 Tailnet 注册获得批准。Headplane 将尝试自动批准，但如果失败，你可以通过访问{" "}
           <Link external styled to={loaderData.authUrl!}>
             此链接
           </Link>
-          来完成批准。
+          完成批准。
         </Notice>
       ) : undefined}
 

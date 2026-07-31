@@ -24,16 +24,16 @@ export default function AddDomain({ domains, isDisabled }: AddDomainProps) {
       if (domain.length === 0) return undefined;
 
       if (domains.includes(domain)) {
-        return { domain: "此域名已存在于列表中。" };
+        return { domain: "该域名已存在于列表中。" };
       }
 
       try {
         const url = new URL(`http://${domain}`);
         if (url.hostname !== domain) {
-          return { domain: "这不是一个有效的域名。" };
+          return { domain: "这不是有效的域名。" };
         }
       } catch {
-        return { domain: "这不是一个有效的域名。" };
+        return { domain: "这不是有效的域名。" };
       }
 
       return undefined;
@@ -47,15 +47,15 @@ export default function AddDomain({ domains, isDisabled }: AddDomainProps) {
       <DialogPanel>
         <Title>添加域名</Title>
         <Text className="mb-4">
-          将此域名添加到允许的邮箱域名列表中，这些域名可以通过 OIDC 在 Headscale 上进行认证。
+          将此域名添加到允许通过 OIDC 使用 Headscale 认证的电子邮件域名列表中。
         </Text>
         <input name="action_id" type="hidden" value="add_domain" />
         <Input
           {...form.field("domain")}
           description={
             domain.length > 0
-              ? `匹配 <用户>@${domain} 格式的邮箱`
-              : "输入域名以匹配用户的邮箱地址。"
+              ? `匹配 <user>@${domain} 的用户`
+              : "输入一个域名以匹配其电子邮件地址对应的用户。"
           }
           required
           label="域名"

@@ -19,7 +19,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const principal = await auth.require(request);
   const check = auth.can(principal, Capabilities.read_users);
   if (!check) {
-    throw data("您没有权限查看 IAM 设置。", {
+    throw data("你没有权限查看 IAM 设置。", {
       status: 403,
     });
   }
@@ -58,18 +58,17 @@ export default function Page({ loaderData: { access, writable, settings } }: Rou
         </p>
         {!access ? (
           <Notice title="认证权限受限" variant="warning">
-            您没有编辑认证限制设置所需的权限。请联系管理员申请权限或进行更改。
+            你没有编辑认证限制设置所需的权限。请联系管理员申请访问权限或修改这些设置。
           </Notice>
         ) : !writable ? (
           <Notice title="配置已锁定" variant="error">
-            Headscale 配置文件无法通过 Web 界面编辑。请确保您已正确授予 Headplane
-            对该文件的写入权限。
+            Headscale 配置文件无法通过 Web 界面编辑。请确保你已正确授予 Headplane 对该文件的写入权限。
           </Notice>
         ) : undefined}
         <h1 className="mt-4 mb-2 text-2xl font-medium">认证限制</h1>
         <p>
-          Headscale 支持限制 OIDC 认证，仅允许特定邮箱域名、群组或用户进行认证。这可以用于将 Tailnet
-          的访问权限限制为特定用户或群组，Headplane 在认证时也会尊重这些设置。{" "}
+          Headscale 支持限制 OIDC 认证，只允许特定电子邮件域名、组或用户进行认证。这可用于将你的
+          Tailnet 访问限制为仅限某些用户或组，Headplane 在认证时也会遵循这些设置。{" "}
           <Link external styled to="https://headscale.net/stable/ref/oidc/#basic-configuration">
             了解更多
           </Link>

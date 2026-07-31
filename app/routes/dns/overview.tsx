@@ -21,14 +21,16 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const headscaleConfig = context.get(headscaleConfigContext);
 
   if (!headscaleConfig.readable()) {
-    throw new Error("无法读取配置");
+    throw new Error("没有可用的配置");
   }
 
   const principal = await auth.require(request);
   const check = auth.can(principal, Capabilities.read_network);
   if (!check) {
     // Not authorized to view this page
-    throw new Error("您没有权限查看此页面。请联系管理员。");
+    throw new Error(
+      "你没有权限查看此页面。请联系管理员。",
+    );
   }
 
   const writablePermission = auth.can(principal, Capabilities.write_network);
@@ -59,8 +61,16 @@ export default function Page() {
 
   return (
     <div className="flex max-w-(--breakpoint-lg) flex-col gap-16">
-      {data.writable ? undefined : <Notice>Headscale 配置文件为只读状态。您无法更改配置。</Notice>}
-      {data.access ? undefined : <Notice>您的权限不允许修改此 Tailnet 的 DNS 设置。</Notice>}
+      {data.writable ? undefined : (
+        <Notice>
+          Headscale 配置为只读。你无法更改配置
+        </Notice>
+      )}
+      {data.access ? undefined : (
+        <Notice>
+          你的权限不允许你修改此 tailnet 的 DNS 设置。
+        </Notice>
+      )}
       <RenameTailnet isDisabled={isDisabled} name={data.baseDomain} />
       <ManageNS isDisabled={isDisabled} nameservers={allNs} overrideLocalDns={data.overrideDns} />
       <ManageRecords isDisabled={isDisabled} records={data.extraRecords} />
@@ -73,12 +83,12 @@ export default function Page() {
       <div className="flex w-full flex-col sm:w-2/3">
         <h1 className="mb-4 text-2xl font-medium">Magic DNS</h1>
         <p className="mb-4">
-          为 Tailnet 上的每台设备自动注册域名。启用 Magic DNS 后，设备可通过{" "}
+          自动为 tailnet 上的每台设备注册域名。启用 Magic DNS 后，设备可通过{" "}
           <Code>
-            [设备名].
+            [device].
             {data.baseDomain}
           </Code>{" "}
-          进行访问。
+          访问。
         </p>
         <ToggleMagic isDisabled={isDisabled} isEnabled={data.magicDns} />
       </div>

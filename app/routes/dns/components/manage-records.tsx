@@ -18,7 +18,7 @@ export default function ManageRecords({ records, isDisabled }: Props) {
     <div className="flex w-full flex-col sm:w-2/3">
       <h1 className="mb-4 text-2xl font-medium">DNS 记录</h1>
       <p>
-        Headscale 支持为您的 Tailnet 添加自定义 DNS 记录。目前仅支持 <Code>A</Code> 和{" "}
+        Headscale 支持向你的 Tailnet 添加自定义 DNS 记录。目前仅支持 <Code>A</Code> 和{" "}
         <Code>AAAA</Code> 记录。{" "}
         <Link external styled to="https://headscale.net/stable/ref/dns">
           了解更多

@@ -21,7 +21,7 @@ export default function PageError({ error, page }: PageErrorProps) {
         <ServerOff className={cn("h-12 w-12", "text-mist-400 dark:text-mist-500")} />
         <h2 className="mt-4 text-lg font-semibold">{page} 不可用</h2>
         <p className="mt-1 max-w-sm text-sm text-mist-500 dark:text-mist-400">
-          由于 Headscale 服务器无法访问，此页面无法加载。连接恢复后将可用。
+          无法加载此页面，因为 Headscale 服务器不可达。连接恢复后即可正常访问。
         </p>
         <Button
           className="mt-6"
@@ -40,3 +40,4 @@ export default function PageError({ error, page }: PageErrorProps) {
 
   return <ErrorBanner className="max-w-2xl" error={error} />;
 }
+

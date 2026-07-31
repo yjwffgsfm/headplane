@@ -103,7 +103,7 @@ export default function UserMenu({
             <>
               <MenuSeparator />
               <MenuItem variant="danger" onClick={() => setModal("transfer")}>
-                转移所有权
+                转让所有权
               </MenuItem>
             </>
           )}
@@ -111,7 +111,7 @@ export default function UserMenu({
             <>
               <MenuSeparator />
               <MenuItem variant="danger" onClick={() => setModal("delete")}>
-                删除用户
+                删除
               </MenuItem>
             </>
           )}

@@ -36,7 +36,7 @@ export default function AddNameserver({ nameservers }: Props) {
         : Object.values(nameservers).some((nsList) => nsList.includes(ns));
 
       if (isDuplicate) {
-        return { ns: "此名称服务器已存在。" };
+        return { ns: "该域名服务器已存在。" };
       }
 
       return undefined;
@@ -46,22 +46,22 @@ export default function AddNameserver({ nameservers }: Props) {
 
   return (
     <Dialog>
-      <Button>添加名称服务器</Button>
+      <Button>添加域名服务器</Button>
       <DialogPanel>
-        <Title className="mb-4">添加名称服务器</Title>
+        <Title className="mb-4">添加域名服务器</Title>
         <input name="action_id" type="hidden" value="add_ns" />
         <Input
           {...form.field("ns")}
-          description="使用此 IPv4 或 IPv6 地址来解析域名。"
+          description="使用此 IPv4 或 IPv6 地址解析名称。"
           required
-          label="名称服务器"
+          label="域名服务器"
           placeholder="1.2.3.4"
         />
         <div className="mt-8 flex items-center justify-between">
           <div className="block">
             <div className="inline-flex items-center gap-2">
-              <Text className="font-semibold">限制到特定域名</Text>
-              <Tooltip content="只有支持拆分 DNS 的客户端（大多数平台上的 Tailscale v1.8 或更高版本）才会使用此名称服务器。旧版客户端会忽略它。">
+              <Text className="font-semibold">限制到域名</Text>
+              <Tooltip content="只有支持拆分 DNS 的客户端（大多数平台为 Tailscale v1.8 或更高版本）才会使用此域名服务器。较旧的客户端将忽略它。">
                 <Chip
                   className={cn("inline-flex items-center")}
                   leftIcon={<Split className="mr-0.5 h-3 w-3" />}
@@ -69,7 +69,7 @@ export default function AddNameserver({ nameservers }: Props) {
                 />
               </Tooltip>
             </div>
-            <Text className="text-sm">此名称服务器仅用于某些域名。</Text>
+            <Text className="text-sm">此域名服务器仅会用于某些域名。</Text>
           </div>
           <Switch
             label="拆分 DNS"
@@ -81,9 +81,14 @@ export default function AddNameserver({ nameservers }: Props) {
         {split ? (
           <>
             <Text className="mt-8 font-semibold">域名</Text>
-            <Input {...form.field("split_name")} required label="域名" placeholder="example.com" />
+            <Input
+              {...form.field("split_name")}
+              required
+              label="域名"
+              placeholder="example.com"
+            />
             <Text className="text-sm">
-              只有匹配此后缀的单标签或完全限定查询才应使用此名称服务器。
+              只有匹配此后缀的单标签或完全限定查询才应使用该域名服务器。
             </Text>
           </>
         ) : (

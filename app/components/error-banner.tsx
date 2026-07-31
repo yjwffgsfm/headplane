@@ -22,8 +22,7 @@ export function getErrorMessage(error: Error | unknown): {
               <Card.Text>
                 与 Headscale API 通信时出错。
                 <br />
-                服务器响应状态码为 <strong>{statusCode}</strong>，表示服务器端问题。请检查 Headscale
-                服务器状态，稍后重试。
+                服务器返回了状态码 <strong>{statusCode}</strong>，表示服务端出现问题。请检查 Headscale 服务器状态并稍后重试。
               </Card.Text>
               {(error.data.data != null || error.data.rawData != null) && (
                 <pre className="mt-2 overflow-x-auto rounded-lg bg-mist-100 p-2 dark:bg-mist-800">
@@ -46,16 +45,19 @@ export function getErrorMessage(error: Error | unknown): {
         jsxMessage: (
           <>
             <Card.Text className="leading-snug">
-              Headscale API 返回了意外响应。
+              Headscale API 返回了意外的响应。
               {authError ? (
-                <> 状态码表示身份验证错误。请检查您的 API 密钥和 Headplane 配置。</>
+                <>
+                  {" "}
+                  状态码表明发生了认证错误。请检查你的 API 密钥和 Headplane 配置。
+                </>
               ) : (
-                <> 您可能使用了不支持的 Headscale 版本，或者这可能是一个 Bug。</>
+                <> 你可能在使用不受支持的 Headscale 版本，或者这可能是程序缺陷。</>
               )}
             </Card.Text>
             <ul className="mt-2 list-inside list-disc">
               <li>
-                请求 URL：<Code>{requestUrl}</Code>
+                请求地址： <Code>{requestUrl}</Code>
               </li>
               <li>
                 状态码：{" "}
@@ -89,8 +91,7 @@ export function getErrorMessage(error: Error | unknown): {
         jsxMessage: (
           <>
             <Card.Text className="leading-snug">
-              Headplane 无法连接到 Headscale API。请检查您的网络设置和配置，确保 Headplane
-              能够连接。
+              Headplane 无法访问 Headscale API。请检查你的网络设置和配置，确保 Headplane 能够连接。
             </Card.Text>
             <Card.Text className="mt-4 text-lg font-semibold">错误详情</Card.Text>
             <pre className="mt-2 overflow-x-auto rounded-lg bg-mist-100 p-2 dark:bg-mist-800">
@@ -114,11 +115,11 @@ export function getErrorMessage(error: Error | unknown): {
     return {
       jsxMessage: (
         <>
-          处理您的请求时出错。
+          处理你的请求时出错。
           <br />
-          状态码：<strong>{error.status}</strong>
+          状态码： <strong>{error.status}</strong>
           <br />
-          状态文本：<strong>{error.data}</strong>
+          状态说明： <strong>{error.data}</strong>
         </>
       ),
       title: `错误 ${error.status}`,
@@ -130,11 +131,11 @@ export function getErrorMessage(error: Error | unknown): {
       jsxMessage: (
         <>
           <Card.Text>
-            发生了意外错误，很可能是 Bug。请在{" "}
+            发生了一个意外错误，这很可能是程序缺陷。请考虑在{" "}
             <Link external styled to="https://github.com/tale/headplane/issues">
               Headplane GitHub
             </Link>{" "}
-            仓库中提交 Issue，并附上以下详细信息。
+            仓库中提交 issue，并附上以下详细信息。
           </Card.Text>
           <Card.Text className="mt-4 text-lg font-semibold">错误详情</Card.Text>
           <pre className="mt-2 overflow-x-auto rounded-lg bg-mist-100 p-2 dark:bg-mist-800">
@@ -163,7 +164,9 @@ export function getErrorMessage(error: Error | unknown): {
   return {
     jsxMessage: rootError.message,
     title:
-      rootError.name.length > 0 && rootError.name !== "Error" ? `错误：${rootError.name}` : "错误",
+      rootError.name.length > 0 && rootError.name !== "Error"
+        ? `错误：${rootError.name}`
+        : "错误",
   };
 }
 

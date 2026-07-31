@@ -16,7 +16,7 @@ export async function aclAction({ request, context }: Route.ActionArgs) {
   const principal = await auth.require(request);
   const check = auth.can(principal, Capabilities.write_policy);
   if (!check) {
-    throw data("您没有权限写入 ACL 策略", {
+    throw data("你没有权限写入 ACL 策略", {
       status: 403,
     });
   }
@@ -44,7 +44,7 @@ export async function aclAction({ request, context }: Route.ActionArgs) {
       const rawData = error.data.rawData;
       // https://github.com/juanfont/headscale/blob/c4600346f9c29b514dc9725ac103efb9d0381f23/hscontrol/types/policy.go#L11
       if (rawData.includes("update is disabled")) {
-        throw data("策略不可写入", { status: 403 });
+        throw data("策略不可写", { status: 403 });
       }
 
       const message =

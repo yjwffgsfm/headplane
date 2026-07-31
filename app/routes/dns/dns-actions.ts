@@ -97,7 +97,7 @@ export async function dnsAction({ request, context }: Route.ActionArgs) {
       }
 
       await integration?.onConfigChange(headscale);
-      return { message: "名称服务器移除成功" };
+      return { message: "域名服务器移除成功" };
     }
     case "add_ns": {
       const config = headscaleConfig.getDNSConfig();
@@ -130,7 +130,7 @@ export async function dnsAction({ request, context }: Route.ActionArgs) {
       }
 
       await integration?.onConfigChange(headscale);
-      return { message: "名称服务器添加成功" };
+      return { message: "域名服务器添加成功" };
     }
     case "remove_domain": {
       const config = headscaleConfig.getDNSConfig();
@@ -148,7 +148,7 @@ export async function dnsAction({ request, context }: Route.ActionArgs) {
       ]);
 
       await integration?.onConfigChange(headscale);
-      return { message: "搜索域移除成功" };
+      return { message: "域名移除成功" };
     }
     case "add_domain": {
       const config = headscaleConfig.getDNSConfig();
@@ -167,7 +167,7 @@ export async function dnsAction({ request, context }: Route.ActionArgs) {
       ]);
 
       await integration?.onConfigChange(headscale);
-      return { message: "搜索域添加成功" };
+      return { message: "域名添加成功" };
     }
     case "remove_record": {
       const recordName = formData.get("record_name")?.toString();

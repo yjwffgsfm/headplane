@@ -53,7 +53,7 @@ export default function HeadscaleUserRow({ user, writable }: HeadscaleUserRowPro
             </p>
           </span>
         ) : (
-          <p className="text-sm text-mist-600 dark:text-mist-300">无设备</p>
+          <p className="text-sm text-mist-600 dark:text-mist-300">无机器</p>
         )}
       </td>
       <td className="py-2 pr-0.5">{writable ? <HeadscaleUserMenu user={user} /> : null}</td>

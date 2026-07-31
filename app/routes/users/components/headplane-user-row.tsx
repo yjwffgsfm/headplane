@@ -58,7 +58,7 @@ export default function HeadplaneUserRow({
       </td>
       <td className="py-2 pl-0.5">
         <p className="text-sm text-mist-600 dark:text-mist-300" suppressHydrationWarning>
-          {user.lastLoginAt ? new Date(user.lastLoginAt).toLocaleDateString() : "从未登录"}
+          {user.lastLoginAt ? new Date(user.lastLoginAt).toLocaleDateString() : "从未"}
         </p>
       </td>
       <td className="py-2 pl-0.5">
@@ -72,7 +72,7 @@ export default function HeadplaneUserRow({
             </p>
           </span>
         ) : (
-          <p className="text-sm text-mist-600 dark:text-mist-300">无设备</p>
+          <p className="text-sm text-mist-600 dark:text-mist-300">无机器</p>
         )}
       </td>
       <td className="py-2 pr-0.5">
@@ -101,7 +101,7 @@ function mapRoleToName(role: Role) {
     case "auditor":
       return "审计员";
     case "viewer":
-      return "观察员";
+      return "查看者";
     case "member":
       return <p className="opacity-50">成员</p>;
     default:

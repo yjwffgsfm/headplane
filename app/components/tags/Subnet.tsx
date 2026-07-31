@@ -14,9 +14,11 @@ export function SubnetTag({ isEnabled }: SubnetTagProps) {
     <Tooltip
       content={
         isEnabled ? (
-          <>此机器正在通告子网路由。</>
+          <>这台机器在通告子网路由。</>
         ) : (
-          <>此机器有未通告的子网路由。请从机器菜单中的“编辑路由设置...”选项进行审核。</>
+          <>
+            这台机器有未通告的子网路由。请在机器菜单中的“编辑路由设置...”中查看。
+          </>
         )
       }
     >

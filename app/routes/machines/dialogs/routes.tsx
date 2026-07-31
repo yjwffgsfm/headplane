@@ -30,7 +30,7 @@ export default function Routes({ node, isOpen, setIsOpen }: RoutesProps) {
         <Title>编辑 {node.givenName} 的路由设置</Title>
         <Text className="font-bold">子网路由</Text>
         <Text>
-          通过将IP范围通告为子网路由，连接到无法安装Tailscale客户端的设备。{" "}
+          通过将 IP 网段通告为子网路由，连接到无法安装 Tailscale 的设备。{" "}
           <Link external styled to="https://tailscale.com/kb/1019/subnets">
             了解更多
           </Link>
@@ -39,7 +39,7 @@ export default function Routes({ node, isOpen, setIsOpen }: RoutesProps) {
           {subnets.length === 0 ? (
             <TableList.Item className="flex flex-col items-center gap-2.5 py-4 opacity-70">
               <RouteOff />
-              <p className="font-semibold">该设备未通告任何路由</p>
+              <p className="font-semibold">这台机器没有通告任何路由</p>
             </TableList.Item>
           ) : undefined}
           {subnets.map((route) => (
@@ -47,7 +47,7 @@ export default function Routes({ node, isOpen, setIsOpen }: RoutesProps) {
               <p>{route}</p>
               <Switch
                 defaultChecked={node.approvedRoutes.includes(route)}
-                label="已启用"
+                label="启用"
                 onCheckedChange={(checked) => {
                   const form = new FormData();
                   form.set("action_id", "update_routes");
@@ -65,7 +65,7 @@ export default function Routes({ node, isOpen, setIsOpen }: RoutesProps) {
         </TableList>
         <Text className="mt-8 font-bold">出口节点</Text>
         <Text>
-          允许您的网络通过该设备路由互联网流量。{" "}
+          允许你的网络通过这台机器路由互联网流量。{" "}
           <Link external styled to="https://tailscale.com/kb/1103/exit-nodes">
             了解更多
           </Link>
@@ -74,14 +74,14 @@ export default function Routes({ node, isOpen, setIsOpen }: RoutesProps) {
           {node.customRouting.exitRoutes.length === 0 ? (
             <TableList.Item className="flex flex-col items-center gap-2.5 py-4 opacity-70">
               <GlobeLock />
-              <p className="font-semibold">该设备未配置为出口节点</p>
+              <p className="font-semibold">这台机器不是出口节点</p>
             </TableList.Item>
           ) : (
             <TableList.Item>
               <p>用作出口节点</p>
               <Switch
                 defaultChecked={node.customRouting.exitApproved}
-                label="已启用"
+                label="启用"
                 onCheckedChange={(checked) => {
                   const form = new FormData();
                   form.set("action_id", "update_routes");

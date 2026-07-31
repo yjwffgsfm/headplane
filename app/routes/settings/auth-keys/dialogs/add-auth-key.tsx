@@ -109,9 +109,9 @@ export default function AddAuthKey({
       {createdKey ? (
         <DialogPanel variant="unactionable">
           <Title>预认证密钥已创建</Title>
-          <Text>请立即复制此密钥。您将无法再次查看完整密钥。</Text>
+          <Text>请立即复制此密钥。你将无法再次查看完整密钥。</Text>
           <CodeBlock className="mt-4">{createdKey}</CodeBlock>
-          <Text className="mt-4 text-sm">使用此密钥注册设备：</Text>
+          <Text className="mt-4 text-sm">要使用此密钥注册设备：</Text>
           <CodeBlock className="mt-1">
             {`tailscale up --login-server=${url} --authkey ${createdKey}`}
           </CodeBlock>
@@ -137,7 +137,7 @@ export default function AddAuthKey({
             <div className="mb-4 flex items-center justify-between gap-2">
               <div>
                 <Text className="font-semibold">仅标签密钥</Text>
-                <Text className="text-sm">创建由 ACL 标签拥有而非用户拥有的密钥。</Text>
+                <Text className="text-sm">创建一个由 ACL 标签而不是用户拥有的密钥。</Text>
               </div>
               <Switch
                 defaultChecked={tagOnly}
@@ -151,7 +151,9 @@ export default function AddAuthKey({
             <Select
               className="mb-2"
               description={
-                selfServiceOnly ? "您只能为自己的用户创建密钥。" : "机器在认证时将归属于此用户。"
+                selfServiceOnly
+                  ? "你只能为自己的用户创建密钥。"
+                  : "设备在认证时将归属于此用户。"
               }
               disabled={selfServiceOnly}
               required
@@ -168,7 +170,7 @@ export default function AddAuthKey({
 
           <Input
             className="mb-2"
-            description="逗号分隔的标签（例如 server, prod）。tag: 前缀会自动添加。"
+            description="逗号分隔的标签（例如 server、prod）。tag: 前缀会自动添加。"
             required={tagOnly}
             label="ACL 标签"
             onChange={(value) => setTags(value)}
@@ -186,20 +188,20 @@ export default function AddAuthKey({
           />
           <div className="mt-6 flex items-center justify-between gap-2">
             <div>
-              <Text className="font-semibold">可重复使用</Text>
-              <Text className="text-sm">允许多台设备使用此密钥进行认证。</Text>
+              <Text className="font-semibold">可重用</Text>
+              <Text className="text-sm">使用此密钥认证多个设备。</Text>
             </div>
             <Switch
               defaultChecked={reusable}
-              label="可重复使用"
+              label="可重用"
               onCheckedChange={() => setReusable(!reusable)}
             />
           </div>
           <div className="mt-6 flex items-center justify-between gap-2">
             <div>
-              <Text className="font-semibold">临时节点</Text>
+              <Text className="font-semibold">临时</Text>
               <Text className="text-sm">
-                使用此密钥认证的设备在离线后将被自动移除。{" "}
+                使用此密钥认证的设备在离线后将自动被移除。{" "}
                 <Link external styled to="https://tailscale.com/kb/1111/ephemeral-nodes">
                   了解更多
                 </Link>
@@ -207,7 +209,7 @@ export default function AddAuthKey({
             </div>
             <Switch
               defaultChecked={ephemeral}
-              label="临时节点"
+              label="临时"
               onCheckedChange={() => setEphemeral(!ephemeral)}
             />
           </div>

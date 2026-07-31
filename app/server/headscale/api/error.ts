@@ -48,7 +48,7 @@ export function undiciToFriendlyError(
   if (isNodeNetworkError(error)) {
     return {
       requestUrl,
-      errorCode: error.code ?? "未知网络错误",
+      errorCode: error.code ?? "UNKNOWN_NODE_NETWORK_ERROR",
       errorMessage: error.message,
       extraData: {
         syscall: error.syscall,
@@ -60,8 +60,8 @@ export function undiciToFriendlyError(
 
   return {
     requestUrl,
-    errorCode: "未知错误",
-    errorMessage: "发生未知错误",
+    errorCode: "UNKNOWN_ERROR",
+    errorMessage: "An unknown error occured",
     extraData: null,
   };
 }

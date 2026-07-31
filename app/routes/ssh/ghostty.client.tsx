@@ -7,8 +7,8 @@ import type { HeadplaneSSH, TunnelSession } from "./wasm.client";
 
 const FONT_BASE = `${__PREFIX__}/fonts`;
 
-// Ghostty 的默认画布背景是 rgb(20,23,26) —— 深灰色，不是纯黑。
-// 覆盖它以让终端与页面和面板容器的背景颜色一致。
+// Ghostty's default canvas background is rgb(20,23,26) — a dark gray, not black.
+// Override it so the terminal matches the page and pane container backgrounds.
 const HEADPLANE_THEME: GhosttyTheme = {
   colors: {
     background: { r: 0, g: 0, b: 0 },

@@ -243,10 +243,10 @@ async function patchHeadscaleConfig(config: HeadscaleConfigState, patches: Patch
 async function writePatches(config: HeadscaleConfigState, patches: PatchConfig[]) {
   if (!config.path || !config.document) return;
 
-  log.debug("config", "正在更新 Headscale 配置");
+  log.debug("config", "Patching Headscale configuration");
   for (const patch of patches) {
     const { path, value } = patch;
-    log.debug("config", "正在更新 %s 为 %o", path, value);
+    log.debug("config", "Patching %s with %o", path, value);
 
     const key = splitPatchPath(path);
     if (value === null) {
@@ -257,7 +257,7 @@ async function writePatches(config: HeadscaleConfigState, patches: PatchConfig[]
     config.document.setIn(key, value);
   }
 
-  log.debug("config", "正在将更新后的 Headscale 配置写入 %s", config.path);
+  log.debug("config", "Writing updated Headscale configuration to %s", config.path);
   await writeFile(config.path, config.document.toString(), "utf8");
   config.config = config.document.toJSON();
 }
@@ -289,13 +289,13 @@ function splitPatchPath(path: string) {
 async function addDNS(config: HeadscaleConfigState, record: DNSRecord) {
   if (config.dns) {
     if (!config.dns.readable() || !config.dns.writable()) {
-      log.debug("config", "DNS 配置不可写");
+      log.debug("config", "DNS config is not writable");
       return;
     }
 
     const records = config.dns.r;
     if (records.some((i) => i.name === record.name && i.type === record.type)) {
-      log.debug("config", "DNS 记录已存在");
+      log.debug("config", "DNS record already exists");
       return;
     }
 
@@ -304,7 +304,7 @@ async function addDNS(config: HeadscaleConfigState, record: DNSRecord) {
 
   const existing = dnsRecords(config);
   if (existing.some((i) => i.name === record.name && i.type === record.type)) {
-    log.debug("config", "DNS 记录已存在");
+    log.debug("config", "DNS record already exists");
     return;
   }
 
@@ -321,7 +321,7 @@ async function addDNS(config: HeadscaleConfigState, record: DNSRecord) {
 async function removeDNS(config: HeadscaleConfigState, record: DNSRecord) {
   if (config.dns) {
     if (!config.dns.readable() || !config.dns.writable()) {
-      log.debug("config", "DNS 配置不可写");
+      log.debug("config", "DNS config is not writable");
       return;
     }
 
@@ -347,11 +347,11 @@ async function removeDNS(config: HeadscaleConfigState, record: DNSRecord) {
 
 export async function loadHeadscaleConfig(path?: string, dnsPath?: string) {
   if (!path) {
-    log.debug("config", "未提供 Headscale 配置文件");
+    log.debug("config", "No Headscale configuration file was provided");
     return createHeadscaleConfig("no");
   }
 
-  log.debug("config", "正在加载 Headscale 配置文件：%s", path);
+  log.debug("config", "Loading Headscale configuration file: %s", path);
   const { r, w } = await validateConfigPath(path);
   if (!r) {
     return createHeadscaleConfig("no");
@@ -370,7 +370,7 @@ export async function loadHeadscaleConfig(path?: string, dnsPath?: string) {
   if (conflict.success && conflict.output.dns?.extra_records && extraRecordsPath) {
     log.warn(
       "config",
-      "同时设置了 dns.extra_records 和 dns.extra_records_path；Headplane 将使用 JSON 记录文件",
+      "Both dns.extra_records and dns.extra_records_path are set; Headplane will use the JSON records file",
     );
   }
 
@@ -378,10 +378,10 @@ export async function loadHeadscaleConfig(path?: string, dnsPath?: string) {
   if (dns && !extraRecordsPath) {
     log.error(
       "config",
-      "使用了独立的 DNS 配置文件，但 Headscale 配置中未设置 dns.extra_records_path",
+      "Using separate DNS config file but dns.extra_records_path is not set in Headscale config",
     );
-    log.error("config", "请在 Headscale 配置中设置 `dns.extra_records_path`");
-    log.error("config", "或从 Headplane 配置中移除 `headscale.dns_records_path`");
+    log.error("config", "Please set `dns.extra_records_path` in the Headscale config");
+    log.error("config", "Or remove `headscale.dns_records_path` from the Headplane config");
 
     exit(1);
   }
@@ -392,9 +392,9 @@ export async function loadHeadscaleConfig(path?: string, dnsPath?: string) {
 async function validateConfigPath(path: string) {
   try {
     await access(path, constants.F_OK | constants.R_OK);
-    log.info("config", "在 %s 找到有效的 Headscale 配置文件", path);
+    log.info("config", "Found a valid Headscale configuration file at %s", path);
   } catch (error) {
-    log.error("config", "无法读取 %s 处的 Headscale 配置文件", path);
+    log.error("config", "Unable to read a Headscale configuration file at %s", path);
     log.error("config", "%s", error);
     return { w: false, r: false };
   }
@@ -403,18 +403,18 @@ async function validateConfigPath(path: string) {
     await access(path, constants.F_OK | constants.W_OK);
     return { w: true, r: true };
   } catch {
-    log.warn("config", "%s 处的 Headscale 配置文件不可写", path);
+    log.warn("config", "Headscale configuration file at %s is not writable", path);
     return { w: false, r: true };
   }
 }
 
 async function loadConfigFile(path: string) {
-  log.debug("config", "正在读取 %s 处的 Headscale 配置文件", path);
+  log.debug("config", "Reading Headscale configuration file at %s", path);
   try {
     const data = await readFile(path, "utf8");
     const configYaml = parseDocument(data);
     if (configYaml.errors.length > 0) {
-      log.error("config", "无法解析 %s 处的 Headscale 配置文件", path);
+      log.error("config", "Cannot parse Headscale configuration file at %s", path);
       for (const error of configYaml.errors) {
         log.error("config", ` - ${error.toString()}`);
       }
@@ -424,7 +424,7 @@ async function loadConfigFile(path: string) {
 
     return configYaml;
   } catch (e) {
-    log.error("config", "读取 %s 处的 Headscale 配置文件时出错", path);
+    log.error("config", "Error reading Headscale configuration file at %s", path);
     log.error("config", "%s", e);
     return false;
   }

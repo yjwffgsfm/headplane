@@ -32,9 +32,9 @@ export default function ManageDomains({ searchDomains, isDisabled, magic }: Prop
 
   return (
     <div className="flex w-full flex-col sm:w-2/3">
-      <h1 className="mb-4 text-2xl font-medium">搜索域</h1>
+      <h1 className="mb-4 text-2xl font-medium">搜索域名</h1>
       <p className="mb-4">
-        为您的 Tailnet 设置自定义 DNS 搜索域，使用 Magic DNS 时，您的 Tailnet 域将作为第一个搜索域。
+        为你的 Tailnet 设置自定义 DNS 搜索域名。使用 Magic DNS 时，你的 tailnet 域名会作为第一个搜索域名。
       </p>
       <DndContext
         collisionDetection={closestCorners}
@@ -103,10 +103,10 @@ export default function ManageDomains({ searchDomains, isDisabled, magic }: Prop
                     "rounded-none focus:ring-0 w-full ml-1",
                   )}
                   required
-                  label="搜索域"
+                  label="搜索域名"
                   labelHidden
                   name="domain"
-                  placeholder="搜索域"
+                  placeholder="搜索域名"
                   type="text"
                 />
                 <Button

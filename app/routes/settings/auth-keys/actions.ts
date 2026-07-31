@@ -18,7 +18,7 @@ export async function authKeysAction({ request, context }: Route.ActionArgs) {
   const canGenerateOwn = auth.can(principal, Capabilities.generate_own_authkeys);
 
   if (!canGenerateAny && !canGenerateOwn) {
-    throw data("您没有权限管理预认证密钥", {
+    throw data("你没有管理预认证密钥的权限", {
       status: 403,
     });
   }
@@ -34,7 +34,7 @@ export async function authKeysAction({ request, context }: Route.ActionArgs) {
       isUserPrincipal(principal) &&
       (principal.user.headscaleUserId === userId || targetSubject === principal.user.subject);
     if (!ownsTarget) {
-      throw data("您没有权限管理此用户的预认证密钥", {
+      throw data("你没有管理该用户预认证密钥的权限", {
         status: 403,
       });
     }

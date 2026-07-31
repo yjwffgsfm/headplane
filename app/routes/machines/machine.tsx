@@ -103,7 +103,7 @@ export default function Page({
     <div>
       <p className="text-md mb-8">
         <Link className="font-medium" to="/machines">
-          所有机器
+          全部机器
         </Link>
         <span className="mx-2">/</span>
         {node.givenName}
@@ -131,13 +131,13 @@ export default function Page({
         <div className="border-r border-mist-100 p-2 pr-4 dark:border-mist-800">
           <span className="flex items-center gap-x-1 text-sm text-mist-600 dark:text-mist-300">
             管理者
-            <Tooltip content="默认情况下，机器的权限与其创建者相同。">
+            <Tooltip content="默认情况下，机器的权限与其创建者的权限一致。">
               <Info className="p-1" />
             </Tooltip>
           </span>
           <div className="mt-1 flex items-center gap-x-2.5">
             <UserCircle />
-            {node.user ? getUserDisplayName(node.user) : "标签拥有"}
+            {node.user ? getUserDisplayName(node.user) : "标签所属"}
           </div>
         </div>
         <div className="p-2 pl-4">
@@ -154,7 +154,7 @@ export default function Page({
       <h2 className="mt-8 text-xl font-medium">子网与路由</h2>
       <div className="mb-4 flex items-center justify-between">
         <p>
-          子网允许您将物理网络路由暴露到 Tailscale 上。{" "}
+          子网可以让你将物理网络路由暴露到 Tailscale 上。{" "}
           <Link external styled to="https://tailscale.com/kb/1019/subnets">
             了解更多
           </Link>
@@ -171,7 +171,7 @@ export default function Page({
         <div>
           <span className="flex items-center gap-x-1 text-mist-600 dark:text-mist-300">
             已批准
-            <Tooltip content="这些路由的流量正在通过此机器进行路由。">
+            <Tooltip content="发往这些路由的流量正在通过这台机器路由。">
               <Info className="h-3.5 w-3.5" />
             </Tooltip>
           </span>
@@ -197,7 +197,7 @@ export default function Page({
         <div>
           <span className="flex items-center gap-x-1 text-mist-600 dark:text-mist-300">
             等待批准
-            <Tooltip content="此机器正在通告这些路由，但在流量被路由到它们之前需要获得批准。">
+            <Tooltip content="这台机器正在通告这些路由，但在流量被路由到它们之前必须获得批准。">
               <Info className="h-3.5 w-3.5" />
             </Tooltip>
           </span>
@@ -223,7 +223,7 @@ export default function Page({
         <div>
           <span className="flex items-center gap-x-1 text-mist-600 dark:text-mist-300">
             出口节点
-            <Tooltip content="此机器是否可以充当您的 tailnet 的出口节点。">
+            <Tooltip content="这台机器是否可以作为你 tailnet 的出口节点。">
               <Info className="h-3.5 w-3.5" />
             </Tooltip>
           </span>
@@ -252,13 +252,18 @@ export default function Page({
         </div>
       </Card>
       <h2 className="text-xl font-medium">机器详情</h2>
-      <p className="mb-4">关于此机器网络的信息。用于调试连接问题。</p>
+      <p className="mb-4">
+        关于这台机器网络的信息。用于调试连接问题。
+      </p>
       <Card
         className="grid w-full max-w-full grid-cols-1 gap-y-2 sm:gap-x-12 lg:grid-cols-2"
         variant="flat"
       >
         <div className="flex flex-col gap-1">
-          <Attribute name="创建者" value={node.user ? getUserDisplayName(node.user) : "标签拥有"} />
+          <Attribute
+            name="创建者"
+            value={node.user ? getUserDisplayName(node.user) : "标签所属"}
+          />
           <Attribute name="机器名称" value={node.givenName} />
           <Attribute
             name="操作系统主机名"
@@ -271,51 +276,57 @@ export default function Page({
               <Attribute name="Tailscale 版本" value={getTSVersion(stats)} />
             </>
           ) : undefined}
-          <Attribute name="ID" tooltip="此机器的 ID。用于 Headscale API。" value={node.id} />
+          <Attribute
+            name="ID"
+            tooltip="这台机器的 ID。在 Headscale API 中使用。"
+            value={node.id}
+          />
           <Attribute
             isCopyable
             name="节点密钥"
-            tooltip="唯一标识此机器的公钥。"
+            tooltip="唯一标识这台机器的公钥。"
             value={node.nodeKey}
           />
           <Attribute name="创建时间" value={new Date(node.createdAt).toLocaleString()} />
           <Attribute
-            name="最后上线"
+            name="最后在线"
             value={node.online ? "已连接" : new Date(node.lastSeen).toLocaleString()}
           />
           <Attribute
-            name="密钥过期"
-            value={!isNoExpiry(node.expiry) ? new Date(node.expiry!).toLocaleString() : "永不过期"}
+            name="密钥过期时间"
+            value={!isNoExpiry(node.expiry) ? new Date(node.expiry!).toLocaleString() : "永不"}
           />
           {magic ? (
             <Attribute isCopyable name="域名" value={`${node.givenName}.${magic}`} />
           ) : undefined}
         </div>
         <div className="flex flex-col gap-1">
-          <p className="text-sm font-semibold text-mist-600 uppercase dark:text-mist-300">地址</p>
+          <p className="text-sm font-semibold text-mist-600 uppercase dark:text-mist-300">
+            地址
+          </p>
           <Attribute
             isCopyable
             name="Tailscale IPv4"
-            tooltip="此机器在您的 tailnet（私有 Tailscale 网络）中的 IPv4 地址。"
+            tooltip="这台机器在你 tailnet（你的私有 Tailscale 网络）内的 IPv4 地址。"
             value={getIpv4Address(node.ipAddresses)}
           />
           <Attribute
             isCopyable
             name="Tailscale IPv6"
-            tooltip="此机器在您的 tailnet（私有 Tailscale 网络）中的 IPv6 地址。即使您的 ISP 不支持 IPv6，tailnet 内的连接也支持 IPv6。"
+            tooltip="这台机器在你 tailnet 内的 IPv6 地址。即使你的 ISP 不支持，tailnet 内的连接也支持 IPv6。"
             value={getIpv6Address(node.ipAddresses)}
           />
           <Attribute
             isCopyable
             name="短域名"
-            tooltip="您的 tailnet 用户可以使用此 DNS 短名称访问此机器。"
+            tooltip="你 tailnet 的用户可以使用此 DNS 短名称访问这台机器。"
             value={node.givenName}
           />
           {magic ? (
             <Attribute
               isCopyable
               name="完整域名"
-              tooltip="您的 tailnet 用户可以使用此 DNS 名称访问此机器。"
+              tooltip="你 tailnet 的用户可以使用此 DNS 名称访问这台机器。"
               value={`${node.givenName}.${magic}`}
             />
           ) : undefined}
@@ -328,13 +339,13 @@ export default function Page({
                 客户端连接性
               </p>
               <Attribute
-                name="可变"
-                tooltip="机器是否位于困难的 NAT 之后，导致其 IP 地址因目标而异。"
+                name="变化"
+                tooltip="机器是否位于难以处理的 NAT 之后，该 NAT 会根据目标地址改变机器的 IP 地址。"
                 value={stats.NetInfo?.MappingVariesByDestIP ? "是" : "否"}
               />
               <Attribute
-                name="回环"
-                tooltip="机器是否需要穿越具有回环的 NAT。"
+                name="Hairpinning"
+                tooltip="机器是否需要穿越具有 hairpinning 的 NAT。"
                 value={stats.NetInfo?.HairPinning ? "是" : "否"}
               />
               <Attribute name="IPv6" value={stats.NetInfo?.WorkingIPv6 ? "是" : "否"} />

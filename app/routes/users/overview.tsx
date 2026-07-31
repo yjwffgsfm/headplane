@@ -52,7 +52,9 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const principal = await auth.require(request);
   const check = await auth.can(principal, Capabilities.read_users);
   if (!check) {
-    throw new Error("您没有权限查看此页面。请联系管理员。");
+    throw new Error(
+      "你没有权限查看此页面。请联系管理员。",
+    );
   }
 
   const writablePermission = await auth.can(principal, Capabilities.write_users);
@@ -75,7 +77,8 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     apiUsers = usersSnap.data;
   } catch (error) {
     log.warn("api", "Failed to fetch Headscale API data: %s", String(error));
-    apiError = "无法连接到 Headscale API。Headscale 用户数据和机器信息不可用。";
+    apiError =
+      "无法连接到 Headscale API。Headscale 用户数据和机器信息不可用。";
   }
 
   const useGravatar = config.oidc?.profile_picture_source === "gravatar";
@@ -158,7 +161,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
   return (
     <>
       <h1 className="mb-1.5 text-2xl font-medium">用户</h1>
-      <p className="text-md mb-8">管理您网络中的用户及其权限。</p>
+      <p className="text-md mb-8">管理你网络中的用户及其权限。</p>
       <ManageBanner isDisabled={!loaderData.writable} oidc={loaderData.oidc} />
 
       {loaderData.apiError && (
@@ -176,7 +179,9 @@ export default function Page({ loaderData }: Route.ComponentProps) {
       <section>
         <h2 className="mb-3 text-lg font-medium">Headplane 用户</h2>
         {loaderData.headplaneUsers.length === 0 ? (
-          <p className="text-sm text-mist-600 dark:text-mist-300">尚未有用户登录 Headplane。</p>
+          <p className="text-sm text-mist-600 dark:text-mist-300">
+            还没有用户登录过 Headplane。
+          </p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[640px] table-auto rounded-lg">

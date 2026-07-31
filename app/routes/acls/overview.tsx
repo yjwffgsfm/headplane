@@ -56,30 +56,30 @@ export default function Page({ loaderData: { access, writable, policy } }: Route
     <div>
       {!access ? (
         <Notice title="ACL 策略受限" variant="warning">
-          您没有编辑访问控制列表策略所需的权限。请联系管理员申请权限或更改 ACL 策略。
+          你没有编辑访问控制列表策略所需的权限。请联系管理员申请访问权限或进行 ACL 策略更改。
         </Notice>
       ) : !writable ? (
         <Notice title="只读 ACL 策略" variant="error">
-          Headscale 配置中的 ACL 策略模式很可能设置为 <Code>file</Code>。这意味着无法通过 Web
-          界面编辑 ACL 文件。要解决此问题，您需要将 Headscale 配置中的 <Code>policy.mode</Code>{" "}
-          设置为 <Code>database</Code>。
+          你的 Headscale 配置中 ACL 策略模式很可能设置为 <Code>file</Code>。这意味着无法通过网页界面编辑 ACL 文件。要解决此问题，你需要在 Headscale 配置中将 <Code>policy.mode</Code> 设置为{" "}
+          <Code>database</Code>。
         </Notice>
       ) : undefined}
       <h1 className="mb-4 text-2xl font-medium">访问控制列表（ACL）</h1>
       <p className="mb-4 max-w-prose">
-        ACL 文件用于定义您网络的访问控制规则。您可以在{" "}
+        ACL 文件用于定义你网络的访问控制规则。你可以在{" "}
         <Link external styled to="https://tailscale.com/kb/1018/acls">
           Tailscale ACL 指南
         </Link>{" "}
         和{" "}
         <Link external styled to="https://headscale.net/stable/ref/acls/">
           Headscale 文档
-        </Link>{" "}
-        中找到有关 ACL 文件的更多信息。
+        </Link>
+        中找到关于 ACL 文件的更多信息。
       </p>
       {fetcher.data?.error !== undefined ? (
         <Notice title={fetcher.data.error.split(":")[0] ?? "错误"} variant="error">
-          {fetcher.data.error.split(":").slice(1).join(": ") ?? "尝试更新 ACL 策略时发生未知错误。"}
+          {fetcher.data.error.split(":").slice(1).join(": ") ??
+            "尝试更新 ACL 策略时发生了未知错误。"}
         </Notice>
       ) : undefined}
       <Tabs className="mb-4" label="ACL 编辑器" defaultValue="edit">
@@ -117,7 +117,7 @@ export default function Page({ loaderData: { access, writable, policy } }: Route
           <div className="flex flex-col items-center py-8">
             <Construction />
             <p className="mt-4 w-1/2 text-center">
-              预览规则功能尚不可用。此功能仍在开发中，实现起来相当复杂。希望我能尽快完成它。
+              规则预览功能尚不可用。该功能仍在开发中，实现起来相当复杂。希望我能尽快完成它。
             </p>
           </div>
         </TabsPanel>
@@ -164,17 +164,19 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
             <AlertCircle className="mb-2 h-6 w-6 text-red-500" />
           </div>
           <Card.Text>
-            由于策略文件在服务器上不存在，ACL 策略当前不可用。这通常表示 Headscale 的 ACL 以{" "}
-            <Code>file</Code> 模式运行，且指定的策略文件缺失。
+            ACL 策略当前不可用，因为服务器上不存在策略文件。这通常表示 Headscale 正在以 <Code>file</Code> 模式运行 ACL，且指定的策略文件缺失。
           </Card.Text>
         </Card>
         <Card className="max-w-2xl" variant="flat">
-          <Card.Text>要解决此问题，您可以采取以下两种措施：</Card.Text>
+          <Card.Text>
+            要解决此问题，你可以采取以下两种操作：
+          </Card.Text>
           <ul className="mt-2 ml-4 list-outside list-disc space-y-1 text-sm">
-            <li>在 Headscale 配置指定的路径下创建 ACL 策略文件。</li>
             <li>
-              或者，将 Headscale 的 ACL 模式切换为 <Code>database</Code> 模式，方法是更新 Headscale
-              配置。这将允许 Headplane 直接通过 Web 界面管理 ACL 策略。
+              在你的 Headscale 配置中指定的路径创建 ACL 策略文件。
+            </li>
+            <li>
+              或者，你可以通过更新 Headscale 配置，让 Headscale 使用 <Code>database</Code> 模式管理 ACL。这将允许 Headplane 直接通过网页界面管理 ACL 策略。
             </li>
           </ul>
         </Card>

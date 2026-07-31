@@ -31,8 +31,8 @@ export default function AddRecord({ records }: Props) {
       const lookup = records.find((r) => r.name === name);
       if (lookup?.value === ip) {
         return {
-          record_name: "此记录已存在。",
-          record_value: "此记录已存在。",
+          record_name: "该记录已存在。",
+          record_value: "该记录已存在。",
         };
       }
 
@@ -43,8 +43,8 @@ export default function AddRecord({ records }: Props) {
   const ip = form.values.record_value as string;
   const recordType = form.values.record_type as string;
   const isDuplicate =
-    !!form.errors.record_name?.includes("already exists") &&
-    !!form.errors.record_value?.includes("already exists");
+    !!form.errors.record_name?.includes("已存在") &&
+    !!form.errors.record_value?.includes("已存在");
 
   return (
     <Dialog>
@@ -81,7 +81,7 @@ export default function AddRecord({ records }: Props) {
           />
           {isDuplicate ? (
             <p className="text-sm opacity-50">
-              域名 <Code>{name}</Code> 和 IP 地址 <Code>{ip}</Code> 的记录已存在。
+              域名为 <Code>{name}</Code>、IP 地址为 <Code>{ip}</Code> 的记录已存在。
             </p>
           ) : undefined}
         </div>

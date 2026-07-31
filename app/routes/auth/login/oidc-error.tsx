@@ -20,7 +20,7 @@ function getErrorMessage(code: string) {
     case "error_no_query":
       return (
         <Card.Text>
-          SSO 提供商未正确携带所需参数重定向回 Headplane。请确保您的 SSO 提供商配置正确。
+          SSO 提供者没有正确地带所需参数重定向回 Headplane。请确保你的 SSO 提供者配置正确。
         </Card.Text>
       );
 
@@ -28,25 +28,29 @@ function getErrorMessage(code: string) {
     case "error_invalid_session":
       return (
         <Card.Text>
-          由于缺少或无效的会话数据，无法完成 SSO 登录。请确保您的 Headplane Cookie
-          配置正确，并且浏览器已接受 Cookie。
+          由于缺少或无效的会话数据，无法完成 SSO 登录。请确保你的 Headplane Cookie 配置正确，并且浏览器接受 Cookie。
         </Card.Text>
       );
 
     case "error_no_sub":
       return (
         <Card.Text>
-          SSO 提供商未返回有效的用户标识符。请确保您的 SSO 提供商已正确配置以提供 <Code>sub</Code>{" "}
-          声明。
+          SSO 提供者未返回有效的用户标识。请确保你的 SSO 提供者已正确配置以提供 <Code>sub</Code> 声明。
         </Card.Text>
       );
 
     case "error_auth_failed":
       return (
-        <Card.Text>与 SSO 提供商的认证失败。请稍后重试。Headplane 日志可能提供更多信息。</Card.Text>
+        <Card.Text>
+          与 SSO 提供者的认证失败。请稍后重试。Headplane 日志可能提供更多信息。
+        </Card.Text>
       );
 
     default:
-      return <Card.Text>OIDC 认证过程中发生未知错误。请稍后重试。</Card.Text>;
+      return (
+        <Card.Text>
+          OIDC 认证期间发生了未知错误。请稍后重试。
+        </Card.Text>
+      );
   }
 }

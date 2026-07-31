@@ -35,8 +35,8 @@ export async function createAppContext(config: HeadplaneConfig) {
     certPath: config.headscale.tls_cert_path,
   });
 
-  // 解析 Headscale API 密钥：优先使用 headscale.api_key，
-  // 若未配置则回退到已废弃的 oidc.headscale_api_key 以保持兼容。
+  // Resolve the Headscale API key: headscale.api_key takes precedence,
+  // falling back to the deprecated oidc.headscale_api_key for compatibility.
   const headscaleApiKey = config.headscale.api_key ?? config.oidc?.headscale_api_key;
 
   const agents = await buildAgents(
@@ -79,7 +79,7 @@ export async function createAppContext(config: HeadplaneConfig) {
   );
   const integration = await loadIntegration(config.integration);
 
-  // 关闭时按注册的逆序执行释放器
+  // Disposers run in reverse-registration order on shutdown.
   const disposers: Array<() => Promise<void> | void> = [
     () => auth.stop(),
     () => hsLive.dispose(),
@@ -106,7 +106,7 @@ export async function createAppContext(config: HeadplaneConfig) {
       try {
         await d();
       } catch (error) {
-        log.warn("server", "关闭时出错：%s", String(error));
+        log.warn("server", "Error during shutdown: %s", String(error));
       }
     }
   }
@@ -133,13 +133,13 @@ function buildOidc(
   headscaleApiKey: string | undefined,
 ): Feature<OidcService> {
   if (!config.oidc) {
-    return disabled("OIDC 未配置");
+    return disabled("OIDC is not configured");
   }
   if (config.oidc.enabled === false) {
-    return disabled("OIDC 已在配置中禁用");
+    return disabled("OIDC is disabled in the configuration");
   }
   if (!headscaleApiKey) {
-    return disabled("OIDC 需要配置 headscale.api_key");
+    return disabled("OIDC requires headscale.api_key to be configured");
   }
 
   return enabled(
@@ -176,13 +176,13 @@ async function buildAgents(
 ): Promise<Feature<AgentManager>> {
   const agentConfig = config.integration?.agent;
   if (!agentConfig?.enabled) {
-    return disabled("Agent 未在配置中启用");
+    return disabled("Agent is not enabled in the configuration");
   }
   if (!apiClient) {
-    return disabled("Agent 需要配置 headscale.api_key");
+    return disabled("Agent requires headscale.api_key to be configured");
   }
   if (!supportsTagOnlyKeys) {
-    return disabled("Agent 需要 Headscale 0.28 或更高版本");
+    return disabled("Agent requires Headscale 0.28 or newer");
   }
 
   const manager = await createAgentManager(
@@ -193,7 +193,7 @@ async function buildAgents(
     db,
   );
   if (!manager) {
-    return disabled("Agent 初始化失败（请查看日志）");
+    return disabled("Agent failed to initialize (see logs)");
   }
   return enabled(manager);
 }

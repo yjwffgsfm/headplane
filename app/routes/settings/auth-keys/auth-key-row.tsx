@@ -20,7 +20,7 @@ export default function AuthKeyRow({ authKey, user }: Props) {
     <div className="w-full">
       <Attribute name="密钥" value={authKey.key} />
       <Attribute name="用户" value={userDisplay} />
-      <Attribute name="可重复使用" value={authKey.reusable ? "是" : "否"} />
+      <Attribute name="可重用" value={authKey.reusable ? "是" : "否"} />
       <Attribute name="临时" value={authKey.ephemeral ? "是" : "否"} />
       <Attribute name="已使用" value={authKey.used ? "是" : "否"} />
       <Attribute name="创建时间" value={createdAt} />

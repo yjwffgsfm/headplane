@@ -23,11 +23,11 @@ export default function ManageBanner({ oidc, isDisabled }: ManageBannerProps) {
         <p className="text-sm text-mist-600 dark:text-mist-300">
           {oidc ? (
             <>
-              用户通过您的{" "}
+              用户通过你的{" "}
               <Link external styled to={oidc.issuer}>
                 OIDC 提供商
               </Link>
-              进行管理。
+              管理。
             </>
           ) : (
             <>

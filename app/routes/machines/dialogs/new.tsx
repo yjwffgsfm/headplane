@@ -36,7 +36,7 @@ export default function NewMachine(data: NewMachineProps) {
         ? undefined
         : {
             register_key:
-              "请粘贴 tailscale up 命令中的注册 URL 或完整的 hskey-authreq-... 密钥。",
+              "请粘贴 tailscale up 显示的注册地址或完整的 hskey-authreq-... 密钥。",
           },
   });
   const navigate = useNavigate();
@@ -46,7 +46,7 @@ export default function NewMachine(data: NewMachineProps) {
       <Dialog isOpen={pushDialog} onOpenChange={setPushDialog}>
         <DialogPanel isDisabled={!form.canSubmit}>
           <Title>注册机器密钥</Title>
-          <Text>在您的设备上运行以下命令时，会显示机器密钥：</Text>
+          <Text>当你在设备上运行以下命令时，会得到机器密钥：</Text>
           <CodeBlock className="mb-4">{`tailscale up --login-server=${data.server}`}</CodeBlock>
           <input name="action_id" type="hidden" value="register" />
           <Input
@@ -54,14 +54,14 @@ export default function NewMachine(data: NewMachineProps) {
             required
             label="机器密钥"
             placeholder="hskey-authreq-XXXXXXXXXXXXXXXXXXXXXXXX"
-            description="粘贴 tailscale up 命令显示的注册 URL 或完整密钥。"
+            description="请粘贴 tailscale up 显示的注册地址或完整密钥。"
           />
           <Select
             required
             label="所有者"
             name="user"
             onValueChange={(v) => form.setValue("user", v)}
-            placeholder="选择用户"
+            placeholder="选择一个用户"
             items={data.users.map((user) => ({
               // Headscale's v1/node/register endpoint resolves the owner by
               // username via GetUserByName, so we must pass user.name (not id).

@@ -63,7 +63,7 @@ export default function MachineRow({
             {node.givenName}
           </p>
           <p className="text-sm opacity-50">
-            {node.user ? getUserDisplayName(node.user) : "标签拥有"}
+            {node.user ? getUserDisplayName(node.user) : "标签所属"}
           </p>
           <div className="mt-1.5 flex flex-wrap gap-1">
             {mapTagsToComponents(node, uiTags)}
@@ -101,7 +101,7 @@ export default function MachineRow({
           </Menu>
         </div>
       </td>
-      {/* 当代理未启用时传入 undefined */}
+      {/* We pass undefined when agents are not enabled */}
       {isAgent !== undefined ? (
         <td className="py-2">
           {node.hostInfo !== undefined ? (

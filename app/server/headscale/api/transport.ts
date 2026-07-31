@@ -108,7 +108,7 @@ export async function createTransport(opts: TransportOptions): Promise<Transport
 
       const res = await rawRequest(url, options);
       if (res.statusCode >= 400) {
-        log.debug("api", "%s %s 请求失败，状态码 %d", method, path, res.statusCode);
+        log.debug("api", "%s %s failed with status %d", method, path, res.statusCode);
         const rawData = await res.body.text();
         const jsonData = (() => {
           try {
@@ -164,7 +164,7 @@ export async function createTransport(opts: TransportOptions): Promise<Transport
         return res.statusCode === 200;
       } catch (error) {
         if (isApiError(error)) {
-          log.debug("api", "健康检查失败：%d", error.statusCode);
+          log.debug("api", "Health check failed: %d", error.statusCode);
         }
         return false;
       }
@@ -179,13 +179,13 @@ export async function createTransport(opts: TransportOptions): Promise<Transport
 async function createUndiciAgent(certPath?: string): Promise<Agent> {
   if (!certPath) return new Agent();
   try {
-    log.debug("config", "正在从 %s 加载证书", certPath);
+    log.debug("config", "Loading certificate from %s", certPath);
     const cert = await readFile(certPath, "utf8");
-    log.info("config", "正在使用来自 %s 的证书", certPath);
+    log.info("config", "Using certificate from %s", certPath);
     return new Agent({ connect: { ca: cert.trim() } });
   } catch (error) {
-    log.error("config", "加载 Headscale TLS 证书失败：%s", error);
-    log.debug("config", "错误详情：%o", error);
+    log.error("config", "Failed to load Headscale TLS cert: %s", error);
+    log.debug("config", "Error Details: %o", error);
     return new Agent();
   }
 }

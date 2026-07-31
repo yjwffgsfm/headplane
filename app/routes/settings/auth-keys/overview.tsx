@@ -197,24 +197,23 @@ export default function Page({
       </p>
       {!access ? (
         <Notice title="预认证密钥权限受限" variant="warning">
-          您没有生成预认证密钥所需的权限。请联系管理员申请权限或为您生成预认证密钥。
+          你没有生成预认证密钥所需的权限。请联系管理员申请访问权限或为你生成预认证密钥。
         </Notice>
       ) : missing.length > 0 ? (
-        <Notice title="获取认证密钥失败" variant="error">
-          获取以下用户的认证密钥时发生错误：{" "}
+        <Notice title="缺少认证密钥" variant="error">
+          获取以下用户的认证密钥时出错：{" "}
           {missing.map(({ user }, index) => (
             <>
               <Code key={user.id}>{getUserDisplayName(user)}</Code>
-              {index < missing.length - 1 ? ", " : ". "}
+              {index < missing.length - 1 ? "、" : "。"}
             </>
           ))}
-          他们的密钥可能无法正确列出。请查看服务器日志了解更多信息。
+          他们的密钥可能无法正确列出。请检查服务器日志以获取更多信息。
         </Notice>
       ) : undefined}
       <h1 className="mb-2 text-2xl font-medium">预认证密钥</h1>
       <p className="mb-4">
-        Headscale 完全支持预认证密钥，方便您将设备添加到
-        Tailnet。要了解有关使用预认证密钥的更多信息，请访问{" "}
+        Headscale 完全支持预认证密钥，以便轻松将设备添加到你的 Tailnet。要了解有关使用预认证密钥的更多信息，请访问{" "}
         <Link external styled to="https://tailscale.com/kb/1085/auth-keys/">
           Tailscale 文档
         </Link>
@@ -255,7 +254,7 @@ export default function Page({
             { value: "all", label: "全部" },
             { value: "active", label: "有效" },
             { value: "expired", label: "已使用/已过期" },
-            { value: "reusable", label: "可重复使用" },
+            { value: "reusable", label: "可重用" },
             { value: "ephemeral", label: "临时" },
           ]}
         />
@@ -269,7 +268,7 @@ export default function Page({
         ) : filteredKeys.length === 0 ? (
           <TableList.Item className="flex flex-col items-center gap-2.5 py-4 opacity-70">
             <FileKey2 />
-            <p className="font-semibold">没有预认证密钥匹配当前筛选条件。</p>
+            <p className="font-semibold">没有符合所选筛选条件的预认证密钥。</p>
           </TableList.Item>
         ) : (
           filteredKeys.map((key) => {

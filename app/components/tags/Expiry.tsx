@@ -17,14 +17,18 @@ export function ExpiryTag({ variant, expiry }: ExpiryTagProps) {
     <Tooltip
       content={
         variant === "expired" ? (
-          <>此机器已过期，将无法连接到网络。请在机器上重新通过 Tailscale 进行身份验证以重新启用。</>
+          <>
+            这台机器已过期，将无法连接到网络。请在该机器上重新使用 Tailscale 认证以重新启用它。
+          </>
         ) : (
-          <>此机器已禁用密钥过期，无需重新进行身份验证。</>
+          <>这台机器已禁用密钥过期，永远不需要重新认证。</>
         )
       }
     >
       <Chip
-        text={variant === "expired" ? `已过期 ${formatter.format(new Date(expiry!))}` : "永不过期"}
+        text={
+          variant === "expired" ? `已过期 ${formatter.format(new Date(expiry!))}` : "无过期时间"
+        }
         className="bg-mist-200 text-mist-800 dark:bg-mist-800 dark:text-mist-200"
       />
     </Tooltip>

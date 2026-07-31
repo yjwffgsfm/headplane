@@ -16,7 +16,7 @@ export async function userAction({ request, context }: Route.ActionArgs) {
   const principal = await auth.require(request);
   const check = await auth.can(principal, Capabilities.write_users);
   if (!check) {
-    throw data("您没有权限更新用户", {
+    throw data("你没有权限更新用户", {
       status: 403,
     });
   }
@@ -72,7 +72,7 @@ export async function userAction({ request, context }: Route.ActionArgs) {
       }
 
       if (user.provider === "oidc") {
-        // OIDC 用户无法通过此端点重命名，返回错误
+        // OIDC users cannot be renamed via this endpoint, return an error
         throw data("由 OIDC 管理的用户无法重命名", {
           status: 403,
         });
@@ -96,11 +96,11 @@ export async function userAction({ request, context }: Route.ActionArgs) {
         throw data("重新分配用户角色失败。", { status: 500 });
       }
 
-      return { message: "用户重新分配成功" };
+      return { message: "用户角色重新分配成功" };
     }
     case "transfer_ownership": {
       if (!isUserPrincipal(principal) || principal.user.role !== "owner") {
-        throw data("只有所有者才能转移所有权。", { status: 403 });
+        throw data("只有所有者才能转让所有权。", { status: 403 });
       }
 
       const headplaneUserId = formData.get("headplane_user_id")?.toString();
@@ -110,10 +110,10 @@ export async function userAction({ request, context }: Route.ActionArgs) {
 
       const result = await auth.transferOwnership(principal.user.id, headplaneUserId);
       if (!result) {
-        throw data("转移所有权失败。", { status: 500 });
+        throw data("转让所有权失败。", { status: 500 });
       }
 
-      return { message: "所有权转移成功" };
+      return { message: "所有权转让成功" };
     }
     case "link_user": {
       const headplaneUserId = formData.get("headplane_user_id")?.toString();

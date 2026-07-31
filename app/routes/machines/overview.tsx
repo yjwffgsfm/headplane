@@ -41,7 +41,9 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const principal = await auth.require(request);
 
   if (!auth.can(principal, Capabilities.read_machines)) {
-    throw new Error("您没有权限查看此页面。请联系管理员。");
+    throw new Error(
+      "你没有权限查看此页面。请联系管理员。",
+    );
   }
 
   const writablePermission = auth.can(principal, Capabilities.write_machines);
@@ -233,7 +235,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
         <div className="flex flex-col">
           <h1 className="mb-2 text-2xl font-medium">机器</h1>
           <p>
-            管理连接到您的 Tailnet 的设备。{" "}
+            管理连接到你的 Tailnet 的设备。{" "}
             <Link external styled to="https://tailscale.com/kb/1372/manage-devices">
               了解更多
             </Link>
@@ -276,7 +278,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
         <MachineFilters users={loaderData.users} populatedNodes={loaderData.populatedNodes} />
         <span className="ml-auto text-sm whitespace-nowrap text-mist-500">
           {searchQuery || hasActiveFilters
-            ? `显示 ${filteredAndSortedNodes.length} / ${loaderData.populatedNodes.length} 台机器`
+            ? `显示 ${loaderData.populatedNodes.length} 台机器中的 ${filteredAndSortedNodes.length} 台`
             : `${loaderData.populatedNodes.length} 台机器`}
         </span>
       </div>
@@ -344,12 +346,12 @@ export default function Page({ loaderData }: Route.ComponentProps) {
                     <Tooltip
                       content={
                         <span className="font-normal">
-                          已启用 MagicDNS，您可以根据设备名称访问设备，也可通过{" "}
+                          由于已启用 MagicDNS，你可以根据设备名称访问设备，也可以使用{" "}
                           <Code>
                             [name].
                             {loaderData.magic}
                           </Code>{" "}
-                          访问
+                          地址访问。
                         </span>
                       }
                     >
@@ -400,7 +402,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
                 className="pb-2 text-xs font-bold uppercase"
               >
                 <button
-                  aria-label="按最后上线排序"
+                  aria-label="按最后在线排序"
                   className={cn(
                     "flex items-center gap-x-1 cursor-pointer",
                     "hover:text-mist-900 dark:hover:text-mist-100",
@@ -408,7 +410,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
                   onClick={() => handleSort("lastSeen")}
                   type="button"
                 >
-                  最后上线
+                  最后在线
                   {sortField === "lastSeen" &&
                     (sortDirection === "asc" ? (
                       <ChevronUp className="h-3 w-3" />
@@ -434,7 +436,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
                   className="py-8 text-center text-mist-500"
                   colSpan={loaderData.agent !== undefined ? 6 : 5}
                 >
-                  没有机器匹配当前筛选条件
+                  没有符合当前筛选条件的机器
                 </td>
               </tr>
             ) : (

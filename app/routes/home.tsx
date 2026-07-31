@@ -143,15 +143,14 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         <Card variant="flat" className="flex max-w-2xl items-center gap-4">
           <Check className="inline-flex size-4" />
           <Card.Text className="text-sm">
-            您的账户已关联到 Headscale 用户 <strong>{loaderData.linkedUserName}</strong>。
+            你的账户已关联到 Headscale 用户 <strong>{loaderData.linkedUserName}</strong>。
           </Card.Text>
         </Card>
       )}
       <Card variant="flat" className="max-w-2xl">
-        <Card.Title>通过 Tailscale 访问您的网络</Card.Title>
+        <Card.Title>通过 Tailscale 访问你的网络</Card.Title>
         <Card.Text className="mt-1">
-          您已成功通过身份验证，但没有仪表盘访问权限。您仍然可以通过安装 Tailscale 来连接到您的
-          Headscale 网络。
+          你已成功通过身份验证，但无法访问控制面板。你仍然可以通过安装 Tailscale 连接到你的 Headscale 网络。
         </Card.Text>
 
         <div className="mt-4 rounded-lg border border-mist-200 p-3 dark:border-mist-700">
@@ -202,8 +201,8 @@ export default function Home({ loaderData }: Route.ComponentProps) {
           )}
         >
           {loaderData.unlinked
-            ? "您的账户尚未关联到 Headscale 用户。请联系管理员为您创建。"
-            : "需要仪表盘访问权限？请联系管理员申请。"}
+            ? "你的账户未关联到 Headscale 用户。请联系管理员为你创建一个。"
+            : "需要访问控制面板？请联系管理员申请访问权限。"}
         </Card.Text>
       </Card>
     </div>

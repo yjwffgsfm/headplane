@@ -30,7 +30,8 @@ export const sshErrors = {
 
   user_not_linked: {
     title: "用户账户未关联",
-    message: "您需要先将您的用户账户关联到 Headscale 用户，然后才能使用浏览器 SSH。",
+    message:
+      "你需要先将你的用户账户关联到 Headscale 用户，之后才能使用浏览器 SSH。",
     anchor: "#user-not-linked",
   },
 } as const;

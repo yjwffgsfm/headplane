@@ -19,7 +19,9 @@ export default function ExpireAuthKey({ authKey, user }: ExpireAuthKeyProps) {
         <input name="user_id" type="hidden" value={user.id} />
         <input name="key_id" type="hidden" value={authKey.id} />
         <input name="key" type="hidden" value={authKey.key} />
-        <Text>使此认证密钥过期将立即阻止其用于认证新设备，此操作无法撤销。</Text>
+        <Text>
+          使此认证密钥过期将立即阻止它用于认证新设备。此操作无法撤销。
+        </Text>
       </DialogPanel>
     </Dialog>
   );

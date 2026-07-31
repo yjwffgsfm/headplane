@@ -19,9 +19,9 @@ interface Props {
 export default function ManageNS({ nameservers, isDisabled, overrideLocalDns }: Props) {
   return (
     <div className="flex w-full flex-col sm:w-2/3">
-      <h1 className="mb-4 text-2xl font-medium">名称服务器</h1>
+      <h1 className="mb-4 text-2xl font-medium">域名服务器</h1>
       <p>
-        设置 Tailnet 上设备用于解析 DNS 查询的名称服务器。{" "}
+        设置 Tailnet 上的设备用于解析 DNS 查询的域名服务器。{" "}
         <Link external styled to="https://tailscale.com/kb/1054/dns">
           了解更多
         </Link>
@@ -65,13 +65,12 @@ function NameserverList({ isGlobal, isDisabled, nameservers, overrideLocalDns, n
       <div className="mb-2 flex items-center justify-between">
         {isGlobal ? (
           <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <h2 className="text-md font-medium opacity-80">全局名称服务器</h2>
+            <h2 className="text-md font-medium opacity-80">全局域名服务器</h2>
             <div className="flex items-center gap-2 text-sm">
               <Tooltip
                 content={
                   <>
-                    启用后，使用下方列出的 DNS 服务器来解析 Tailnet
-                    外部的名称。禁用时（默认），设备将优先使用其本地 DNS 配置。{" "}
+                    启用后，使用下面列出的 DNS 服务器解析 tailnet 之外的名称。禁用时（默认），设备将优先使用其本地 DNS 配置。{" "}
                     <Link external styled to="https://tailscale.com/kb/1054/dns#global-nameservers">
                       了解更多
                     </Link>

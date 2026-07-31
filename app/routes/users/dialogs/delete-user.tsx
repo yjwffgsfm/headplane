@@ -19,14 +19,14 @@ export default function DeleteUser({ user, machines, isOpen, setIsOpen }: Delete
         <Title>删除 {name}？</Title>
         {machines.length > 0 ? (
           <Text className="mb-6">
-            用户如果拥有设备，则无法删除。请先删除或将其设备重新分配给其他用户，然后再继续操作。
+            拥有机器的用户无法被删除。请先删除或将其机器重新分配给其他用户，然后再继续。
           </Text>
         ) : (
           <Text className="mb-6">
             已删除的用户无法恢复。
             {user.provider === "oidc" && (
               <p className="mt-4 text-sm text-mist-600 dark:text-mist-300">
-                由于该用户是通过外部身份提供者进行身份验证的，因此如果他们再次登录，将被重新创建。
+                由于该用户通过外部提供商进行身份验证，如果他们再次登录，将会被重新创建。
               </p>
             )}
           </Text>

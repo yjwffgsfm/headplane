@@ -28,7 +28,7 @@ function compareApiVersions(current: string, required: string) {
     currentParts.some((part) => Number.isNaN(part)) ||
     requiredParts.some((part) => Number.isNaN(part))
   ) {
-    throw new Error("无效的 Docker API 版本格式");
+    throw new Error("Invalid Docker API version format");
   }
 
   const length = Math.max(currentParts.length, requiredParts.length);
@@ -84,7 +84,7 @@ export default class DockerIntegration extends Integration<typeof configSchema.f
 
   async getContainerName(label: string, value: string): Promise<string> {
     if (!this.client) {
-      throw new Error("Docker 客户端尚未初始化");
+      throw new Error("Docker client is not initialized");
     }
 
     const filters = encodeURIComponent(
@@ -99,65 +99,67 @@ export default class DockerIntegration extends Integration<typeof configSchema.f
     const containers: DockerContainer[] = (await body.json()) as DockerContainer[];
     if (containers.length > 1) {
       throw new Error(
-        `找到多个匹配标签 ${label}=${value} 的 Docker 容器。请指定容器名称。`,
+        `Found multiple Docker containers matching label ${label}=${value}. Please specify a container name.`,
       );
     }
     if (containers.length === 0) {
-      throw new Error(`未找到匹配标签的 Docker 容器：${label}=${value}`);
+      throw new Error(`No Docker containers found matching label: ${label}=${value}`);
     }
-    log.info("config", "找到匹配标签的 Docker 容器：%s=%s", label, value);
+    log.info("config", "Found Docker container matching label: %s=%s", label, value);
     return containers[0].Id;
   }
 
   async isAvailable() {
-    log.info("config", "需要 Docker API 版本 %s 或更高", REQUIRED_DOCKER_API_VERSION);
+    log.info("config", "Requiring Docker API version %s or newer", REQUIRED_DOCKER_API_VERSION);
 
-    // 基础配置检查，由于历史兼容性原因，容器名称覆盖容器标签选择器。
+    // Basic configuration check, the name overrides the container_label
+    // selector because of legacy support.
     const { container_name, container_label } = this.context;
     if (container_name?.length === 0 && container_label.length === 0) {
-      log.error("config", "缺少 Docker `container_name` 或 `container_label` 配置");
+      log.error("config", "Missing a Docker `container_name` or `container_label`");
       return false;
     }
 
-    // 验证 Docker 套接字是否可访问
+    // Verify that Docker socket is reachable
     let url: URL | undefined;
     try {
       url = new URL(this.context.socket);
     } catch {
-      log.error("config", "无效的 Docker 套接字路径：%s", this.context.socket);
+      log.error("config", "Invalid Docker socket path: %s", this.context.socket);
       return false;
     }
 
     if (url.protocol !== "tcp:" && url.protocol !== "unix:") {
-      log.error("config", "无效的 Docker 套接字协议：%s", url.protocol);
+      log.error("config", "Invalid Docker socket protocol: %s", url.protocol);
       return false;
     }
 
-    // API 作为 HTTP 端点可用，这将简化 undici 中的获取逻辑
+    // The API is available as an HTTP endpoint and this
+    // will simplify the fetching logic in undici
     if (url.protocol === "tcp:") {
-      // 似乎设置 url.protocol 不再起作用？
+      // Apparently setting url.protocol doesn't work anymore?
       const fetchU = url.href.replace(url.protocol, "http:");
 
       try {
-        log.info("config", "正在检查 API：%s", fetchU);
+        log.info("config", "Checking API: %s", fetchU);
         await fetch(new URL("/version", fetchU).href);
       } catch (error) {
-        log.error("config", "连接 Docker API 失败：%s", error);
-        log.debug("config", "连接错误：%o", error);
+        log.error("config", "Failed to connect to Docker API: %s", error);
+        log.debug("config", "Connection error: %o", error);
         return false;
       }
 
       this.client = new Client(fetchU);
     }
 
-    // 检查套接字是否可访问
+    // Check if the socket is accessible
     if (url.protocol === "unix:") {
       try {
-        log.info("config", "正在检查套接字：%s", url.pathname);
+        log.info("config", "Checking socket: %s", url.pathname);
         await access(url.pathname, constants.R_OK);
       } catch (error) {
-        log.error("config", "无法访问 Docker 套接字：%s", url.pathname);
-        log.debug("config", "访问错误：%o", error);
+        log.error("config", "Failed to access Docker socket: %s", url.pathname);
+        log.debug("config", "Access error: %o", error);
         return false;
       }
 
@@ -167,7 +169,7 @@ export default class DockerIntegration extends Integration<typeof configSchema.f
     }
 
     if (this.client === undefined) {
-      log.error("config", "创建 Docker 客户端失败");
+      log.error("config", "Failed to create Docker client");
       return false;
     }
 
@@ -178,31 +180,31 @@ export default class DockerIntegration extends Integration<typeof configSchema.f
       });
 
       if (versionRes.statusCode !== 200) {
-        log.error("config", "无法请求 Docker API 版本");
-        log.debug("config", "错误详情：%o", await versionRes.body.json());
+        log.error("config", "Could not request Docker API version");
+        log.debug("config", "Error Details: %o", await versionRes.body.json());
         return false;
       }
 
       const versionInfo = (await versionRes.body.json()) as DockerVersionInfo;
       if (!versionInfo.ApiVersion) {
-        log.error("config", "Docker API 版本响应缺少 `ApiVersion` 字段");
+        log.error("config", "Docker API version response is missing `ApiVersion`");
         return false;
       }
 
-      log.info("config", "检测到 Docker API 版本 %s", versionInfo.ApiVersion);
+      log.info("config", "Detected Docker API version %s", versionInfo.ApiVersion);
 
       if (!isSupportedDockerApiVersion(versionInfo.ApiVersion)) {
         log.error(
           "config",
-          "Docker API 版本 %s 过旧，需要 %s 或更高版本",
+          "Docker API version %s is too old, require %s or newer",
           versionInfo.ApiVersion,
           REQUIRED_DOCKER_API_VERSION,
         );
         return false;
       }
     } catch (error) {
-      log.error("config", "验证 Docker API 版本失败：%s", error);
-      log.debug("config", "版本检查错误：%o", error);
+      log.error("config", "Failed to validate Docker API version: %s", error);
+      log.debug("config", "Version check error: %o", error);
       return false;
     }
 
@@ -214,24 +216,24 @@ export default class DockerIntegration extends Integration<typeof configSchema.f
       ),
     });
 
-    log.debug("config", "正在使用过滤器请求 Docker 容器：%s", qp.toString());
+    log.debug("config", "Requesting Docker containers with filters: %s", qp.toString());
     const res = await this.client.request({
       method: "GET",
       path: `/v${REQUIRED_DOCKER_API_VERSION}/containers/json?${qp.toString()}`,
     });
 
     if (res.statusCode !== 200) {
-      log.error("config", "无法请求可用的 Docker 容器");
-      log.debug("config", "错误详情：%o", await res.body.json());
+      log.error("config", "Could not request available Docker containers");
+      log.debug("config", "Error Details: %o", await res.body.json());
       return false;
     }
 
     const data = (await res.body.json()) as DockerContainer[];
     if (data.length > 1) {
       if (container_name != null && container_name.length > 0) {
-        log.error("config", `找到多个名称为 ${container_name} 的容器`);
+        log.error("config", `Found multiple containers with name ${container_name}`);
       } else {
-        log.error("config", `找到多个匹配标签 ${container_label} 的容器`);
+        log.error("config", `Found multiple containers with label ${container_label}`);
       }
 
       return false;
@@ -239,16 +241,16 @@ export default class DockerIntegration extends Integration<typeof configSchema.f
 
     if (data.length === 0) {
       if (container_name != null && container_name.length > 0) {
-        log.error("config", `未找到名称为 ${container_name} 的容器`);
+        log.error("config", `No container found with the name ${container_name}`);
       } else {
-        log.error("config", `未找到匹配标签 ${container_label} 的容器`);
+        log.error("config", `No container found with the label ${container_label}`);
       }
 
       return false;
     }
 
     this.containerId = data[0].Id;
-    log.info("config", "正在使用容器：%s（ID：%s）", data[0].Names[0], this.containerId);
+    log.info("config", "Using container: %s (ID: %s)", data[0].Names[0], this.containerId);
 
     return this.client !== undefined && this.containerId !== undefined;
   }
@@ -258,11 +260,11 @@ export default class DockerIntegration extends Integration<typeof configSchema.f
       return;
     }
 
-    log.info("config", "正在通过 Docker 重启 Headscale");
+    log.info("config", "Restarting Headscale via Docker");
 
     let attempts = 0;
     while (attempts <= this.maxAttempts) {
-      log.debug("config", "正在重启容器：%s（尝试 %d）", this.containerId, attempts);
+      log.debug("config", "Restarting container: %s (attempt %d)", this.containerId, attempts);
 
       const response = await this.client.request({
         method: "POST",
@@ -278,7 +280,7 @@ export default class DockerIntegration extends Integration<typeof configSchema.f
 
         const stringCode = response.statusCode.toString();
         const body = await response.body.text();
-        throw new Error(`API 请求失败：${stringCode} ${body}`);
+        throw new Error(`API request failed: ${stringCode} ${body}`);
       }
 
       break;
@@ -287,13 +289,13 @@ export default class DockerIntegration extends Integration<typeof configSchema.f
     attempts = 0;
     while (attempts <= this.maxAttempts) {
       try {
-        log.debug("config", "正在检查 Headscale 状态（尝试 %d）", attempts);
+        log.debug("config", "Checking Headscale status (attempt %d)", attempts);
         const status = await headscale.health();
         if (status === false) {
-          throw new Error("Headscale 未运行");
+          throw new Error("Headscale is not running");
         }
 
-        log.info("config", "Headscale 已正常运行");
+        log.info("config", "Headscale is up and running");
         return;
       } catch {
         if (attempts < this.maxAttempts) {
@@ -302,7 +304,7 @@ export default class DockerIntegration extends Integration<typeof configSchema.f
           continue;
         }
 
-        log.error("config", "等待 %s 重启超时", this.containerId);
+        log.error("config", "Missed restart deadline for %s", this.containerId);
         return;
       }
     }

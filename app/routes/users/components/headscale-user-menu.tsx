@@ -49,7 +49,7 @@ export default function HeadscaleUserMenu({ user }: HeadscaleUserMenuProps) {
           {canRename && <MenuItem onClick={() => setModal("rename")}>重命名</MenuItem>}
           {canRename && <MenuSeparator />}
           <MenuItem variant="danger" onClick={() => setModal("delete")}>
-            删除用户
+            删除
           </MenuItem>
         </MenuContent>
       </Menu>

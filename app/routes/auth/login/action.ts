@@ -21,7 +21,7 @@ export async function loginAction({ request, context }: Route.LoaderArgs) {
     );
     return {
       success: false,
-      message: "缺少 API 密钥。请输入您的 API 密钥。",
+      message: "缺少 API 密钥。请输入你的 API 密钥。",
     };
   }
 
@@ -52,7 +52,7 @@ export async function loginAction({ request, context }: Route.LoaderArgs) {
     if (!lookup) {
       return {
         success: false,
-        message: "在 Headscale 数据库中未找到该 API 密钥",
+        message: "API 密钥未在 Headscale 数据库中找到",
       };
     }
 
@@ -60,7 +60,7 @@ export async function loginAction({ request, context }: Route.LoaderArgs) {
       log.error("auth", "Got an API key without an expiration");
       return {
         success: false,
-        message: "API 密钥格式错误（缺少过期时间）。请生成一个新的 API 密钥。",
+        message: "API 密钥格式错误（缺少过期时间）。请生成新的 API 密钥。",
       };
     }
 

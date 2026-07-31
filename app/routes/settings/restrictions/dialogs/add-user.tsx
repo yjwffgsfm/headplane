@@ -24,7 +24,7 @@ export default function AddUser({ users, isDisabled }: AddUserProps) {
       if (user.length === 0) return undefined;
 
       if (users.includes(user)) {
-        return { user: "此用户已存在于列表中。" };
+        return { user: "该用户已存在于列表中。" };
       }
 
       return undefined;
@@ -37,12 +37,12 @@ export default function AddUser({ users, isDisabled }: AddUserProps) {
       <DialogPanel>
         <Title>添加用户</Title>
         <Text className="mb-4">
-          将此用户添加到允许的用户列表中，这些用户可以通过 OIDC 在 Headscale 上进行认证。
+          将此用户添加到允许通过 OIDC 使用 Headscale 认证的用户列表中。
         </Text>
         <input name="action_id" type="hidden" value="add_user" />
         <Input
           {...form.field("user")}
-          description="允许进行 OIDC 认证的用户。"
+          description="允许用于 OIDC 认证的用户。"
           required
           label="用户"
           placeholder="john_doe"

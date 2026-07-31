@@ -31,7 +31,6 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
   }
 
   // Allow programmatic revalidations (e.g. SSE-triggered) where the URL hasn't changed
-  // 允许程序化重新验证（例如由SSE触发的），当URL未发生变化时
   if (currentUrl.href === nextUrl.href) {
     return defaultShouldRevalidate;
   }
@@ -61,7 +60,6 @@ export async function loader({ request, context }: Route.LoaderArgs) {
       : { name: principal.displayName, subject: "api_key" };
 
     // MARK: The session should stay valid if Headscale isn't healthy
-    // MARK: 如果 Headscale 不健康，会话应保持有效
     const isHealthy = await headscale.health();
     if (isHealthy) {
       try {
@@ -82,8 +80,6 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 
       // Self-heal: if the linked Headscale user was deleted, clear the
       // stale link so the user gets prompted to re-link.
-      // 自我修复：如果关联的 Headscale 用户已被删除，则清除过期的关联，
-      // 以便提示用户重新关联。
       if (isUserPrincipal(principal) && principal.user.headscaleUserId) {
         try {
           const usersSnap = await headscaleLiveStore.get(usersResource, api);
@@ -92,7 +88,6 @@ export async function loader({ request, context }: Route.LoaderArgs) {
           }
         } catch {
           // API call failed, skip validation
-          // API 调用失败，跳过验证
         }
       }
     }
@@ -134,10 +129,10 @@ export default function AppLayout({ loaderData }: Route.ComponentProps) {
           <StatusBanner
             className="mb-4"
             dismissable={false}
-            title="Headscale 无法访问"
+            title="Headscale 无法连接"
             variant="critical"
           >
-            无法连接到 Headscale 服务器。显示的数据可能已过期，在连接恢复之前无法保存更改。
+            无法连接到 Headscale 服务器。当前显示的数据可能已过期，在连接恢复前无法保存更改。
           </StatusBanner>
         )}
         <Outlet />

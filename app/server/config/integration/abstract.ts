@@ -4,7 +4,7 @@ export abstract class Integration<T> {
   protected context: NonNullable<T>;
   constructor(context: T) {
     if (!context) {
-      throw new Error("缺少集成上下文");
+      throw new Error("Missing integration context");
     }
 
     this.context = context;

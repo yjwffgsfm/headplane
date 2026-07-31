@@ -82,7 +82,7 @@ export default function Header({ user, access, configAvailable }: HeaderProps) {
             <picture className="min-w-8">
               <source srcSet={logoLight} media="(prefers-color-scheme: dark)" />
               <source srcSet={logoDark} media="(prefers-color-scheme: light)" />
-              <img src={logoBg} alt="Headplane logo" />
+              <img src={logoBg} alt="Headplane 标志" />
             </picture>
             <h1 className="text-2xl font-semibold">headplane</h1>
           </div>
@@ -135,7 +135,7 @@ export default function Header({ user, access, configAvailable }: HeaderProps) {
               </MenuItem>
               <MenuItem>
                 <Link external to="https://tailscale.com/download">
-                  下载 Tailscale
+                  下载
                 </Link>
               </MenuItem>
             </MenuContent>
@@ -187,7 +187,7 @@ export default function Header({ user, access, configAvailable }: HeaderProps) {
                 variant="danger"
                 onClick={() => submit({}, { action: "/logout", method: "POST" })}
               >
-                登出
+                退出登录
               </MenuItem>
             </MenuContent>
           </Menu>

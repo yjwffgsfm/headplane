@@ -196,10 +196,13 @@ function BrowserSSHCompatibilityBanner({
 
   return (
     <div className="fixed inset-x-4 top-4 z-[60] mx-auto max-w-2xl">
-      <StatusBanner variant="warning" title={`浏览器 SSH 在 Headscale ${warning.version} 上不可用`}>
-        Headscale 0.29 beta 版本至 0.29.1 会拒绝 Tailscale 的浏览器/WASM <Code>/ts2021</Code>{" "}
-        WebSocket 请求，返回 <Code>405 Method Not Allowed</Code>。请将 Headscale 升级到 0.29.2
-        或更高版本，或使用 Headscale 0.28.x 版本。
+      <StatusBanner
+        variant="warning"
+        title={`Headscale ${warning.version} 上的浏览器 SSH 已损坏`}
+      >
+        Headscale 0.29 测试版至 0.29.1 版本会拒绝 Tailscale 的浏览器/WASM{" "}
+        <Code>/ts2021</Code> WebSocket 请求，并返回 <Code>405 Method Not Allowed</Code>。请将
+        Headscale 升级到 0.29.2 或更高版本，或使用 Headscale 0.28.x。
       </StatusBanner>
     </div>
   );
