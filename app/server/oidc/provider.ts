@@ -780,7 +780,7 @@ export function createOidcService(initialConfig: OidcConfig): OidcService {
       claims.name ??
       (claims.given_name && claims.family_name
         ? `${claims.given_name} ${claims.family_name}`
-        : (claims.preferred_username ?? "SSO User"));
+        : (claims.preferred_username ?? "SSO 用户"));
 
     const username = claims.preferred_username ?? claims.email?.split("@")[0] ?? "user";
 

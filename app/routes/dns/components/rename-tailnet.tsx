@@ -10,17 +10,17 @@ interface Props {
 export default function RenameTailnet({ name, isDisabled }: Props) {
   return (
     <ActionDialog
-      description="Devices may misbehave until they pick up the new name."
+      description="设备在获取新名称前可能工作异常。"
       intent="rename_tailnet"
-      submitLabel="Rename"
-      title="Rename tailnet"
+      submitLabel="重命名"
+      title="重命名 Tailnet"
       trigger={
         <Button disabled={isDisabled} size="sm">
-          Rename
+          重命名
         </Button>
       }
     >
-      <Input defaultValue={name} label="Tailnet name" name="name" placeholder="ts.net" required />
+      <Input defaultValue={name} label="Tailnet 名称" name="name" placeholder="ts.net" required />
     </ActionDialog>
   );
 }

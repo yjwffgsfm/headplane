@@ -10,14 +10,14 @@ import { getUserDisplayName, sortUsersByDisplayName } from "~/utils/user";
 import { useMachineFilterParams } from "../hooks/use-machine-filter-params";
 
 const STATUS_OPTIONS = [
-  { value: "online", label: "Online" },
-  { value: "offline", label: "Offline" },
-  { value: "expired", label: "Expired" },
+  { value: "online", label: "在线" },
+  { value: "offline", label: "离线" },
+  { value: "expired", label: "已过期" },
 ] as const;
 
 const ROUTE_OPTIONS = [
-  { value: "exit-node", label: "Exit node" },
-  { value: "subnet", label: "Subnet router" },
+  { value: "exit-node", label: "出口节点" },
+  { value: "subnet", label: "子网路由" },
 ] as const;
 
 interface MachineFiltersProps {
@@ -38,7 +38,7 @@ export function MachineFilters({ users, populatedNodes }: MachineFiltersProps): 
 
   const tagOwnedExists = populatedNodes.some((n) => !n.user);
   const userOptions = [
-    ...(tagOwnedExists ? [{ value: "tag-owned", label: "Tag-owned" }] : []),
+    ...(tagOwnedExists ? [{ value: "tag-owned", label: "标签所有" }] : []),
     ...sortUsersByDisplayName(users).map((u) => ({ value: u.name, label: getUserDisplayName(u) })),
   ];
 
@@ -51,7 +51,7 @@ export function MachineFilters({ users, populatedNodes }: MachineFiltersProps): 
     <>
       {userOptions.length > 0 && (
         <FilterDropdown
-          label="User"
+          label="用户"
           onChange={(v) => setParam("user", v)}
           options={userOptions}
           value={filterUser}
@@ -59,27 +59,27 @@ export function MachineFilters({ users, populatedNodes }: MachineFiltersProps): 
       )}
       {tagOptions.length > 0 && (
         <FilterDropdown
-          label="Tag"
+          label="标签"
           onChange={(v) => setParam("tag", v)}
           options={tagOptions}
           value={filterTag}
         />
       )}
       <FilterDropdown
-        label="Status"
+        label="状态"
         onChange={(v) => setParam("status", v)}
         options={STATUS_OPTIONS}
         value={filterStatus}
       />
       <FilterDropdown
-        label="Route"
+        label="路由"
         onChange={(v) => setParam("route", v)}
         options={ROUTE_OPTIONS}
         value={filterRoute}
       />
       {hasActiveFilters && (
         <Button onClick={clearFilters} variant="ghost">
-          Clear filters
+          清除筛选
           <X className="size-3.5" />
         </Button>
       )}

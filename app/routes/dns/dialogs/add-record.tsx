@@ -19,14 +19,14 @@ export default function AddRecord() {
 
   return (
     <ActionDialog
-      description="Point a domain at an IP address for every device on the tailnet."
+      description="让 Tailnet 网络中的所有设备都能把某个域名解析到指定 IP 地址。"
       intent="add_record"
-      submitLabel="Add record"
-      title="Add DNS record"
+      submitLabel="添加记录"
+      title="添加 DNS 记录"
       trigger={
         <Button>
           <Plus className="size-3.5" />
-          Add record
+          添加记录
         </Button>
       }
     >
@@ -35,7 +35,7 @@ export default function AddRecord() {
           { value: "A", label: "A" },
           { value: "AAAA", label: "AAAA" },
         ]}
-        label="Type"
+        label="类型"
         name="type"
         onValueChange={(value) => {
           if (value === "A" || value === "AAAA") setType(value);
@@ -43,10 +43,10 @@ export default function AddRecord() {
         required
         value={type}
       />
-      <Input label="Domain" name="name" placeholder="test.example.com" required />
+      <Input label="域名" name="name" placeholder="test.example.com" required />
       <Input
         key={type}
-        label="IP address"
+        label="IP 地址"
         name="value"
         placeholder={type === "AAAA" ? "2001:db8::ff00:42:8329" : "100.100.100.100"}
         required

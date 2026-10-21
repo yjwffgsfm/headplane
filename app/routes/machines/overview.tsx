@@ -261,29 +261,29 @@ export default function Page({ loaderData }: Route.ComponentProps) {
         }
         description={
           <>
-            Devices connected to your tailnet.{" "}
+            连接到你的 Tailnet 网络的设备。
             <Link external styled to="https://tailscale.com/kb/1372/manage-devices">
-              Docs
+              文档
             </Link>
           </>
         }
-        title="Machines"
+        title="设备"
       />
       <div className="mb-3 flex flex-wrap items-center gap-2">
         <div className="relative w-64 max-w-full">
           <Search className="text-faint pointer-events-none absolute top-1/2 left-2.5 z-10 size-3.5 -translate-y-1/2" />
           <Input
             className="[&_input]:pl-8"
-            label="Search machines"
+            label="搜索设备"
             labelHidden
             maxLength={100}
             onChange={setSearchQuery}
-            placeholder="Search by name or IP"
+            placeholder="按名称或 IP 搜索"
             value={searchQuery}
           />
           {searchQuery && (
             <button
-              aria-label="Clear search"
+              aria-label="清除搜索"
               className={cn(
                 "absolute right-2 top-1/2 -translate-y-1/2",
                 "p-1 rounded-full",
@@ -300,15 +300,15 @@ export default function Page({ loaderData }: Route.ComponentProps) {
         <MachineFilters users={loaderData.users} populatedNodes={loaderData.populatedNodes} />
         <span className="text-muted ml-auto text-xs whitespace-nowrap tabular-nums">
           {searchQuery || hasActiveFilters
-            ? `Showing ${filteredAndSortedNodes.length} of ${loaderData.populatedNodes.length} machines`
-            : `${loaderData.populatedNodes.length} machines`}
+            ? `显示 ${filteredAndSortedNodes.length} / ${loaderData.populatedNodes.length} 台设备`
+            : `${loaderData.populatedNodes.length} 台设备`}
         </span>
       </div>
       <Table>
         <thead>
           <tr>
             <SortHeader field="name" {...sortProps}>
-              Name
+              名称
             </SortHeader>
             <SortHeader
               className="w-1/4"
@@ -319,8 +319,8 @@ export default function Page({ loaderData }: Route.ComponentProps) {
                     <Tooltip
                       content={
                         <span className="font-normal">
-                          Since MagicDNS is enabled, you can access devices based on their name and
-                          also at <Code>[name].{loaderData.magic}</Code>
+                          已启用 MagicDNS，因此除了通过设备名称访问设备外，也可以使用{" "}
+                          <Code>[name].{loaderData.magic}</Code> 访问。
                         </span>
                       }
                     >
@@ -331,18 +331,18 @@ export default function Page({ loaderData }: Route.ComponentProps) {
               }
               {...sortProps}
             >
-              Addresses
+              地址
             </SortHeader>
             {loaderData.agent !== undefined ? (
               <SortHeader field="version" {...sortProps}>
-                Version
+                版本
               </SortHeader>
             ) : undefined}
             <SortHeader field="lastSeen" {...sortProps}>
-              Last seen
+              最后活跃
             </SortHeader>
             <TableHeader className="w-12">
-              <span className="sr-only">Actions</span>
+              <span className="sr-only">操作</span>
             </TableHeader>
           </tr>
         </thead>
@@ -353,7 +353,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
                 className="text-muted py-8 text-center"
                 colSpan={loaderData.agent !== undefined ? 5 : 4}
               >
-                No machines match the current filters
+                没有符合当前筛选条件的设备
               </TableCell>
             </tr>
           ) : (
@@ -388,5 +388,5 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  return <PageError error={error} page="machines" />;
+  return <PageError error={error} page="设备" />;
 }

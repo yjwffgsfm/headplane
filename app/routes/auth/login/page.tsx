@@ -123,16 +123,16 @@ export default function Page({ loaderData, actionData }: Route.ComponentProps) {
   ) : oidcErrorCodes.length > 0 ? (
     <OidcConfigErrorNotice errors={oidcErrorCodes} />
   ) : showCookieWarning ? (
-    <Callout className="mb-6" title="Sign-in won't work over HTTP" variant="error">
-      Headplane is set to use secure cookies, but this page was loaded over an insecure connection.{" "}
+    <Callout className="mb-6" title="通过 HTTP 无法登录" variant="error">
+      Headplane 已设置为使用安全 Cookie，但此页面是通过不安全的连接加载的。
       <Link external styled to="https://headplane.net/troubleshooting#signing-in-does-nothing">
-        Docs
+        文档
       </Link>
     </Callout>
   ) : undefined;
 
   return (
-    <Shell title="Sign in to Headplane">
+    <Shell title="登录 Headplane">
       {notice}
       {isOidcConnectorEnabled && (
         <>
@@ -142,11 +142,11 @@ export default function Page({ loaderData, actionData }: Route.ComponentProps) {
             render={<RouterLink prefetch="none" reloadDocument to="/oidc/start" />}
             variant="primary"
           >
-            Continue with SSO
+            使用 SSO 继续
           </Button>
           <div className="text-muted my-6 flex items-center gap-3 text-xs">
             <span className="bg-line h-px flex-1" />
-            or
+            或
             <span className="bg-line h-px flex-1" />
           </div>
         </>
@@ -156,12 +156,11 @@ export default function Page({ loaderData, actionData }: Route.ComponentProps) {
           autoComplete="current-password"
           errorMessage={actionData?.success === false ? actionData.message : undefined}
           invalid={actionData?.success === false}
-          label="API key"
+          label="API 密钥"
           labelTooltip={
             <>
-              Create one by running{" "}
-              <Code className="whitespace-nowrap">headscale apikeys create</Code> on your Headscale
-              server.
+              在 Headscale 服务器上运行{" "}
+              <Code className="whitespace-nowrap">headscale apikeys create</Code> 即可创建。
             </>
           }
           name="api_key"
@@ -175,7 +174,7 @@ export default function Page({ loaderData, actionData }: Route.ComponentProps) {
           type="submit"
           variant={isOidcConnectorEnabled ? "secondary" : "primary"}
         >
-          Sign in with API key
+          使用 API 密钥登录
         </Button>
       </Form>
     </Shell>

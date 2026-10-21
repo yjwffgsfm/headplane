@@ -133,17 +133,17 @@ function buildOidc(
   headscaleApiKey: string | undefined,
 ): Feature<OidcService> {
   if (!config.oidc) {
-    return disabled("OIDC is not configured");
+    return disabled("尚未配置");
   }
   if (config.oidc.enabled === false) {
-    return disabled("OIDC is disabled in the configuration");
+    return disabled("已在配置中禁用");
   }
   if (!headscaleApiKey) {
-    return disabled("OIDC requires headscale.api_key to be configured");
+    return disabled("需要配置 headscale.api_key");
   }
   if (!config.server.base_url) {
     log.warn("config", "OIDC is disabled because `server.base_url` is not set");
-    return disabled("OIDC requires server.base_url to be configured");
+    return disabled("需要配置 server.base_url");
   }
 
   return enabled(
@@ -181,13 +181,13 @@ async function buildAgents(
 ): Promise<Feature<AgentManager>> {
   const agentConfig = config.integration?.agent;
   if (!agentConfig?.enabled) {
-    return disabled("Agent is not enabled in the configuration");
+    return disabled("Agent 未在配置中启用");
   }
   if (!apiClient) {
-    return disabled("Agent requires headscale.api_key to be configured");
+    return disabled("Agent 需要配置 headscale.api_key");
   }
   if (!supportsTagOnlyKeys) {
-    return disabled("Agent requires Headscale 0.28 or newer");
+    return disabled("Agent 需要 Headscale 0.28 或更高版本");
   }
 
   const manager = await createAgentManager(
@@ -198,7 +198,7 @@ async function buildAgents(
     db,
   );
   if (!manager) {
-    return disabled("Agent failed to initialize (see logs)");
+    return disabled("Agent 初始化失败（请查看日志）");
   }
   return enabled(manager);
 }

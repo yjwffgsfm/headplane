@@ -8,7 +8,7 @@ export interface ExpiryTagProps {
   expiry?: string;
 }
 
-const formatter = new Intl.DateTimeFormat("en-US", {
+const formatter = new Intl.DateTimeFormat("zh-CN", {
   month: "short",
   day: "numeric",
   year: "numeric",
@@ -16,30 +16,31 @@ const formatter = new Intl.DateTimeFormat("en-US", {
 
 export function ExpiryTag({ variant, expiry }: ExpiryTagProps) {
   const date = expiry ? formatter.format(new Date(expiry)) : undefined;
+  const remaining = expiry ? formatTimeUntil(new Date(expiry)) : "现在";
 
   switch (variant) {
     case "expired":
       return (
         <Tooltip
-          content={`This machine's key expired on ${date}. Re-authenticate with Tailscale on the machine to reconnect it.`}
+          content={`此设备的密钥已于 ${date} 过期。请在设备上使用 Tailscale 重新认证以重新连接。`}
         >
-          <Chip text="Expired" variant="bad" />
+          <Chip text="已过期" variant="bad" />
         </Tooltip>
       );
 
     case "expiring":
       return (
         <Tooltip
-          content={`This machine's key expires on ${date}. Re-authenticate with Tailscale on the machine before then to stay connected.`}
+          content={`此设备的密钥将于 ${date} 到期。请在到期前在设备上使用 Tailscale 重新认证以保持连接。`}
         >
-          <Chip text={`Key expires ${formatTimeUntil(new Date(expiry!))}`} variant="warn" />
+          <Chip text={remaining === "现在" ? "即将过期" : `${remaining}过期`} variant="warn" />
         </Tooltip>
       );
 
     case "no-expiry":
       return (
-        <Tooltip content="This machine has key expiry disabled and never needs to re-authenticate.">
-          <Chip text="No expiry" />
+        <Tooltip content="此设备已禁用密钥过期，无需重新认证。">
+          <Chip text="永不过期" />
         </Tooltip>
       );
   }

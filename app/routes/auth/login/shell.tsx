@@ -32,10 +32,10 @@ export default function Shell({ title, description, isWide, children }: Props) {
           </div>
         </main>
         <footer className="text-muted flex flex-wrap items-center justify-between gap-2 p-6 text-xs sm:p-8">
-          <p>The web interface for Headscale.</p>
+          <p>Headscale 的 Web 界面。</p>
           <span className="flex gap-3">
             <Link className="hover:text-fg" external to="https://headplane.net">
-              Docs
+              文档
             </Link>
             <Link className="hover:text-fg" external to="https://github.com/tale/headplane">
               GitHub
@@ -60,9 +60,9 @@ export function SignedIn({ name }: { name: string }) {
       className="border-line text-muted mt-6 border-t pt-6 text-sm"
       method="POST"
     >
-      Signed in as <span className="text-fg">{name}</span>.{" "}
+      已登录为 <span className="text-fg">{name}</span>。
       <button className="text-accent focus-ring rounded-sm" type="submit">
-        Sign out
+        退出登录
       </button>
     </Form>
   );

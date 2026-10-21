@@ -95,7 +95,7 @@ export default function ActionDialog({
         <>
           {success(result.data ?? {})}
           <DialogActions>
-            <DialogClose render={<Button>Done</Button>} />
+            <DialogClose render={<Button>完成</Button>} />
           </DialogActions>
         </>
       ) : (
@@ -115,7 +115,7 @@ export default function ActionDialog({
             {children}
             {errors?.form && <Callout variant="error">{errors.form}</Callout>}
             <DialogActions>
-              <DialogClose disabled={isPending} render={<Button>Cancel</Button>} />
+              <DialogClose disabled={isPending} render={<Button>取消</Button>} />
               <Button
                 disabled={isDisabled}
                 pending={isPending}

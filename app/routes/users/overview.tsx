@@ -100,7 +100,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   } catch (error) {
     log.warn("api", "Failed to fetch Headscale API data: %s", String(error));
     apiError =
-      "Could not connect to the Headscale API. Headscale user data and machine information are unavailable.";
+      "无法连接到 Headscale API，Headscale 用户数据和设备信息暂不可用。";
   }
 
   const useGravatar = config.oidc?.profile_picture_source === "gravatar";
@@ -197,22 +197,22 @@ export default function Page({ loaderData }: Route.ComponentProps) {
         description={
           loaderData.oidc ? (
             <>
-              People who can sign in to Headplane, managed through your{" "}
+              可以通过你的{" "}
               <Link external styled to={loaderData.oidc.issuer}>
-                OIDC provider
+                OIDC 提供商
               </Link>
-              .
+              登录 Headplane 的用户。
             </>
           ) : (
             <>
-              People in your tailnet, managed locally.{" "}
+              你的 Tailnet 网络中的用户，由本地管理。{" "}
               <Link external styled to="https://headscale.net/stable/ref/oidc">
-                Set up OIDC
+                设置 OIDC
               </Link>
             </>
           )
         }
-        title="Users"
+        title="用户"
       />
 
       {loaderData.apiError && (
@@ -222,19 +222,19 @@ export default function Page({ loaderData }: Route.ComponentProps) {
       )}
 
       <section>
-        <h2 className="mb-2 font-semibold">Headplane users</h2>
+        <h2 className="mb-2 font-semibold">Headplane 用户</h2>
         {loaderData.headplaneUsers.length === 0 ? (
-          <p className="text-muted text-sm">No users have signed into Headplane yet.</p>
+          <p className="text-muted text-sm">还没有用户登录过 Headplane。</p>
         ) : (
           <Table>
             <thead>
               <tr>
-                <TableHeader>User</TableHeader>
-                <TableHeader>Role</TableHeader>
-                <TableHeader>Last login</TableHeader>
-                <TableHeader>Last seen</TableHeader>
+                <TableHeader>用户</TableHeader>
+                <TableHeader>角色</TableHeader>
+                <TableHeader>最后登录</TableHeader>
+                <TableHeader>最后活跃</TableHeader>
                 <TableHeader className="w-12">
-                  <span className="sr-only">Actions</span>
+                  <span className="sr-only">操作</span>
                 </TableHeader>
               </tr>
             </thead>
@@ -258,18 +258,18 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 
       {!loaderData.apiError && loaderData.unlinkedHeadscaleUsers.length > 0 && (
         <section className="mt-10">
-          <h2 className="font-semibold">Unlinked Headscale users</h2>
+          <h2 className="font-semibold">未关联的 Headscale 用户</h2>
           <p className="text-muted mb-2 text-sm">
-            These Headscale users have no Headplane account, so Headplane can't manage their access.
+            这些 Headscale 用户没有 Headplane 账号，因此 Headplane 无法管理他们的访问权限。
           </p>
           <Table>
             <thead>
               <tr>
-                <TableHeader>User</TableHeader>
-                <TableHeader>Created</TableHeader>
-                <TableHeader>Last seen</TableHeader>
+                <TableHeader>用户</TableHeader>
+                <TableHeader>创建时间</TableHeader>
+                <TableHeader>最后活跃</TableHeader>
                 <TableHeader className="w-12">
-                  <span className="sr-only">Actions</span>
+                  <span className="sr-only">操作</span>
                 </TableHeader>
               </tr>
             </thead>
@@ -293,5 +293,5 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  return <PageError error={error} page="users" />;
+  return <PageError error={error} page="用户" />;
 }

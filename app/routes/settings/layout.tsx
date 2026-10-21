@@ -16,9 +16,9 @@ export async function loader({ context }: Route.LoaderArgs) {
 
 export default function Layout({ loaderData }: Route.ComponentProps) {
   const items = [
-    { to: "/settings/auth-keys", label: "Auth keys" },
+    { to: "/settings/auth-keys", label: "认证密钥" },
     ...(loaderData.hasRestrictions
-      ? [{ to: "/settings/restrictions", label: "Sign-in restrictions" }]
+      ? [{ to: "/settings/restrictions", label: "登录限制" }]
       : []),
     { to: "/settings/agent", label: "Agent" },
   ];
@@ -26,11 +26,11 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
   return (
     <>
       <PageHeader
-        description="How machines join your tailnet, who can sign in, and the Headplane agent."
-        title="Settings"
+        description="设备如何加入你的 Tailnet 网络、谁可以登录，以及 Headplane Agent。"
+        title="设置"
       />
       <div className="grid gap-x-12 gap-y-6 md:grid-cols-[11rem_minmax(0,1fr)]">
-        <nav aria-label="Settings" className="min-w-0">
+        <nav aria-label="设置" className="min-w-0">
           <ul className="-mx-2 flex gap-1 overflow-x-auto md:mx-0 md:flex-col">
             {items.map((item) => (
               <li key={item.to}>

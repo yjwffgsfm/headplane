@@ -36,9 +36,9 @@ export default function UserGroups({
     <ActionDialog
       description={
         <>
-          Groups live in the ACL policy, so saving rewrites its <Code>groups</Code> section.{" "}
+          组保存在 ACL 策略中，因此保存会重写策略里的 <Code>groups</Code> 部分。{" "}
           <Link external styled to="https://tailscale.com/kb/1018/acls">
-            Docs
+            文档
           </Link>
         </>
       }
@@ -47,15 +47,15 @@ export default function UserGroups({
       isDisabled={isUnchanged}
       onOpenChange={setIsOpen}
       open={isOpen}
-      submitLabel="Save groups"
-      title={`Groups for ${displayName}`}
+      submitLabel="保存组"
+      title={`${displayName} 的组`}
     >
       {selected.map((group) => (
         <input key={group} name="groups" type="hidden" value={group} />
       ))}
       <TokenList
-        emptyText="This user isn't in any group"
-        label="Groups"
+        emptyText="该用户未加入任何组"
+        label="组"
         onChange={setSelected}
         placeholder="group:example"
         suggestions={availableGroups}
@@ -64,7 +64,7 @@ export default function UserGroups({
       />
       {policyHasComments && (
         <Callout variant="warning">
-          Your policy has comments. Saving here rewrites the policy and drops them.
+          你的策略中包含注释。在此保存会重写策略并丢失这些注释。
         </Callout>
       )}
     </ActionDialog>

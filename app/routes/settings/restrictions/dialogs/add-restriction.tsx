@@ -10,21 +10,21 @@ import { type RestrictionType, restrictionValue } from "../schemas";
 
 const copy = {
   domain: {
-    title: "Add domain",
-    label: "Domain",
-    description: "Only users with an email address at this domain can sign in through OIDC.",
+    title: "添加域名",
+    label: "域名",
+    description: "只有邮箱地址属于此域名的用户才能通过 OIDC 登录。",
     placeholder: "example.com",
   },
   group: {
-    title: "Add group",
-    label: "Group",
-    description: "Only members of this OIDC group can sign in.",
+    title: "添加组",
+    label: "组",
+    description: "只有此 OIDC 组的成员才能登录。",
     placeholder: "admin",
   },
   user: {
-    title: "Add user",
-    label: "User",
-    description: "Only this OIDC user can sign in.",
+    title: "添加用户",
+    label: "用户",
+    description: "只有此 OIDC 用户可以登录。",
     placeholder: "john_doe",
   },
 };
@@ -60,7 +60,7 @@ export default function AddRestriction({ type }: AddRestrictionProps) {
     >
       <Input
         description={
-          type === "domain" && domain.length > 0 ? `Matches <user>@${domain}` : undefined
+          type === "domain" && domain.length > 0 ? `匹配 <user>@${domain}` : undefined
         }
         label={label}
         name="value"

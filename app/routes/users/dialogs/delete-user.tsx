@@ -16,8 +16,8 @@ export default function DeleteUser({ user, machines, isOpen, setIsOpen }: Delete
     <ActionDialog
       description={
         user.provider === "oidc"
-          ? "Deleted users can't be recovered. They sign in through your OIDC provider, so signing in again recreates them."
-          : "Deleted users can't be recovered."
+          ? "删除后无法恢复。该用户通过你的 OIDC 提供商登录，再次登录时会重新创建。"
+          : "删除后无法恢复。"
       }
       fields={{ headscale_user_id: user.id }}
       intent="delete"
@@ -25,12 +25,12 @@ export default function DeleteUser({ user, machines, isOpen, setIsOpen }: Delete
       isDisabled={hasMachines}
       onOpenChange={setIsOpen}
       open={isOpen}
-      submitLabel="Delete"
-      title={`Delete ${user.name || user.displayName}?`}
+      submitLabel="删除"
+      title={`删除 ${user.name || user.displayName}？`}
     >
       {hasMachines && (
         <Callout variant="warning">
-          This user still owns machines. Remove them or change their owner first.
+          该用户仍拥有设备。请先移除这些设备，或更改它们的所有者。
         </Callout>
       )}
     </ActionDialog>

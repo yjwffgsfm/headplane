@@ -23,18 +23,18 @@ export default function Rename({ machine, magic, isOpen, setIsOpen }: RenameProp
 
   return (
     <ActionDialog
-      description="This name is shown in the admin panel, in Tailscale clients, and used when generating MagicDNS names."
+      description="此名称会显示在管理面板和 Tailscale 客户端中，并用于生成 MagicDNS 名称。"
       fields={{ node_id: machine.id }}
       intent="rename"
       isDisabled={name === machine.givenName}
       onOpenChange={setIsOpen}
       open={isOpen}
-      submitLabel="Rename"
-      title={`Rename ${machine.givenName}`}
+      submitLabel="重命名"
+      title={`重命名 ${machine.givenName}`}
     >
       <Input
         defaultValue={machine.givenName}
-        label="Machine name"
+        label="设备名称"
         name="name"
         onChange={setName}
         required
@@ -44,12 +44,12 @@ export default function Rename({ machine, magic, isOpen, setIsOpen }: RenameProp
         <p className="text-muted">
           {name === machine.givenName ? (
             <>
-              Reachable at <Code>{machine.givenName}</Code>.
+              可通过 <Code>{machine.givenName}</Code> 访问。
             </>
           ) : (
             <>
-              Will be reachable at <Code>{name.toLowerCase()}</Code>, and{" "}
-              <Code>{machine.givenName}</Code> will stop resolving.
+              将可通过 <Code>{name.toLowerCase()}</Code> 访问，且{" "}
+              <Code>{machine.givenName}</Code> 将不再解析。
             </>
           )}
         </p>

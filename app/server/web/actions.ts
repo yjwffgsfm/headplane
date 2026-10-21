@@ -44,13 +44,13 @@ export function createAction<
       const name = String(values.intent ?? "");
 
       if (!Object.hasOwn(options.intents, name)) {
-        return invalid({ form: "This action isn't supported." });
+        return invalid({ form: "不支持此操作。" });
       }
 
       const intent = options.intents[name] as Intent<v.ObjectEntries, C>;
       for (const capability of [options.capability, intent.capability]) {
         if (capability !== undefined && !auth.can(ctx.principal, capability)) {
-          throw new ActionError("You don't have permission to do this.", 403);
+          throw new ActionError("你没有执行此操作的权限。", 403);
         }
       }
 

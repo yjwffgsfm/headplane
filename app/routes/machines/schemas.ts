@@ -4,6 +4,6 @@ export const machineName = v.pipe(
   v.string(),
   v.regex(
     /^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$/i,
-    "Use letters, numbers, and hyphens only, starting and ending with a letter or number.",
+    "只能使用字母、数字和连字符，且必须以字母或数字开头和结尾。",
   ),
 );

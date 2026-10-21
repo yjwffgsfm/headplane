@@ -54,7 +54,7 @@ export default function Field({
           <BaseField.Label className="text-fg text-sm font-medium">{label}</BaseField.Label>
           <Tooltip className="w-72" content={labelTooltip}>
             <Info
-              aria-label={`About ${label}`}
+              aria-label={`关于 ${label}`}
               className="text-muted hover:text-fg size-3.5 transition-colors"
             />
           </Tooltip>

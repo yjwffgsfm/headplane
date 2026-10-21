@@ -49,7 +49,7 @@ export default function Callout({
       </div>
       {isDismissable && (
         <button
-          aria-label="Dismiss"
+          aria-label="关闭"
           className="focus-ring text-muted hover:text-fg -m-0.5 shrink-0 rounded-sm p-0.5"
           onClick={() => setIsDismissed(true)}
           type="button"

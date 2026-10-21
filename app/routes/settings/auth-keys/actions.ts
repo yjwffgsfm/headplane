@@ -21,10 +21,10 @@ const switchValue = v.pipe(
 const expiryDays = v.pipe(
   v.string(),
   v.trim(),
-  v.regex(/^\d+$/, "Enter a whole number of days."),
+  v.regex(/^\d+$/, "请输入整数天数。"),
   v.transform(Number),
-  v.minValue(1, "Enter at least 1 day."),
-  v.maxValue(365_000, "Enter at most 365,000 days."),
+  v.minValue(1, "至少输入 1 天。"),
+  v.maxValue(365_000, "最多输入 365,000 天。"),
 );
 
 export const authKeysAction = createAction({
@@ -34,7 +34,7 @@ export const authKeysAction = createAction({
     const canGenerateAny = auth.can(principal, Capabilities.generate_authkeys);
     const canGenerateOwn = auth.can(principal, Capabilities.generate_own_authkeys);
     if (!canGenerateAny && !canGenerateOwn) {
-      throw new ActionError("You don't have permission to manage auth keys.", 403);
+      throw new ActionError("你没有管理认证密钥的权限。", 403);
     }
 
     async function requireOwnUser(userId: string) {
@@ -49,7 +49,7 @@ export const authKeysAction = createAction({
         (principal.user.headscaleUserId === userId ||
           getOidcSubject(user) === principal.user.subject);
       if (!ownsUser) {
-        throw new ActionError("You can only manage your own auth keys.", 403);
+        throw new ActionError("你只能管理自己的认证密钥。", 403);
       }
     }
 
@@ -68,7 +68,7 @@ export const authKeysAction = createAction({
         const tags = input.tags.map((tag) => tag.trim()).filter((tag) => tag !== "");
         const user = input.user_id || null;
         if (!user && tags.length === 0) {
-          throw new ActionError("Choose a user or add at least one tag.");
+          throw new ActionError("请选择用户或添加至少一个标签。");
         }
 
         if (user) {
@@ -101,7 +101,7 @@ export const authKeysAction = createAction({
           key: input.key,
           user: { id: input.user_id },
         } as unknown as PreAuthKey);
-        return ok("Auth key expired");
+        return ok("认证密钥已过期");
       },
     },
   },

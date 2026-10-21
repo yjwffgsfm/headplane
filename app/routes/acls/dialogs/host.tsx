@@ -31,29 +31,27 @@ export default function HostDialog({
 
   return (
     <EditorDialog
-      description="Hosts give a name to an IP address or CIDR range so it can be referenced from rules."
+      description="主机为 IP 地址或 CIDR 网段命名，以便在规则中引用。"
       isDisabled={nameIsInvalid || valueIsInvalid}
       isOpen={isOpen}
       onSubmit={() => onSave(draftName, draftValue.trim())}
       setIsOpen={setIsOpen}
-      submitLabel={name ? "Update host" : "Add host"}
-      title={name ? `Edit host ${name}` : "New host"}
+      submitLabel={name ? "更新主机" : "添加主机"}
+      title={name ? `编辑主机 ${name}` : "新建主机"}
     >
       <Input
         errorMessage={
-          isDuplicate
-            ? "A host with this name already exists."
-            : "Host names may only contain lowercase letters, numbers and dashes."
+          isDuplicate ? "已存在同名主机。" : "主机名只能包含小写字母、数字和连字符。"
         }
         invalid={draftName.length > 0 && nameIsInvalid}
-        label="Name"
+        label="名称"
         onChange={setDraftName}
         placeholder="office"
         value={draftName}
       />
       <Input
         invalid={draftValue.length > 0 && valueIsInvalid}
-        label="Address"
+        label="地址"
         onChange={setDraftValue}
         placeholder="100.64.0.0/24"
         value={draftValue}

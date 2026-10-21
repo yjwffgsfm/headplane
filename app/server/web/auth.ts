@@ -460,7 +460,7 @@ export function createAuthService(opts: AuthServiceOptions): AuthService {
       return {
         kind: "api_key",
         sessionId: session.id,
-        displayName: session.api_key_display ?? "API Key",
+        displayName: session.api_key_display ?? "API 密钥",
         apiKey: payload.api_key,
       };
     }
@@ -499,7 +499,7 @@ export function createAuthService(opts: AuthServiceOptions): AuthService {
   ): Promise<Principal> {
     const principal = await require(request);
     if (!can(principal, capabilities)) {
-      throw data("You don't have permission to do this. Ask your administrator for access.", {
+      throw data("你没有执行此操作的权限。请联系管理员获取访问权限。", {
         status: 403,
       });
     }

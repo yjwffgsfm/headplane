@@ -46,10 +46,10 @@ export default function NumberInput({
       >
         <NumberField.Group className={cn(controlClass, "flex items-center pr-0.5")}>
           <NumberField.Input className="h-full w-full bg-transparent pl-2.5 outline-hidden" />
-          <NumberField.Decrement aria-label="Decrement" className={stepperClass}>
+          <NumberField.Decrement aria-label="减少" className={stepperClass}>
             <Minus className="size-3.5" />
           </NumberField.Decrement>
-          <NumberField.Increment aria-label="Increment" className={stepperClass}>
+          <NumberField.Increment aria-label="增加" className={stepperClass}>
             <Plus className="size-3.5" />
           </NumberField.Increment>
         </NumberField.Group>

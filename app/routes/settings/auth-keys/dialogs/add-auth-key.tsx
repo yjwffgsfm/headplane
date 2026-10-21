@@ -59,24 +59,24 @@ export default function AddAuthKey({
 
   return (
     <ActionDialog
-      description="Devices sign in with the key instead of an interactive login."
+      description="设备使用该密钥登录，无需交互式登录。"
       intent="create"
       isDisabled={selfServiceOnly && !currentUser}
-      submitLabel="Create key"
+      submitLabel="创建密钥"
       success={({ key }) => (
         <>
-          <DialogTitle>Auth key created</DialogTitle>
-          <DialogDescription>Copy the key now. It won&apos;t be shown again.</DialogDescription>
+          <DialogTitle>认证密钥已创建</DialogTitle>
+          <DialogDescription>请立即复制密钥，之后将不再显示。</DialogDescription>
           <CodeBlock>{key}</CodeBlock>
-          <p className="text-muted">Register a device with it:</p>
+          <p className="text-muted">用它注册设备：</p>
           <CodeBlock>{`tailscale up --login-server=${url} --authkey ${key}`}</CodeBlock>
         </>
       )}
-      title="Create auth key"
+      title="创建认证密钥"
       trigger={
         <Button variant="primary">
           <Plus className="size-3.5" />
-          Create key
+          创建密钥
         </Button>
       }
     >
@@ -99,7 +99,7 @@ function AuthKeyFields({ users, selfServiceOnly, currentUser }: AuthKeyFieldsPro
   if (selfServiceOnly && !currentUser) {
     return (
       <Callout variant="warning">
-        Your account isn&apos;t linked to a Headscale user yet, so you can&apos;t create a key.
+        你的账户尚未关联 Headscale 用户，因此无法创建密钥。
       </Callout>
     );
   }
@@ -109,8 +109,8 @@ function AuthKeyFields({ users, selfServiceOnly, currentUser }: AuthKeyFieldsPro
       {!selfServiceOnly && (
         <SwitchField
           checked={isTagOnly}
-          description="The key belongs to its tags instead of a user."
-          label="Tag-only key"
+          description="该密钥属于其标签，而不是某个用户。"
+          label="仅标签密钥"
           onCheckedChange={setIsTagOnly}
         />
       )}
@@ -119,24 +119,24 @@ function AuthKeyFields({ users, selfServiceOnly, currentUser }: AuthKeyFieldsPro
           <>
             <input name="user_id" type="hidden" value={currentUser.id} />
             <Select
-              description="You can only create keys for your own user."
+              description="你只能为自己的用户创建密钥。"
               disabled
               items={[{ value: currentUser.id, label: getUserDisplayName(currentUser) }]}
-              label="User"
+              label="用户"
               value={currentUser.id}
             />
           </>
         ) : (
           <Select
             defaultValue={sortUsersByDisplayName(users)[0]?.id ?? null}
-            description="Devices that sign in with the key belong to this user."
+            description="使用该密钥登录的设备将归属于此用户。"
             items={sortUsersByDisplayName(users).map((user) => ({
               value: user.id,
               label: getUserDisplayName(user),
             }))}
-            label="User"
+            label="用户"
             name="user_id"
-            placeholder="Select a user"
+            placeholder="选择用户"
             required
           />
         ))}
@@ -144,8 +144,8 @@ function AuthKeyFields({ users, selfServiceOnly, currentUser }: AuthKeyFieldsPro
         <input key={tag} name="tags" type="hidden" value={tag} />
       ))}
       <TokenList
-        emptyText={isTagOnly ? "Add at least one tag" : "No tags"}
-        label="Tags"
+        emptyText={isTagOnly ? "添加至少一个标签" : "无标签"}
+        label="标签"
         normalize={(value) => (value.startsWith("tag:") ? value : `tag:${value}`)}
         onChange={setTags}
         placeholder="tag:server"
@@ -154,27 +154,27 @@ function AuthKeyFields({ users, selfServiceOnly, currentUser }: AuthKeyFieldsPro
       />
       <NumberInput
         defaultValue={90}
-        label="Expires after (days)"
+        label="有效天数"
         max={365_000}
         min={1}
         name="expiry"
         required
       />
       <SwitchField
-        description="The key can sign in more than one device."
-        label="Reusable"
+        description="该密钥可用于登录多台设备。"
+        label="可重复使用"
         name="reusable"
       />
       <SwitchField
         description={
           <>
-            Devices are removed once they go offline.{" "}
+            设备离线后会被移除。{" "}
             <Link external styled to="https://tailscale.com/kb/1111/ephemeral-nodes">
-              Docs
+              文档
             </Link>
           </>
         }
-        label="Ephemeral"
+        label="临时"
         name="ephemeral"
       />
     </>

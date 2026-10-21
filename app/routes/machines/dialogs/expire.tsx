@@ -10,14 +10,14 @@ interface ExpireProps {
 export default function Expire({ machine, isOpen, setIsOpen }: ExpireProps) {
   return (
     <ActionDialog
-      description="The machine disconnects from your tailnet until someone signs in on it again."
+      description="设备会从你的 Tailnet 断开，直到有人在其上重新登录。"
       fields={{ node_id: machine.id }}
       intent="expire"
       isDestructive
       onOpenChange={setIsOpen}
       open={isOpen}
-      submitLabel="Expire"
-      title={`Expire ${machine.givenName}?`}
+      submitLabel="立即过期"
+      title={`立即使 ${machine.givenName} 过期？`}
     />
   );
 }

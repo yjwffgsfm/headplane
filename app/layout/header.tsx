@@ -34,17 +34,17 @@ export interface HeaderProps {
 }
 
 const tabs = [
-  { to: "/machines", label: "Machines", key: "machines" },
-  { to: "/users", label: "Users", key: "users" },
-  { to: "/acls", label: "Access controls", key: "policy" },
+  { to: "/machines", label: "设备", key: "machines" },
+  { to: "/users", label: "用户", key: "users" },
+  { to: "/acls", label: "访问控制", key: "policy" },
   { to: "/dns", label: "DNS", key: "dns" },
-  { to: "/settings", label: "Settings", key: "settings" },
+  { to: "/settings", label: "设置", key: "settings" },
 ] as const;
 
 const colorSchemes = [
-  { value: "system", label: "System", icon: Monitor },
-  { value: "light", label: "Light", icon: Sun },
-  { value: "dark", label: "Dark", icon: Moon },
+  { value: "system", label: "跟随系统", icon: Monitor },
+  { value: "light", label: "浅色", icon: Sun },
+  { value: "dark", label: "深色", icon: Moon },
 ] as const satisfies ReadonlyArray<{
   value: ColorScheme;
   label: string;
@@ -97,7 +97,7 @@ export default function Header({ user, access, configAvailable }: HeaderProps) {
           {showTabs && (
             <Menu>
               <MenuTrigger className="text-muted hover:bg-hover hover:text-fg size-8 rounded-md md:hidden">
-                <MenuIcon aria-label="Navigation" className="size-4" />
+                <MenuIcon aria-label="导航" className="size-4" />
               </MenuTrigger>
               <MenuContent align="end">
                 {visibleTabs.map((tab) => (
@@ -116,12 +116,12 @@ export default function Header({ user, access, configAvailable }: HeaderProps) {
           )}
           <Menu>
             <MenuTrigger className="text-muted hover:bg-hover hover:text-fg size-8 rounded-md">
-              <CircleQuestionMark aria-label="Help" className="size-4" />
+              <CircleQuestionMark aria-label="帮助" className="size-4" />
             </MenuTrigger>
             <MenuContent align="end">
               <MenuItem>
                 <Link external to="https://headplane.net">
-                  Docs
+                  文档
                 </Link>
               </MenuItem>
               <MenuItem>
@@ -131,7 +131,7 @@ export default function Header({ user, access, configAvailable }: HeaderProps) {
               </MenuItem>
               <MenuItem>
                 <Link external to="https://tailscale.com/download">
-                  Download
+                  下载
                 </Link>
               </MenuItem>
             </MenuContent>
@@ -145,7 +145,7 @@ export default function Header({ user, access, configAvailable }: HeaderProps) {
                 <div className="text-fg">
                   {user.subject === "api_key" ? (
                     <>
-                      <p className="font-semibold">API Key</p>
+                      <p className="font-semibold">API 密钥</p>
                       <p>{user.name}</p>
                     </>
                   ) : (
@@ -179,7 +179,7 @@ export default function Header({ user, access, configAvailable }: HeaderProps) {
                 variant="danger"
                 onClick={() => submit({}, { action: "/logout", method: "POST" })}
               >
-                Logout
+                退出登录
               </MenuItem>
             </MenuContent>
           </Menu>

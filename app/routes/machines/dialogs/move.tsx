@@ -17,14 +17,14 @@ export default function Move({ machine, users, isOpen, setIsOpen }: MoveProps) {
 
   return (
     <ActionDialog
-      description="The owner is the user the machine belongs to."
+      description="所有者是此设备所属的用户。"
       fields={{ node_id: machine.id }}
       intent="reassign"
       isDisabled={!userId || userId === machine.user?.id}
       onOpenChange={setIsOpen}
       open={isOpen}
-      submitLabel="Change owner"
-      title={`Change owner of ${machine.givenName}`}
+      submitLabel="更改所有者"
+      title={`更改 ${machine.givenName} 的所有者`}
     >
       <Select
         defaultValue={machine.user?.id ?? null}
@@ -32,10 +32,10 @@ export default function Move({ machine, users, isOpen, setIsOpen }: MoveProps) {
           value: user.id,
           label: getUserDisplayName(user),
         }))}
-        label="Owner"
+        label="所有者"
         name="user_id"
         onValueChange={setUserId}
-        placeholder="Select a user"
+        placeholder="选择用户"
         required
       />
     </ActionDialog>

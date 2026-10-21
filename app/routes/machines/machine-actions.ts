@@ -22,11 +22,11 @@ export const machineAction = createAction({
     async function requireNode(id: string) {
       const node = await api.nodes.get(id);
       if (!node) {
-        throw new ActionError("This machine no longer exists.", 404);
+        throw new ActionError("此设备已不存在。", 404);
       }
 
       if (!auth.canManageNode(principal, node)) {
-        throw new ActionError("You don't have permission to manage this machine.", 403);
+        throw new ActionError("你没有管理此设备的权限。", 403);
       }
 
       return node;
@@ -43,15 +43,14 @@ export const machineAction = createAction({
     register: {
       capability: Capabilities.write_machines,
       fields: {
-        register_key: v.pipe(v.string(), v.minLength(1, "Paste the machine key.")),
-        user: v.pipe(v.string(), v.minLength(1, "Choose an owner.")),
+        register_key: v.pipe(v.string(), v.minLength(1, "请粘贴设备密钥。")),
+        user: v.pipe(v.string(), v.minLength(1, "请选择所有者。")),
       },
       async handler(input, { api, refresh }) {
         const registrationKey = normalizeRegistrationKey(input.register_key);
         if (!registrationKey) {
           return invalid({
-            register_key:
-              "Paste the registration URL or full hskey-authreq-... key from tailscale up.",
+            register_key: "请粘贴注册 URL，或 tailscale up 输出的完整 hskey-authreq-... 密钥。",
           });
         }
 
@@ -66,7 +65,7 @@ export const machineAction = createAction({
         const node = await requireNode(input.node_id);
         await api.nodes.rename(node.id, input.name);
         await refresh();
-        return ok("Machine renamed");
+        return ok("设备已重命名");
       },
     },
     delete: {
@@ -84,7 +83,7 @@ export const machineAction = createAction({
         const node = await requireNode(input.node_id);
         await api.nodes.expire(node.id);
         await refresh();
-        return ok("Machine expired");
+        return ok("设备已过期");
       },
     },
     toggle_expiry: {
@@ -94,7 +93,7 @@ export const machineAction = createAction({
         const disableExpiry = input.disable_expiry === "true";
         await api.nodes.toggleExpiry(node.id, disableExpiry);
         await refresh();
-        return ok(disableExpiry ? "Key expiry disabled" : "Key expiry enabled");
+        return ok(disableExpiry ? "已禁用密钥过期" : "已启用密钥过期");
       },
     },
     update_tags: {
@@ -104,7 +103,7 @@ export const machineAction = createAction({
         const tags = input.tags.map((tag) => tag.trim()).filter((tag) => tag !== "");
         await api.nodes.setTags(node.id, tags);
         await refresh();
-        return ok("Tags updated");
+        return ok("标签已更新");
       },
     },
     update_routes: {
@@ -119,25 +118,23 @@ export const machineAction = createAction({
 
         await api.nodes.approveRoutes(node.id, approved);
         await refresh();
-        return ok("Routes updated");
+        return ok("路由已更新");
       },
     },
     reassign: {
       fields: {
         node_id: nodeId,
-        user_id: v.pipe(v.string(), v.minLength(1, "Choose an owner.")),
+        user_id: v.pipe(v.string(), v.minLength(1, "请选择所有者。")),
       },
       async handler(input, { api, requireNode, refresh }) {
         const node = await requireNode(input.node_id);
         if (!api.nodes.reassignUser) {
-          throw new ActionError(
-            "Changing a machine's owner isn't supported on this Headscale version.",
-          );
+          throw new ActionError("此 Headscale 版本不支持更改设备所有者。");
         }
 
         await api.nodes.reassignUser(node.id, input.user_id);
         await refresh();
-        return ok("Owner changed");
+        return ok("所有者已更改");
       },
     },
   },

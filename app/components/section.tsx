@@ -45,7 +45,7 @@ export function RemoveButton({ className, children, ...props }: ButtonProps) {
       size="sm"
       variant="ghost"
     >
-      {children ?? "Remove"}
+      {children ?? "移除"}
     </Button>
   );
 }

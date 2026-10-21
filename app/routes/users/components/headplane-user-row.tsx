@@ -51,7 +51,7 @@ export default function HeadplaneUserRow({
                   {group}
                 </span>
               ))}
-              {!user.headscaleUserId && <Chip text="Not linked" variant="warn" />}
+              {!user.headscaleUserId && <Chip text="未关联" variant="warn" />}
             </div>
           </div>
         </div>
@@ -65,7 +65,7 @@ export default function HeadplaneUserRow({
             {formatTimeDelta(new Date(user.lastLoginAt))}
           </span>
         ) : (
-          "Never"
+          "从不"
         )}
       </TableCell>
       <TableCell className="whitespace-nowrap">
@@ -90,20 +90,20 @@ export default function HeadplaneUserRow({
 function mapRoleToName(role: Role) {
   switch (role) {
     case "owner":
-      return "Owner";
+      return "所有者";
     case "admin":
-      return "Admin";
+      return "管理员";
     case "network_admin":
-      return "Network Admin";
+      return "网络管理员";
     case "it_admin":
-      return "IT Admin";
+      return "IT 管理员";
     case "auditor":
-      return "Auditor";
+      return "审计员";
     case "viewer":
-      return "Viewer";
+      return "查看者";
     case "member":
-      return "Member";
+      return "成员";
     default:
-      return "Unknown";
+      return "未知";
   }
 }

@@ -3,7 +3,7 @@ import type { HostInfo } from "~/types";
 export function getTSVersion(host: HostInfo) {
   const { IPNVersion } = host;
   if (!IPNVersion) {
-    return "Unknown";
+    return "未知";
   }
 
   // IPNVersion is <Semver>-<something>-<something>
@@ -14,7 +14,7 @@ export function getTSVersion(host: HostInfo) {
 // different times (e.g. the macOS app often trails the Linux tarballs).
 export function isUpdateAvailable(host: HostInfo, latest: string) {
   const current = getTSVersion(host);
-  if (current === "Unknown") {
+  if (current === "未知") {
     return false;
   }
 
@@ -46,7 +46,7 @@ function formatOS(os?: string) {
     case "linux":
       return "Linux";
     case undefined:
-      return "Unknown";
+      return "未知";
     default:
       return os;
   }

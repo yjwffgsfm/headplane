@@ -18,8 +18,8 @@ export default function ManageDomains({ searchDomains, isDisabled, magic }: Prop
   return (
     <Section
       action={isDisabled ? undefined : <AddDomain />}
-      description="Devices try these suffixes, in order, when resolving a short name. With Magic DNS on, your tailnet domain always comes first."
-      title="Search domains"
+      description="设备解析短名称时会按顺序尝试这些后缀。启用 MagicDNS 后，Tailnet 域名始终排在最前。"
+      title="搜索域"
     >
       {reorder.error && (
         <Callout className="mb-3" variant="error">
@@ -27,11 +27,11 @@ export default function ManageDomains({ searchDomains, isDisabled, magic }: Prop
         </Callout>
       )}
       {!magic && domains.length === 0 ? (
-        <p className="text-muted py-2.5 text-sm">No search domains</p>
+        <p className="text-muted py-2.5 text-sm">没有搜索域</p>
       ) : (
         <RowList>
           {magic && (
-            <Row action={<span className="text-muted px-2">Magic DNS</span>}>
+            <Row action={<span className="text-muted px-2">MagicDNS</span>}>
               <span className="font-mono text-xs break-all">{magic}</span>
             </Row>
           )}
@@ -41,12 +41,12 @@ export default function ManageDomains({ searchDomains, isDisabled, magic }: Prop
                 <div className="flex items-center gap-1">
                   {!isDisabled && reorder.controls(domains, index)}
                   <ActionDialog
-                    description="Devices stop trying this suffix on short names."
+                    description="设备解析短名称时将不再尝试此后缀。"
                     fields={{ domain }}
                     intent="remove_domain"
                     isDestructive
-                    submitLabel="Remove"
-                    title={`Remove search domain ${domain}?`}
+                    submitLabel="移除"
+                    title={`移除搜索域 ${domain}？`}
                     trigger={<RemoveButton disabled={isDisabled} />}
                   />
                 </div>

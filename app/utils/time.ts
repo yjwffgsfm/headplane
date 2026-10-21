@@ -6,7 +6,7 @@ const UNITS: [Intl.RelativeTimeFormatUnit, number][] = [
   ["minute", 60],
 ];
 
-const relative = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+const relative = new Intl.RelativeTimeFormat("zh-CN", { numeric: "auto" });
 
 /**
  * Formats the time since a date in its largest unit, e.g. "3 hours ago".
@@ -19,7 +19,7 @@ export function formatTimeDelta(date: Date): string {
     }
   }
 
-  return "just now";
+  return "刚刚";
 }
 
 /**
@@ -33,5 +33,5 @@ export function formatTimeUntil(date: Date): string {
     }
   }
 
-  return "now";
+  return "现在";
 }

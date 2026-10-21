@@ -57,7 +57,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 
   const isPickable = users.some((u) => u.id === headscaleUserId);
   if (!isPickable || !(await auth.linkHeadscaleUser(principal.user.id, headscaleUserId!))) {
-    return data({ message: "That user can't be linked anymore. Pick another." }, { status: 400 });
+    return data({ message: "该用户已无法关联，请选择其他用户。" }, { status: 400 });
   }
 
   return redirect("/");
@@ -68,17 +68,17 @@ export default function Page({ loaderData, actionData }: Route.ComponentProps) {
 
   return (
     <Shell
-      description="Headplane couldn't match your sign-in to a Headscale user. Pick the one that's yours."
-      title="Link your account"
+      description="Headplane 无法将你的登录匹配到某个 Headscale 用户。请选择属于你的用户。"
+      title="关联你的账户"
     >
       <Form className="flex flex-col gap-3" method="POST">
         <Select
           errorMessage={actionData?.message}
           invalid={actionData !== undefined}
           items={loaderData.users.map((u) => ({ value: u.id, label: u.name }))}
-          label="Headscale user"
+          label="Headscale 用户"
           name="headscale_user_id"
-          placeholder="Select a user"
+          placeholder="选择用户"
           required
         />
         <Button
@@ -87,15 +87,14 @@ export default function Page({ loaderData, actionData }: Route.ComponentProps) {
           type="submit"
           variant="primary"
         >
-          Link account
+          关联账户
         </Button>
         <Button className="w-full" nativeButton={false} render={<RouterLink to="/" />}>
-          Skip for now
+          暂时跳过
         </Button>
       </Form>
       <p className="text-muted mt-6 text-sm">
-        You'll add machines and create auth keys as this user. You can change it later from the
-        Users page.
+        你将以此用户身份添加设备并创建认证密钥。之后可以在用户页面更改。
       </p>
       <SignedIn name={loaderData.email} />
     </Shell>

@@ -110,19 +110,19 @@ export default function UserMenu({
             disabled={!isLinked || user.role === "owner"}
             onClick={() => setModal("reassign")}
           >
-            Change role
+            更改角色
           </MenuItem>
           <MenuItem onClick={() => setModal("link")}>
-            {isLinked ? "Change linked user" : "Link Headscale user"}
+            {isLinked ? "更改关联用户" : "关联 Headscale 用户"}
           </MenuItem>
           {canEditGroups && user.linkedHeadscaleUser && (
-            <MenuItem onClick={() => setModal("groups")}>Edit groups</MenuItem>
+            <MenuItem onClick={() => setModal("groups")}>编辑组</MenuItem>
           )}
           {isOwner && !isSelf && (
             <>
               <MenuSeparator />
               <MenuItem variant="danger" onClick={() => setModal("transfer")}>
-                Transfer ownership
+                转移所有权
               </MenuItem>
             </>
           )}
@@ -130,7 +130,7 @@ export default function UserMenu({
             <>
               <MenuSeparator />
               <MenuItem variant="danger" onClick={() => setModal("delete")}>
-                Delete
+                删除
               </MenuItem>
             </>
           )}

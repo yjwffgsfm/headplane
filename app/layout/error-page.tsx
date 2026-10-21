@@ -14,7 +14,7 @@ export default function ErrorPage({ error }: { error: unknown }) {
       <div className="flex flex-wrap items-center gap-3">
         {canRetry && (
           <Button onClick={() => window.location.reload()} variant="primary">
-            Try again
+            重试
           </Button>
         )}
         <Button
@@ -22,7 +22,7 @@ export default function ErrorPage({ error }: { error: unknown }) {
           render={<RouterLink reloadDocument to="/" />}
           variant={canRetry ? "secondary" : "primary"}
         >
-          Go to Headplane
+          前往 Headplane
         </Button>
         {info.kind === "unknown" && (
           <span className="ml-1 text-sm">

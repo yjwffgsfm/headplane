@@ -7,7 +7,7 @@ export function isTaggedDevicesUser(user: User): boolean {
 
 export function getUserDisplayName(user: User): string {
   if (isTaggedDevicesUser(user)) {
-    return "Tag-owned";
+    return "标签所有";
   }
 
   return user.name || user.displayName || user.email || user.id;
@@ -26,9 +26,8 @@ export function sortUsersByDisplayName(users: User[]): User[] {
 export const USERNAME_PATTERN = String.raw`\p{L}[\p{L}\p{Nd}._\-]*(@[\p{L}\p{Nd}._\-]+)?`;
 
 export const USERNAME_RULE =
-  "Usernames must be at least 2 characters, start with a letter, and contain only " +
-  "letters, numbers, dots, dashes and underscores, with at most one @ that cannot " +
-  "be the last character.";
+  "用户名至少 2 个字符，以字母开头，且只能包含字母、数字、点、短横线和下划线，" +
+  "最多只能有一个 @，且不能位于末尾。";
 
 const usernameRegex = new RegExp(`^${USERNAME_PATTERN}$`, "u");
 

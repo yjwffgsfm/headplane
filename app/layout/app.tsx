@@ -132,10 +132,10 @@ export default function AppLayout({ loaderData }: Route.ComponentProps) {
           <Callout
             className="mb-4"
             icon={<CloudOff />}
-            title="Can't reach Headscale"
+            title="无法连接 Headscale"
             variant="error"
           >
-            Some data may be out of date, and changes won't save until it's back.
+            部分数据可能已过时，在 Headscale 恢复前更改不会保存。
           </Callout>
         )}
         <Outlet />

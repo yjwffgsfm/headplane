@@ -35,7 +35,7 @@ export const dnsAction = createAction({
     const config = context.get(headscaleConfigContext);
     const integration = context.get(integrationContext);
     if (!config.writable()) {
-      throw new ActionError("The Headscale configuration is read-only.", 403);
+      throw new ActionError("Headscale 配置为只读。", 403);
     }
 
     return {
@@ -44,21 +44,18 @@ export const dnsAction = createAction({
       dns: config.getDNSConfig(),
       restart: async () => {
         if (integration && !(await integration.onConfigChange(headscale))) {
-          throw new ActionError(
-            "Saved, but Headscale didn't come back after restarting. Check its logs.",
-            502,
-          );
+          throw new ActionError("已保存，但 Headscale 重启后未能恢复。请检查其日志。", 502);
         }
       },
     };
   },
   intents: {
     rename_tailnet: {
-      fields: { name: text("Enter a tailnet name.") },
+      fields: { name: text("请输入 Tailnet 名称。") },
       async handler(input, { config, restart }) {
         await config.patch([{ path: "dns.base_domain", value: input.name }]);
         await restart();
-        return ok("Tailnet renamed");
+        return ok("Tailnet 已重命名");
       },
     },
     toggle_magic: {
@@ -67,7 +64,7 @@ export const dnsAction = createAction({
         const isEnabled = input.enabled === "true";
         await config.patch([{ path: "dns.magic_dns", value: isEnabled }]);
         await restart();
-        return ok(isEnabled ? "Magic DNS enabled" : "Magic DNS disabled");
+        return ok(isEnabled ? "已启用 MagicDNS" : "已禁用 MagicDNS");
       },
     },
     override_dns: {
@@ -75,7 +72,7 @@ export const dnsAction = createAction({
       async handler(input, { config, restart }) {
         await config.patch([{ path: "dns.override_local_dns", value: input.enabled === "true" }]);
         await restart();
-        return ok("DNS override updated");
+        return ok("DNS 覆盖设置已更新");
       },
     },
     add_ns: {
@@ -85,14 +82,14 @@ export const dnsAction = createAction({
           ? (dns.splitDns[input.split_domain] ?? [])
           : dns.nameservers;
         if (servers.includes(input.nameserver)) {
-          return invalid({ nameserver: "This nameserver is already in the list." });
+          return invalid({ nameserver: "该名称服务器已在列表中。" });
         }
 
         await config.patch([
           { path: nameserverPath(input.split_domain), value: [...servers, input.nameserver] },
         ]);
         await restart();
-        return ok("Nameserver added");
+        return ok("已添加名称服务器");
       },
     },
     remove_ns: {
@@ -110,7 +107,7 @@ export const dnsAction = createAction({
           },
         ]);
         await restart();
-        return ok("Nameserver removed");
+        return ok("已移除名称服务器");
       },
     },
     move_ns: {
@@ -135,17 +132,17 @@ export const dnsAction = createAction({
       },
     },
     add_domain: {
-      fields: { domain: text("Enter a search domain.") },
+      fields: { domain: text("请输入搜索域。") },
       async handler(input, { config, dns, restart }) {
         if (dns.searchDomains.includes(input.domain)) {
-          return invalid({ domain: "This search domain is already in the list." });
+          return invalid({ domain: "该搜索域已在列表中。" });
         }
 
         await config.patch([
           { path: "dns.search_domains", value: [...dns.searchDomains, input.domain] },
         ]);
         await restart();
-        return ok("Search domain added");
+        return ok("已添加搜索域");
       },
     },
     remove_domain: {
@@ -158,7 +155,7 @@ export const dnsAction = createAction({
           },
         ]);
         await restart();
-        return ok("Search domain removed");
+        return ok("已移除搜索域");
       },
     },
     move_domain: {
@@ -176,16 +173,13 @@ export const dnsAction = createAction({
     },
     add_record: {
       fields: {
-        type: v.picklist(["A", "AAAA"], "Choose a record type."),
-        name: text("Enter a domain."),
+        type: v.picklist(["A", "AAAA"], "请选择记录类型。"),
+        name: text("请输入域名。"),
         value: v.string(),
       },
       async handler(input, { config, dns }) {
         if (!config.recordsWritable()) {
-          throw new ActionError(
-            "DNS records can only be changed through dns.extra_records_path.",
-            403,
-          );
+          throw new ActionError("只能通过 dns.extra_records_path 更改 DNS 记录。", 403);
         }
 
         const value = parseValues(recordValue[input.type], input.value);
@@ -194,25 +188,22 @@ export const dnsAction = createAction({
         }
 
         if (dns.extraRecords.some((r) => r.name === input.name && r.type === input.type)) {
-          return invalid({ name: `This domain already has an ${input.type} record.` });
+          return invalid({ name: `该域名已有 ${input.type} 记录。` });
         }
 
         await config.addDNS({ name: input.name, type: input.type, value: value.data });
-        return ok("Record added");
+        return ok("已添加记录");
       },
     },
     remove_record: {
       fields: { type: v.string(), name: v.string() },
       async handler(input, { config }) {
         if (!config.recordsWritable()) {
-          throw new ActionError(
-            "DNS records can only be changed through dns.extra_records_path.",
-            403,
-          );
+          throw new ActionError("只能通过 dns.extra_records_path 更改 DNS 记录。", 403);
         }
 
         await config.removeDNS({ name: input.name, type: input.type, value: "" });
-        return ok("Record removed");
+        return ok("已移除记录");
       },
     },
   },

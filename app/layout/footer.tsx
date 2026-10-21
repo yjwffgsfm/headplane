@@ -16,18 +16,18 @@ export default function Footer({ isDebug, baseUrl }: FooterProps) {
     <footer className={cn("fixed w-full bottom-0 left-0 z-20", "bg-surface border-t border-line")}>
       <div className="container flex flex-col gap-1 py-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
         <p className="min-w-0 text-xs">
-          Headplane is free and open-source. Please consider{" "}
+          Headplane 是免费的开源项目。欢迎
           <Link external styled to="https://tale.me/sponsor">
-            sponsoring
-          </Link>{" "}
-          to support development.
+            赞助
+          </Link>
+          支持项目开发。
         </p>
         <div className="flex min-w-0 items-center gap-2 text-xs">
           {isDebug && (
             <span
               className={cn("rounded-full px-2 py-0.5 font-medium", "bg-warn-subtle text-warn")}
             >
-              Debug
+              调试
             </span>
           )}
           <p className="text-muted">
@@ -39,7 +39,7 @@ export default function Footer({ isDebug, baseUrl }: FooterProps) {
             )}
             <button
               type="button"
-              aria-label={urlVisible ? "Hide server URL" : "Show server URL"}
+              aria-label={urlVisible ? "隐藏服务器 URL" : "显示服务器 URL"}
               className={cn(
                 "ml-1 inline-flex align-middle rounded-xs p-0.5",
                 "text-muted hover:text-muted",

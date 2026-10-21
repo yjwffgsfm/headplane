@@ -90,16 +90,16 @@ export default function TagsGroupsEditor({
       <Section
         description={
           <>
-            Groups bundle users together so rules can refer to a team instead of individual
-            accounts. Membership is stored in the policy, not in Headscale.
+            组把用户聚合在一起，规则便可引用整个团队而不用逐个列出账号。成员信息保存在策略中，而非
+            Headscale 中。
           </>
         }
         isDisabled={isDisabled}
         onAdd={() => setEditing({ kind: "group", name: null })}
-        title="Groups"
+        title="组"
       >
         {groups.length === 0 ? (
-          <Empty text="No groups are defined yet." />
+          <Empty text="尚未定义任何组。" />
         ) : (
           groups.map(([name, members]) => (
             <List.Item
@@ -110,7 +110,7 @@ export default function TagsGroupsEditor({
                 <span className="font-mono text-sm">{name}</span>
                 <span className="flex flex-wrap items-center gap-1">
                   {members.length === 0 ? (
-                    <span className="text-xs opacity-60">No members</span>
+                    <span className="text-xs opacity-60">无成员</span>
                   ) : (
                     members.map((member) => (
                       <Chip className="font-mono" key={member} text={member} />
@@ -131,20 +131,19 @@ export default function TagsGroupsEditor({
       <Section
         description={
           <>
-            Tags identify machines by role instead of by owner. A tag must be declared here before
-            it can be assigned to a node — see the{" "}
+            标签按角色而非所有者来标识设备。标签必须先在此处声明，之后才能分配给节点——参见{" "}
             <Link external styled to="https://tailscale.com/kb/1068/acl-tags">
-              Tailscale tag documentation
+              Tailscale 标签文档
             </Link>
-            .
+            。
           </>
         }
         isDisabled={isDisabled}
         onAdd={() => setEditing({ kind: "tag", name: null })}
-        title="Tags"
+        title="标签"
       >
         {tags.length === 0 ? (
-          <Empty text="No tags are defined yet." />
+          <Empty text="尚未定义任何标签。" />
         ) : (
           tags.map(([name, owners]) => {
             const usedBy = tagUsage.find((usage) => usage.tag === name)?.nodes ?? [];
@@ -158,13 +157,13 @@ export default function TagsGroupsEditor({
                     <span className="font-mono text-sm">{name}</span>
                     <span className="text-xs opacity-60">
                       {usedBy.length === 0
-                        ? "Not assigned to any machine"
-                        : `${usedBy.length} machine${usedBy.length === 1 ? "" : "s"}: ${usedBy.join(", ")}`}
+                        ? "未分配给任何设备"
+                        : `${usedBy.length} 台设备：${usedBy.join(", ")}`}
                     </span>
                   </div>
                   <span className="flex flex-wrap items-center gap-1">
                     {owners.length === 0 ? (
-                      <span className="text-xs opacity-60">No owners</span>
+                      <span className="text-xs opacity-60">无所有者</span>
                     ) : (
                       owners.map((owner) => <Chip className="font-mono" key={owner} text={owner} />)
                     )}

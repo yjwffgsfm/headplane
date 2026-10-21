@@ -45,7 +45,7 @@ export default function EditorDialog({
       >
         {children}
         <DialogActions>
-          <DialogClose render={<Button>Cancel</Button>} />
+          <DialogClose render={<Button>取消</Button>} />
           <Button disabled={isDisabled} type="submit" variant="primary">
             {submitLabel}
           </Button>

@@ -34,14 +34,13 @@ export default function ManageNS({ global, split, isDisabled }: Props) {
       action={isDisabled ? undefined : <AddNS />}
       description={
         <>
-          The servers devices use for names outside the tailnet, preferring ones higher in the list.
-          A server marked with a domain only answers for that domain.{" "}
+          设备在解析 Tailnet 之外的名称时使用的服务器，列表中越靠前优先级越高。标记了域名的服务器只应答该域名。{" "}
           <Link external styled to="https://tailscale.com/kb/1054/dns">
-            Docs
+            文档
           </Link>
         </>
       }
-      title="Nameservers"
+      title="名称服务器"
     >
       {reorder.error && (
         <Callout className="mb-3" variant="error">
@@ -49,9 +48,7 @@ export default function ManageNS({ global, split, isDisabled }: Props) {
         </Callout>
       )}
       {rows.length === 0 ? (
-        <p className="text-muted py-2.5 text-sm">
-          No nameservers. Devices use their own DNS settings.
-        </p>
+        <p className="text-muted py-2.5 text-sm">没有名称服务器。设备将使用自己的 DNS 设置。</p>
       ) : (
         <RowList>
           {rows.map(({ ns, domain, list, index }) => (
@@ -64,14 +61,14 @@ export default function ManageNS({ global, split, isDisabled }: Props) {
                   <ActionDialog
                     description={
                       domain
-                        ? `Devices stop using this nameserver for ${domain}.`
-                        : "Devices stop using this nameserver for queries outside the tailnet."
+                        ? `设备将不再使用此名称服务器解析 ${domain}。`
+                        : "设备将不再使用此名称服务器解析 Tailnet 之外的查询。"
                     }
                     fields={domain ? { nameserver: ns, split_domain: domain } : { nameserver: ns }}
                     intent="remove_ns"
                     isDestructive
-                    submitLabel="Remove"
-                    title={`Remove nameserver ${ns}?`}
+                    submitLabel="移除"
+                    title={`移除名称服务器 ${ns}？`}
                     trigger={<RemoveButton disabled={isDisabled} />}
                   />
                 </div>

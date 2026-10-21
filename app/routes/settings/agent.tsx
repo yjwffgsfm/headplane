@@ -113,9 +113,9 @@ export default function Page({ loaderData }: Route.ComponentProps) {
   const fetcher = useFetcher<typeof action>();
   const description = (
     <>
-      Syncs each machine's Tailscale version, OS, and connectivity from your tailnet.{" "}
+      从你的 Tailnet 网络同步每台设备的 Tailscale 版本、操作系统和连接状态。{" "}
       <Link external styled to="https://headplane.net/features/agent">
-        Docs
+        文档
       </Link>
     </>
   );
@@ -124,13 +124,13 @@ export default function Page({ loaderData }: Route.ComponentProps) {
     return (
       <>
         <PageHeader description={description} isSubpage title="Agent" />
-        <Callout title="The agent is off">{loaderData.reason}.</Callout>
+        <Callout title="Agent 已关闭">{loaderData.reason}。</Callout>
       </>
     );
   }
 
   const { self, missing, machineCount, isHeadscaleDown, hasMachines } = loaderData;
-  const unavailable = <p className="text-muted py-2.5 text-sm">Unavailable</p>;
+  const unavailable = <p className="text-muted py-2.5 text-sm">不可用</p>;
   const isPending = !loaderData.syncedAt && Boolean(loaderData.authUrl);
   const hasError = Boolean(loaderData.error);
   const intervalMinutes = Math.max(1, Math.round(loaderData.intervalMs / 60_000));
@@ -141,7 +141,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
         actions={
           <fetcher.Form method="post">
             <Button pending={fetcher.state !== "idle"} type="submit">
-              Sync now
+              立即同步
             </Button>
           </fetcher.Form>
         }
@@ -150,68 +150,67 @@ export default function Page({ loaderData }: Route.ComponentProps) {
         title="Agent"
       />
       {isPending && loaderData.authUrl && (
-        <Callout className="mb-6" title="Waiting for approval" variant="warning">
-          Headplane tries to approve the agent's tailnet registration automatically. If that doesn't
-          work,{" "}
+        <Callout className="mb-6" title="等待批准" variant="warning">
+          Headplane 会尝试自动批准 Agent 的 Tailnet 网络注册。如果未能成功，请{" "}
           <Link external styled to={loaderData.authUrl}>
-            approve it here
+            在此批准
           </Link>
-          .
+          。
         </Callout>
       )}
       {loaderData.error && !isHeadscaleDown && (
-        <Callout className="mb-6" title="Sync failed" variant="error">
+        <Callout className="mb-6" title="同步失败" variant="error">
           {loaderData.error}
         </Callout>
       )}
-      <Section title="Sync">
+      <Section title="同步">
         <SettingList>
-          <SettingRow label="Status">
+          <SettingRow label="状态">
             <span className="flex items-center gap-2">
               <StatusCircle isExpired={hasError} isOnline={!hasError && !isPending} />
               {hasError
-                ? `Failing, ${loaderData.consecutiveErrors} ${loaderData.consecutiveErrors === 1 ? "time" : "times"} in a row`
+                ? `连续失败 ${loaderData.consecutiveErrors} 次`
                 : isPending
-                  ? "Waiting for approval"
-                  : "Healthy"}
+                  ? "等待批准"
+                  : "运行正常"}
             </span>
           </SettingRow>
-          <SettingRow label="Last synced">
+          <SettingRow label="上次同步">
             {loaderData.syncedAt ? (
               <span suppressHydrationWarning title={new Date(loaderData.syncedAt).toLocaleString()}>
                 {formatTimeDelta(new Date(loaderData.syncedAt))}
               </span>
             ) : (
-              <span className="text-muted">Never</span>
+              <span className="text-muted">从不</span>
             )}
             <span className="text-muted">
               {" "}
-              · every {intervalMinutes} {intervalMinutes === 1 ? "minute" : "minutes"}
+              · 每隔 {intervalMinutes} 分钟
             </span>
           </SettingRow>
-          <SettingRow label="Process">
+          <SettingRow label="进程">
             {loaderData.startedAt ? (
               <span
                 suppressHydrationWarning
                 title={new Date(loaderData.startedAt).toLocaleString()}
               >
-                Started {formatTimeDelta(new Date(loaderData.startedAt))}
+                启动于 {formatTimeDelta(new Date(loaderData.startedAt))}
               </span>
             ) : (
-              <span className="text-muted">Not running</span>
+              <span className="text-muted">未运行</span>
             )}
           </SettingRow>
         </SettingList>
       </Section>
       <Section
-        description="The node the agent uses to reach the rest of your tailnet."
-        title="Agent machine"
+        description="Agent 用来访问 Tailnet 网络中其他部分的节点。"
+        title="Agent 设备"
       >
         {!hasMachines ? (
           unavailable
         ) : self ? (
           <SettingList>
-            <SettingRow label="Machine">
+            <SettingRow label="设备">
               <span className="flex items-center gap-2">
                 <StatusCircle isOnline={self.isOnline} />
                 <Link styled to={`/machines/${self.id}`}>
@@ -219,27 +218,26 @@ export default function Page({ loaderData }: Route.ComponentProps) {
                 </Link>
               </span>
             </SettingRow>
-            <SettingRow label="Address">
-              <span className="font-mono text-xs">{self.addresses[0] ?? "None"}</span>
+            <SettingRow label="地址">
+              <span className="font-mono text-xs">{self.addresses[0] ?? "无"}</span>
             </SettingRow>
-            <SettingRow label="Tailscale version">
-              <span className="font-mono text-xs">{self.version ?? "Unknown"}</span>
+            <SettingRow label="Tailscale 版本">
+              <span className="font-mono text-xs">{self.version ?? "未知"}</span>
             </SettingRow>
           </SettingList>
         ) : (
-          <p className="text-muted py-2.5 text-sm">The agent hasn't joined the tailnet yet.</p>
+          <p className="text-muted py-2.5 text-sm">Agent 尚未加入 Tailnet 网络。</p>
         )}
       </Section>
       <Section
-        description="Machines missing from the last sync keep the details from the last time they were seen, usually because they're offline."
-        title="Coverage"
+        description="未出现在上次同步中的设备会保留最后一次被发现时的详情，通常是因为它们处于离线状态。"
+        title="覆盖范围"
       >
         {!hasMachines ? (
           unavailable
         ) : (
           <p className="py-2.5 text-sm">
-            {machineCount - missing.length} of {machineCount}{" "}
-            {machineCount === 1 ? "machine" : "machines"} in the last sync
+            上次同步包含 {machineCount - missing.length} / {machineCount} 台设备
           </p>
         )}
         {missing.length > 0 && (
@@ -249,8 +247,8 @@ export default function Page({ loaderData }: Route.ComponentProps) {
                 action={
                   <span className="text-muted text-sm whitespace-nowrap" suppressHydrationWarning>
                     {node.updatedAt
-                      ? `Details from ${formatTimeDelta(new Date(node.updatedAt))}`
-                      : "No details yet"}
+                      ? `详情更新于 ${formatTimeDelta(new Date(node.updatedAt))}`
+                      : "暂无详情"}
                   </span>
                 }
                 key={node.id}
@@ -271,5 +269,5 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  return <PageError error={error} page="the agent" />;
+  return <PageError error={error} page="Agent" />;
 }

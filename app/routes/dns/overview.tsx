@@ -53,9 +53,9 @@ export default function Page() {
       <PageHeader
         description={
           <>
-            Control how devices on your tailnet resolve names.{" "}
+            控制 Tailnet 网络中的设备如何解析名称。{" "}
             <Link external styled to="https://headscale.net/stable/ref/dns">
-              Docs
+              文档
             </Link>
           </>
         }
@@ -65,18 +65,17 @@ export default function Page() {
         {isDisabled && (
           <Callout className="mb-6">
             {data.writable
-              ? "Your permissions don't allow changes to DNS settings."
-              : "The Headscale configuration is read-only, so DNS settings can't be changed here."}
+              ? "你的权限不允许更改 DNS 设置。"
+              : "Headscale 配置为只读，因此无法在此更改 DNS 设置。"}
           </Callout>
         )}
         {!isDisabled && !data.isAutoApplied && (
           <Callout className="mb-6" variant="warning">
-            Changes are saved to the Headscale configuration but only take effect once Headscale
-            restarts. Set up an{" "}
+            更改会保存到 Headscale 配置，但需要重启 Headscale 后才会生效。设置一个{" "}
             <Link external styled to="https://headplane.net/configuration/integrations">
-              integration
+              集成
             </Link>{" "}
-            to restart it automatically.
+            即可自动重启。
           </Callout>
         )}
         <General
@@ -103,5 +102,5 @@ export default function Page() {
 }
 
 export function ErrorBoundary({ error }: { error: unknown }) {
-  return <PageError error={error} page="DNS settings" />;
+  return <PageError error={error} page="DNS" />;
 }

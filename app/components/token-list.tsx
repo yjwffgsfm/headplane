@@ -77,7 +77,7 @@ export default function TokenList({
             <Row
               action={
                 <RemoveButton
-                  aria-label={`Remove ${value}`}
+                  aria-label={`移除 ${value}`}
                   disabled={isDisabled}
                   onClick={() => onChange(values.filter((entry) => entry !== value))}
                   type="button"
@@ -92,7 +92,7 @@ export default function TokenList({
       )}
       <div className="flex items-center gap-2">
         <Input
-          aria-label={`Add to ${label}`}
+          aria-label={`添加到 ${label}`}
           className="w-full"
           disabled={isDisabled}
           invalid={draft.length > 0 && draftIsInvalid}
@@ -110,7 +110,7 @@ export default function TokenList({
         />
         <Button disabled={isDisabled || draftIsInvalid} onClick={() => add(draft)} type="button">
           <Plus className="size-4" />
-          Add
+          添加
         </Button>
       </div>
       {available.length > 0 ? (

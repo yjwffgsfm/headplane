@@ -20,7 +20,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 
   const oidc = headscaleConfig.getOIDCConfig();
   if (!oidc) {
-    throw data("OIDC is not configured on this Headscale instance.", {
+    throw data("此 Headscale 实例未配置 OIDC。", {
       status: 501,
     });
   }
@@ -51,29 +51,28 @@ export default function Page({
         isSubpage
         description={
           <>
-            Limit who can sign in through OIDC. Headscale and Headplane both enforce these.{" "}
+            限制谁可以通过 OIDC 登录。Headscale 和 Headplane 都会执行这些限制。{" "}
             <Link external styled to="https://headscale.net/stable/ref/oidc/#basic-configuration">
-              Docs
+              文档
             </Link>
           </>
         }
-        title="Sign-in restrictions"
+        title="登录限制"
       />
       {isDisabled && (
         <Callout className="mb-6">
           {access
-            ? "The Headscale configuration is read-only, so restrictions can't be changed here."
-            : "Your permissions don't allow changes to sign-in restrictions."}
+            ? "Headscale 配置为只读，因此无法在此更改限制。"
+            : "你的权限不允许更改登录限制。"}
         </Callout>
       )}
       {!isDisabled && !isAutoApplied && (
         <Callout className="mb-6" variant="warning">
-          Changes are saved to the Headscale configuration but only take effect once Headscale
-          restarts. Set up an{" "}
+          更改会保存到 Headscale 配置，但只在 Headscale 重启后生效。配置{" "}
           <Link external styled to="https://headplane.net/configuration/integrations">
-            integration
+            集成
           </Link>{" "}
-          to restart it automatically.
+          即可自动重启。
         </Callout>
       )}
       <RestrictionSection isDisabled={isDisabled} type="domain" values={settings.domains} />
@@ -84,5 +83,5 @@ export default function Page({
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  return <PageError error={error} page="sign-in restrictions" />;
+  return <PageError error={error} page="登录限制" />;
 }

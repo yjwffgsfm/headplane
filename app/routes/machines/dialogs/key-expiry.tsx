@@ -15,15 +15,15 @@ export default function KeyExpiry({ machine, isOpen, setIsOpen }: KeyExpiryProps
     <ActionDialog
       description={
         isDisabling
-          ? "The machine stays signed in until you expire or remove it."
-          : "The machine has to sign in again when its key expires."
+          ? "设备会保持登录状态，直到你使其过期或将其移除。"
+          : "密钥过期后，设备需要重新登录。"
       }
       fields={{ node_id: machine.id, disable_expiry: String(isDisabling) }}
       intent="toggle_expiry"
       onOpenChange={setIsOpen}
       open={isOpen}
-      submitLabel={isDisabling ? "Disable key expiry" : "Enable key expiry"}
-      title={`${isDisabling ? "Disable" : "Enable"} key expiry for ${machine.givenName}?`}
+      submitLabel={isDisabling ? "禁用密钥过期" : "启用密钥过期"}
+      title={`${isDisabling ? "禁用" : "启用"} ${machine.givenName} 的密钥过期？`}
     />
   );
 }

@@ -11,17 +11,16 @@ export function SubnetTag({ isEnabled, count }: SubnetTagProps) {
     <Tooltip
       content={
         isEnabled ? (
-          <>This machine advertises subnet routes.</>
+          <>此设备正在通告子网路由。</>
         ) : (
           <>
-            This machine has subnet routes waiting for approval. Review them from "Edit route
-            settings" in the machine's menu.
+            此设备有子网路由待批准。请在设备菜单的“编辑路由设置”中审核。
           </>
         )
       }
     >
       <Chip
-        text={`${count} ${count === 1 ? "subnet" : "subnets"}`}
+        text={`${count} 个子网`}
         variant={isEnabled ? "neutral" : "warn"}
       />
     </Tooltip>

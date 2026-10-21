@@ -21,21 +21,21 @@ interface Props {
   page?: string;
 }
 
-export default function PageError({ error, page = "this page" }: Props) {
+export default function PageError({ error, page = "此页面" }: Props) {
   const { revalidate, state } = useRevalidator();
   const info = describeError(error);
   const Icon = icons[info.kind];
 
   const title =
     info.kind === "connection"
-      ? `Can't load ${page}`
+      ? `无法加载${page}`
       : info.kind === "forbidden"
-        ? `You don't have access to ${page}`
+        ? `无权访问${page}`
         : info.title;
 
   const description =
     info.kind === "connection"
-      ? "This page needs Headscale to load. Try again once it's back."
+      ? "此页面需要 Headscale 才能加载。请在其恢复后重试。"
       : info.description;
 
   const canRetry = info.kind !== "forbidden" && info.kind !== "not_found";
@@ -46,7 +46,7 @@ export default function PageError({ error, page = "this page" }: Props) {
         <div className="mt-6 flex items-center gap-4">
           {canRetry && (
             <Button onClick={() => revalidate()} pending={state === "loading"}>
-              Try again
+              重试
             </Button>
           )}
           {info.kind === "unknown" && <ReportLink />}
@@ -78,7 +78,7 @@ export function ErrorState({ icon, title, description, children }: ErrorStatePro
 export function ErrorDetails({ details, className }: { details: string; className?: string }) {
   return (
     <details className={cn("mt-6 w-full max-w-lg text-left", className)}>
-      <summary className="text-muted hover:text-fg w-fit cursor-pointer text-sm">Details</summary>
+      <summary className="text-muted hover:text-fg w-fit cursor-pointer text-sm">详情</summary>
       <pre className="bg-subtle mt-2 overflow-x-auto rounded-md p-3 font-mono text-xs break-all whitespace-pre-wrap">
         {details}
       </pre>
@@ -89,7 +89,7 @@ export function ErrorDetails({ details, className }: { details: string; classNam
 export function ReportLink() {
   return (
     <Link external styled to="https://github.com/tale/headplane/issues/new">
-      Report an issue
+      报告问题
     </Link>
   );
 }
