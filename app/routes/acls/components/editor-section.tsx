@@ -24,7 +24,7 @@ export function Section({ title, description, isDisabled, onAdd, children }: Sec
         </div>
         <Button className="shrink-0" disabled={isDisabled} onClick={onAdd} type="button">
           <Plus className="size-4" />
-          Add
+          添加
         </Button>
       </div>
       <List>{children}</List>
@@ -46,7 +46,7 @@ export function RowActions({ isDisabled, onEdit, onDelete }: RowActionsProps) {
   return (
     <div className="flex shrink-0 items-center gap-1">
       <Button
-        aria-label="Edit"
+        aria-label="编辑"
         disabled={isDisabled}
         onClick={onEdit}
         size="sm"
@@ -56,7 +56,7 @@ export function RowActions({ isDisabled, onEdit, onDelete }: RowActionsProps) {
         <Pencil className="h-4 w-4" />
       </Button>
       <Button
-        aria-label="Delete"
+        aria-label="删除"
         disabled={isDisabled}
         onClick={onDelete}
         size="sm"

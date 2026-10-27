@@ -18,18 +18,18 @@ export default function AddNameserver() {
     <ActionDialog
       intent="add_ns"
       onOpenChange={(isOpen) => isOpen && setIsSplit(false)}
-      submitLabel="Add nameserver"
-      title="Add nameserver"
+      submitLabel="添加名称服务器"
+      title="添加名称服务器"
       trigger={
         <Button>
           <Plus className="size-3.5" />
-          Add nameserver
+          添加名称服务器
         </Button>
       }
     >
       <Input
-        description="Use this IPv4 or IPv6 address to resolve names."
-        label="Nameserver"
+        description="使用此 IPv4 或 IPv6 地址解析名称。"
+        label="名称服务器"
         name="nameserver"
         placeholder="1.2.3.4"
         required
@@ -37,14 +37,14 @@ export default function AddNameserver() {
       />
       <SwitchField
         checked={isSplit}
-        description="Split DNS. Only Tailscale 1.8 and later use this nameserver."
-        label="Restrict to domain"
+        description="拆分 DNS。仅 Tailscale 1.8 及更高版本使用此名称服务器。"
+        label="限制到域名"
         onCheckedChange={setIsSplit}
       />
       {isSplit && (
         <Input
-          description="Only queries for this domain and its subdomains use the nameserver."
-          label="Domain"
+          description="仅此域名及其子域的查询使用该名称服务器。"
+          label="域名"
           name="split_domain"
           placeholder="example.com"
           required

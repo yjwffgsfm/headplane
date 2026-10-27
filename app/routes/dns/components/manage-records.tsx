@@ -20,43 +20,41 @@ export default function ManageRecords({ records, hasRecordsFile, isDisabled, isR
       action={isLocked ? undefined : <AddRecord />}
       description={
         <>
-          Point a name at an address for every device on the tailnet. Headscale supports A and AAAA
-          records.{" "}
+          将名称指向 Tailnet 网络中设备的地址。Headscale 支持 A 和 AAAA 记录。参阅{" "}
           <Link external styled to="https://headscale.net/stable/ref/dns">
-            Docs
+            DNS 文档
           </Link>
           {!isDisabled && isReadOnly && hasRecordsFile && (
             <>
               {" "}
-              To edit records here, give Headplane write access to the file at{" "}
-              <Code>dns.extra_records_path</Code>.
+              要在此编辑记录，请授予 Headplane 对 <Code>dns.extra_records_path</Code> 所在文件的写入权限。
             </>
           )}
           {!isDisabled && isReadOnly && !hasRecordsFile && (
             <>
               {" "}
-              To edit records here, move them from <Code>dns.extra_records</Code> into a JSON file
-              set as <Code>dns.extra_records_path</Code>.
+              要在此编辑记录，请将其从 <Code>dns.extra_records</Code> 移动到一个设置为{" "}
+              <Code>dns.extra_records_path</Code> 的 JSON 文件中。
             </>
           )}
         </>
       }
-      title="DNS records"
+      title="DNS 记录"
     >
       {records.length === 0 ? (
-        <p className="text-muted py-2.5 text-sm">No DNS records</p>
+        <p className="text-muted py-2.5 text-sm">暂无 DNS 记录</p>
       ) : (
         <RowList>
           {records.map((record) => (
             <Row
               action={
                 <ActionDialog
-                  description="Devices stop resolving this name to the record's address."
+                  description="设备将不再把此名称解析为该记录的地址。"
                   fields={{ name: record.name, type: record.type }}
                   intent="remove_record"
                   isDestructive
-                  submitLabel="Remove"
-                  title={`Remove the ${record.type} record for ${record.name}?`}
+                  submitLabel="移除"
+                  title={`移除 ${record.name} 的 ${record.type} 记录？`}
                   trigger={<RemoveButton disabled={isLocked} />}
                 />
               }

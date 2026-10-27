@@ -34,14 +34,13 @@ export default function ManageNS({ global, split, isDisabled }: Props) {
       action={isDisabled ? undefined : <AddNS />}
       description={
         <>
-          The servers devices use for names outside the tailnet, preferring ones higher in the list.
-          A server marked with a domain only answers for that domain.{" "}
+          设备用于解析 Tailnet 外部名称的服务器，列表中越靠前的优先使用。标记了域名的服务器只应答该域名。参阅{" "}
           <Link external styled to="https://tailscale.com/kb/1054/dns">
-            Docs
+            DNS 文档
           </Link>
         </>
       }
-      title="Nameservers"
+      title="名称服务器"
     >
       {reorder.error && (
         <Callout className="mb-3" variant="error">
@@ -50,7 +49,7 @@ export default function ManageNS({ global, split, isDisabled }: Props) {
       )}
       {rows.length === 0 ? (
         <p className="text-muted py-2.5 text-sm">
-          No nameservers. Devices use their own DNS settings.
+          没有名称服务器。设备使用自己的 DNS 设置。
         </p>
       ) : (
         <RowList>
@@ -64,14 +63,14 @@ export default function ManageNS({ global, split, isDisabled }: Props) {
                   <ActionDialog
                     description={
                       domain
-                        ? `Devices stop using this nameserver for ${domain}.`
-                        : "Devices stop using this nameserver for queries outside the tailnet."
+                        ? `设备将不再使用此名称服务器解析 ${domain}。`
+                        : "设备将不再使用此名称服务器解析 Tailnet 外部的查询。"
                     }
                     fields={domain ? { nameserver: ns, split_domain: domain } : { nameserver: ns }}
                     intent="remove_ns"
                     isDestructive
-                    submitLabel="Remove"
-                    title={`Remove nameserver ${ns}?`}
+                    submitLabel="移除"
+                    title={`移除名称服务器 ${ns}？`}
                     trigger={<RemoveButton disabled={isDisabled} />}
                   />
                 </div>

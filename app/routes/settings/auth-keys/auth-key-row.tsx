@@ -27,19 +27,19 @@ export default function AuthKeyRow({ authKey, user }: Props) {
               {tag}
             </span>
           ))}
-          <Chip text={authKey.reusable ? "Reusable" : isSpent ? "Used" : "Single use"} />
-          {authKey.ephemeral && <Chip text="Ephemeral" />}
+          <Chip text={authKey.reusable ? "可重复使用" : isSpent ? "已使用" : "单次使用"} />
+          {authKey.ephemeral && <Chip text="临时" />}
         </div>
       </TableCell>
       <TableCell>
-        {user ? getUserDisplayName(user) : <span className="text-muted">Tags only</span>}
+        {user ? getUserDisplayName(user) : <span className="text-muted">仅标签</span>}
       </TableCell>
       <TableCell
         className={isPastExpiry ? "text-muted whitespace-nowrap" : "whitespace-nowrap"}
         suppressHydrationWarning
         title={expiration.toLocaleString()}
       >
-        {isPastExpiry ? `Expired ${formatTimeDelta(expiration)}` : formatTimeUntil(expiration)}
+        {isPastExpiry ? `${formatTimeDelta(expiration)}过期` : formatTimeUntil(expiration)}
       </TableCell>
       <TableCell
         className="text-muted whitespace-nowrap"

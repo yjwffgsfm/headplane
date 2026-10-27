@@ -15,9 +15,9 @@ export const restrictionValue = {
   domain: v.pipe(
     v.string(),
     v.trim(),
-    v.nonEmpty("Enter a domain."),
-    v.check(isHostname, "Enter a domain like example.com."),
+    v.nonEmpty("请输入域名。"),
+    v.check(isHostname, "请输入类似 example.com 的域名。"),
   ),
-  group: v.pipe(v.string(), v.trim(), v.nonEmpty("Enter a group.")),
-  user: v.pipe(v.string(), v.trim(), v.nonEmpty("Enter a user.")),
+  group: v.pipe(v.string(), v.trim(), v.nonEmpty("请输入组。")),
+  user: v.pipe(v.string(), v.trim(), v.nonEmpty("请输入用户。")),
 };

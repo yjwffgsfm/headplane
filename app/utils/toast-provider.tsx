@@ -17,7 +17,7 @@ function ToastList() {
       >
         <Toast.Description>{toast.description}</Toast.Description>
         <Toast.Close
-          aria-label="Close"
+          aria-label="关闭"
           className={cn(
             "inline-flex shrink-0 items-center justify-center rounded-full p-1",
             "bg-transparent hover:bg-hover",

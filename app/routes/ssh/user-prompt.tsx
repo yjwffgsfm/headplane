@@ -14,8 +14,8 @@ interface UserPromptProps {
 export default function UserPrompt({ hostname }: UserPromptProps) {
   return (
     <Shell
-      description="Pick the user to sign in as. Your policy's SSH rules decide which ones are allowed."
-      title={`Connect to ${hostname}`}
+      description="选择要登录使用的用户。策略中的 SSH 规则决定允许使用哪些用户。"
+      title={`连接到 ${hostname}`}
     >
       <Form
         className="flex flex-col gap-3"
@@ -36,17 +36,15 @@ export default function UserPrompt({ hostname }: UserPromptProps) {
           window.location.assign(url.toString());
         }}
       >
-        <Input autoComplete="off" label="Username" name="user" required spellCheck={false} />
+        <Input autoComplete="off" label="用户名" name="user" required spellCheck={false} />
         <Button className="w-full" type="submit" variant="primary">
-          Connect
+          连接
         </Button>
       </Form>
       <p className="text-muted mt-6 text-sm">
-        Can't connect? See{" "}
-        <Link external styled to={`${SSH_DOCS_URL}#troubleshooting`}>
-          troubleshooting
-        </Link>
-        .
+        无法连接？请查看<Link external styled to={`${SSH_DOCS_URL}#troubleshooting`}>
+          故障排查
+        </Link>。
       </p>
     </Shell>
   );

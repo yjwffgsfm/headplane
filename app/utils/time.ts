@@ -1,12 +1,10 @@
-const UNITS: [Intl.RelativeTimeFormatUnit, number][] = [
-  ["year", 365 * 24 * 60 * 60],
-  ["month", 30 * 24 * 60 * 60],
-  ["day", 24 * 60 * 60],
-  ["hour", 60 * 60],
-  ["minute", 60],
+const UNITS: [string, number][] = [
+  ["年", 365 * 24 * 60 * 60],
+  ["个月", 30 * 24 * 60 * 60],
+  ["天", 24 * 60 * 60],
+  ["小时", 60 * 60],
+  ["分钟", 60],
 ];
-
-const relative = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 
 /**
  * Formats the time since a date in its largest unit, e.g. "3 hours ago".
@@ -15,11 +13,11 @@ export function formatTimeDelta(date: Date): string {
   const seconds = Math.round((Date.now() - date.getTime()) / 1000);
   for (const [unit, size] of UNITS) {
     if (seconds >= size) {
-      return relative.format(-Math.floor(seconds / size), unit);
+      return `${Math.floor(seconds / size)} ${unit}前`;
     }
   }
 
-  return "just now";
+  return "刚刚";
 }
 
 /**
@@ -29,9 +27,9 @@ export function formatTimeUntil(date: Date): string {
   const seconds = Math.round((date.getTime() - Date.now()) / 1000);
   for (const [unit, size] of UNITS) {
     if (seconds >= size) {
-      return relative.format(Math.floor(seconds / size), unit);
+      return `${Math.floor(seconds / size)} ${unit}后`;
     }
   }
 
-  return "now";
+  return "即将";
 }

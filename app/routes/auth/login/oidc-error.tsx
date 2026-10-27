@@ -3,7 +3,7 @@ import Code from "~/components/code";
 
 export function OidcErrorNotice({ code }: { code: string }) {
   return (
-    <Callout className="mb-6" title="Single sign-on failed" variant="error">
+    <Callout className="mb-6" title="单点登录失败" variant="error">
       {getErrorMessage(code)}
     </Callout>
   );
@@ -14,8 +14,7 @@ function getErrorMessage(code: string) {
     case "error_no_query":
       return (
         <p>
-          The SSO provider did not correctly redirect back to Headplane with the required
-          parameters. Please ensure your SSO provider is configured correctly.
+          SSO 提供方未能正确重定向回 Headplane，缺少必需的参数。请确认你的 SSO 提供方配置正确。
         </p>
       );
 
@@ -23,28 +22,26 @@ function getErrorMessage(code: string) {
     case "error_invalid_session":
       return (
         <p>
-          Unable to complete SSO login due to missing or invalid session data. Ensure that your
-          Headplane cookie configuration is correct and that your browser is accepting cookies.
+          由于会话数据缺失或无效，无法完成 SSO 登录。请确认 Headplane 的 Cookie 配置正确，且浏览器允许接受 Cookie。
         </p>
       );
 
     case "error_no_sub":
       return (
         <p>
-          The SSO provider did not return a valid user identifier. Please ensure your SSO provider
-          is correctly configured to provide the <Code>sub</Code> claim.
+          SSO 提供方未返回有效的用户标识符。请确认你的 SSO 提供方已正确配置以提供{" "}
+          <Code>sub</Code> 声明。
         </p>
       );
 
     case "error_auth_failed":
       return (
         <p>
-          Authentication with the SSO provider failed. Please try again later. Headplane logs may
-          provide more information.
+          使用 SSO 提供方进行认证失败。请稍后重试。Headplane 日志可能提供更多信息。
         </p>
       );
 
     default:
-      return <p>An unknown error occurred during OIDC authentication. Please try again later.</p>;
+      return <p>OIDC 认证过程中发生未知错误。请稍后重试。</p>;
   }
 }

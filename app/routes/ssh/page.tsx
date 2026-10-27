@@ -136,11 +136,11 @@ export default function Page({ loaderData }: Route.ComponentProps) {
       <>
         <BrowserSSHCompatibilityBanner warning={compatibilityWarning} />
         <Shell
-          description="It isn't connected to the tailnet right now. Start Tailscale on it, then try again."
-          title={`${hostname} is offline`}
+          description="此设备当前未连接到 Tailnet 网络。请在其上启动 Tailscale 后重试。"
+          title={`${hostname} 已离线`}
         >
           <Button onClick={() => window.location.reload()} variant="primary">
-            Try again
+            重试
           </Button>
         </Shell>
       </>
@@ -177,11 +177,12 @@ function BrowserSSHCompatibilityBanner({
         className="bg-raised"
         isDismissable
         variant="warning"
-        title={`Browser SSH is broken on Headscale ${warning.version}`}
+        title={`Headscale ${warning.version} 上的浏览器 SSH 无法使用`}
       >
-        Headscale 0.29 beta releases through 0.29.1 reject Tailscale's browser/WASM{" "}
-        <Code>/ts2021</Code> WebSocket request with <Code>405 Method Not Allowed</Code>. Upgrade
-        Headscale to 0.29.2 or newer, or use Headscale 0.28.x.
+        Headscale 0.29 的 beta 版本到 0.29.1 都会以{" "}
+        <Code>405 Method Not Allowed</Code> 拒绝 Tailscale 浏览器/WASM 的{" "}
+        <Code>/ts2021</Code> WebSocket 请求。请将 Headscale 升级到 0.29.2 或更高版本，或使用
+        Headscale 0.28.x。
       </Callout>
     </div>
   );
@@ -200,7 +201,7 @@ function SSHConsole({
   const [isTerminalShown, setIsTerminalShown] = useState(false);
   const [isWasmMissing, setIsWasmMissing] = useState(false);
   const [authUrl, setAuthUrl] = useState<string>();
-  const [status, setStatus] = useState("Joining Tailnet…");
+  const [status, setStatus] = useState("正在加入 Tailnet…");
 
   // Stable, so the terminal isn't torn down and reconnected on re-render.
   const showTerminal = useCallback(() => setIsTerminalShown(true), []);
@@ -219,12 +220,12 @@ function SSHConsole({
       authKey: node.preAuthKey,
       hostname: node.ephemeralHostname,
       onPanic: (error) => {
-        if (!cancelled) setStatus(`Tailnet node stopped: ${error}`);
+        if (!cancelled) setStatus(`Tailnet 节点已停止：${error}`);
       },
     }).then(
       (instance) => {
         if (cancelled) return;
-        setStatus(`Connecting to ${hostname}…`);
+        setStatus(`正在连接到 ${hostname}…`);
         setIpn(instance);
       },
       (error: unknown) => {
@@ -234,7 +235,7 @@ function SSHConsole({
           return;
         }
 
-        setStatus(`Failed to join Tailnet: ${error instanceof Error ? error.message : error}`);
+        setStatus(`加入 Tailnet 失败：${error instanceof Error ? error.message : error}`);
       },
     );
 
@@ -250,10 +251,9 @@ function SSHConsole({
   return (
     <div className="fixed inset-0 flex flex-col bg-black">
       {authUrl && (
-        <Callout className="m-4" title="Sign in to continue" variant="warning">
-          {hostname} needs you to sign in again before it opens the session.{" "}
-          <Link external styled to={authUrl}>
-            Sign in
+        <Callout className="m-4" title="登录后继续" variant="warning">
+          {hostname} 需要你重新登录后才能打开会话。<Link external styled to={authUrl}>
+            登录
           </Link>
         </Callout>
       )}

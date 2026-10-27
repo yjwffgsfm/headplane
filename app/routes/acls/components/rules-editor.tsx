@@ -110,13 +110,13 @@ export default function RulesEditor({
       ) : null}
 
       <Section
-        description="Rules are evaluated top to bottom. Traffic is denied unless a rule allows it."
+        description="规则自上而下依次评估。除非有规则允许，否则流量会被拒绝。"
         isDisabled={isDisabled}
         onAdd={() => setEditing({ kind: "acl", index: null })}
-        title="Access rules"
+        title="访问规则"
       >
         {policy.acls.length === 0 ? (
-          <Empty text="No access rules are defined yet." />
+          <Empty text="尚未定义访问规则。" />
         ) : (
           policy.acls.map((rule, index) => (
             <List.Item
@@ -126,7 +126,7 @@ export default function RulesEditor({
               <div className="flex min-w-0 flex-wrap items-center gap-2">
                 {/* An unknown action is shown verbatim, never relabelled. */}
                 <span className="text-xs font-semibold uppercase opacity-60">
-                  {rule.action === "accept" ? "Allow" : rule.action}
+                  {rule.action === "accept" ? "允许" : rule.action}
                 </span>
                 <ChipRow values={rule.src} />
                 <ArrowRight className="h-4 w-4 shrink-0 opacity-60" />
@@ -146,13 +146,13 @@ export default function RulesEditor({
       </Section>
 
       <Section
-        description="Control which nodes can be reached over Tailscale SSH and as which local user."
+        description="控制哪些节点可以通过 Tailscale SSH 访问，以及以哪个本地用户身份访问。"
         isDisabled={isDisabled}
         onAdd={() => setEditing({ kind: "ssh", index: null })}
-        title="SSH rules"
+        title="SSH 规则"
       >
         {policy.ssh.length === 0 ? (
-          <Empty text="No SSH rules are defined yet." />
+          <Empty text="尚未定义 SSH 规则。" />
         ) : (
           policy.ssh.map((rule, index) => (
             <List.Item
@@ -165,7 +165,7 @@ export default function RulesEditor({
                 <ChipRow values={rule.src} />
                 <ArrowRight className="h-4 w-4 shrink-0 opacity-60" />
                 <ChipRow values={rule.dst} />
-                <span className="text-xs opacity-60">as</span>
+                <span className="text-xs opacity-60">作为</span>
                 <ChipRow values={rule.users} />
               </div>
               <RowActions
@@ -181,13 +181,13 @@ export default function RulesEditor({
       </Section>
 
       <Section
-        description="Named IP addresses and CIDR ranges that can be referenced from rules."
+        description="可在规则中引用的命名 IP 地址和 CIDR 范围。"
         isDisabled={isDisabled}
         onAdd={() => setEditing({ kind: "host", name: null })}
-        title="Hosts"
+        title="主机"
       >
         {hostEntries.length === 0 ? (
-          <Empty text="No hosts are defined yet." />
+          <Empty text="尚未定义主机。" />
         ) : (
           hostEntries.map(([name, value]) => (
             <List.Item key={name}>

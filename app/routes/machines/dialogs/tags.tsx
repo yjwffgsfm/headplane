@@ -27,9 +27,8 @@ export default function Tags({ machine, isOpen, setIsOpen, existingTags, policyT
     <ActionDialog
       description={
         <>
-          Tags let your access control policy refer to machines by role.{" "}
-          <Link external styled to="https://tailscale.com/kb/1068/acl-tags">
-            Docs
+          标签让访问控制策略可以按角色引用设备。<Link external styled to="https://tailscale.com/kb/1068/acl-tags">
+            文档
           </Link>
         </>
       }
@@ -38,15 +37,15 @@ export default function Tags({ machine, isOpen, setIsOpen, existingTags, policyT
       isDisabled={isUnchanged}
       onOpenChange={setIsOpen}
       open={isOpen}
-      submitLabel="Save tags"
-      title={`Tags for ${machine.givenName}`}
+      submitLabel="保存标签"
+      title={`${machine.givenName} 的标签`}
     >
       {tags.map((tag) => (
         <input key={tag} name="tags" type="hidden" value={tag} />
       ))}
       <TokenList
-        emptyText="No tags on this machine"
-        label="Tags"
+        emptyText="这台设备没有标签"
+        label="标签"
         normalize={(value) => (value.startsWith("tag:") ? value : `tag:${value}`)}
         onChange={setTags}
         placeholder="tag:server"
@@ -56,14 +55,11 @@ export default function Tags({ machine, isOpen, setIsOpen, existingTags, policyT
       />
       {undeclaredTags.length > 0 && (
         <Callout variant="warning">
-          {undeclaredTags.join(", ")} {undeclaredTags.length === 1 ? "isn't" : "aren't"} declared
-          under <Code>tagOwners</Code>, so no rule will match{" "}
-          {undeclaredTags.length === 1 ? "it" : "them"}. Declare{" "}
-          {undeclaredTags.length === 1 ? "it" : "them"} in{" "}
+          {undeclaredTags.join(", ")} 未在 <Code>tagOwners</Code> 中声明，因此没有规则会匹配它。请在
           <Link styled to="/acls">
-            Access Control
+            访问控制
           </Link>
-          .
+          中声明。
         </Callout>
       )}
     </ActionDialog>

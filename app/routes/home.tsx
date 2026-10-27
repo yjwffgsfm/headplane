@@ -100,12 +100,12 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 
   return (
     <Shell
-      description="You don't have access to the dashboard, but your devices can still join the network."
+      description="你无权访问仪表盘，但你的设备仍可加入网络。"
       isWide
-      title="Connect your devices"
+      title="连接你的设备"
     >
       <ol className="flex flex-col gap-6">
-        <Step number={1} title="Install Tailscale">
+        <Step number={1} title="安装 Tailscale">
           <div className="flex flex-wrap gap-2">
             {downloads.map((d) => (
               <Button
@@ -120,23 +120,23 @@ export default function Home({ loaderData }: Route.ComponentProps) {
             ))}
           </div>
           <p className="text-muted mt-4 mb-2 text-sm">
-            On Linux, use the install script (
+            在 Linux 上，请使用安装脚本（
             <Link
               external
               styled
               to="https://github.com/tailscale/tailscale/blob/main/scripts/installer.sh"
             >
-              source
+              源代码
             </Link>
-            ):
+            ）：
           </p>
           <CodeBlock>curl -fsSL https://tailscale.com/install.sh | sh</CodeBlock>
         </Step>
-        <Step number={2} title="Sign in to this network">
+        <Step number={2} title="登录此网络">
           <CodeBlock>{`tailscale up --login-server=${server}`}</CodeBlock>
           <p className="text-muted mt-2 text-sm">
-            Then open the link it prints. In the desktop and mobile apps, set a custom coordination
-            server to <span className="text-fg break-all">{server}</span> instead.
+            然后打开它输出的链接。在桌面和移动应用中，改为将自定义协调服务器设置为{" "}
+            <span className="text-fg break-all">{server}</span>。
           </p>
         </Step>
       </ol>
@@ -178,12 +178,12 @@ function LinkStatus({ hasHeadscaleSso, isLinked, linkedName }: LinkStatusProps) 
       <Status icon={<Check className="text-ok size-4" />}>
         {linkedName ? (
           <>
-            Linked as <span className="font-medium">{linkedName}</span>
+            已关联为 <span className="font-medium">{linkedName}</span>
           </>
         ) : (
-          "Your account is linked"
+          "你的账号已关联"
         )}
-        {hasHeadscaleSso === false && <Detail>An administrator approves each new device.</Detail>}
+        {hasHeadscaleSso === false && <Detail>每台新设备都需要管理员批准。</Detail>}
       </Status>
     );
   }
@@ -198,10 +198,9 @@ function LinkStatus({ hasHeadscaleSso, isLinked, linkedName }: LinkStatusProps) 
           </span>
         }
       >
-        Waiting for your first device…
+        等待你的第一台设备…
         <Detail>
-          Your account links once a device signs in with single sign-on. Not linking? Ask an
-          administrator.
+          当某台设备通过单点登录登录后，你的账号就会关联。仍未关联？请联系管理员。
         </Detail>
       </Status>
     );
@@ -209,8 +208,8 @@ function LinkStatus({ hasHeadscaleSso, isLinked, linkedName }: LinkStatusProps) 
 
   return (
     <Status icon={<TriangleAlert className="text-warn size-4" />}>
-      Ask an administrator to link your account
-      {hasHeadscaleSso === false && <Detail>They'll also approve each new device.</Detail>}
+      请联系管理员关联你的账号
+      {hasHeadscaleSso === false && <Detail>管理员还会批准每台新设备。</Detail>}
     </Status>
   );
 }

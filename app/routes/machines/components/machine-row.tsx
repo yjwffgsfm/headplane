@@ -106,7 +106,7 @@ export default function MachineRow({
                 key={value}
                 onClick={async () => {
                   const isCopied = await copyToClipboard(value);
-                  toast(isCopied ? `Copied ${value}` : "Copy failed. Copy the address manually.");
+                  toast(isCopied ? `已复制 ${value}` : "复制失败，请手动复制该地址。");
                 }}
               >
                 <div className="flex w-full items-center justify-between gap-x-6">
@@ -129,10 +129,10 @@ export default function MachineRow({
               <p className="flex items-center gap-x-1 font-mono">
                 {hinfo.getTSVersion(node.hostInfo)}
                 {latestVersion && hinfo.isUpdateAvailable(node.hostInfo, latestVersion) ? (
-                  <Tooltip content={`Tailscale ${latestVersion} is available.`}>
+                  <Tooltip content={`Tailscale ${latestVersion} 已可用。`}>
                     <span className="bg-warn-subtle text-warn inline-flex size-4 items-center justify-center rounded-full">
                       <ArrowUp
-                        aria-label="Update available"
+                        aria-label="有可用更新"
                         className="size-3"
                         strokeWidth={2.75}
                       />
@@ -143,13 +143,13 @@ export default function MachineRow({
               <p className="text-muted max-w-48 truncate">{hinfo.getOSInfo(node.hostInfo)}</p>
             </>
           ) : (
-            <p className="text-muted">Unknown</p>
+            <p className="text-muted">未知</p>
           )}
         </TableCell>
       ) : undefined}
       <TableCell className="whitespace-nowrap">
         {isConnected ? (
-          <span className="text-ok">Connected</span>
+          <span className="text-ok">已连接</span>
         ) : (
           <span
             className="text-muted"

@@ -25,24 +25,24 @@ export default function NewMachine(data: NewMachineProps) {
   return (
     <>
       <ActionDialog
-        description="Run this on the device, then paste the key it prints."
+        description="在设备上运行下面的命令，然后粘贴它输出的密钥。"
         intent="register"
         onOpenChange={setIsRegisterOpen}
         open={isRegisterOpen}
-        submitLabel="Register"
-        title="Register a machine"
+        submitLabel="注册"
+        title="注册设备"
       >
         <CodeBlock>{`tailscale up --login-server=${data.server}`}</CodeBlock>
         <Input
-          description="The registration URL or the full hskey-authreq-... key."
-          label="Machine key"
+          description="注册 URL，或完整的 hskey-authreq-... 密钥。"
+          label="设备密钥"
           name="register_key"
           placeholder="hskey-authreq-XXXXXXXXXXXXXXXXXXXXXXXX"
           required
           validate={(value) =>
             normalizeRegistrationKey(String(value ?? ""))
               ? null
-              : "Paste the registration URL or full hskey-authreq-... key."
+              : "请粘贴注册 URL 或完整的 hskey-authreq-... 密钥。"
           }
         />
         <Select
@@ -52,16 +52,16 @@ export default function NewMachine(data: NewMachineProps) {
             value: user.name,
             label: getUserDisplayName(user),
           }))}
-          label="Owner"
+          label="所有者"
           name="user"
-          placeholder="Select a user"
+          placeholder="选择用户"
           required
         />
       </ActionDialog>
       <Menu disabled={data.isDisabled}>
         <MenuTrigger className="bg-ink text-ink-fg hover:bg-ink/90 h-8 gap-1.5 rounded-md px-3 text-sm font-medium">
           <Plus className="size-3.5" />
-          Add machine
+          添加设备
         </MenuTrigger>
         <MenuContent>
           <MenuItem
@@ -70,7 +70,7 @@ export default function NewMachine(data: NewMachineProps) {
           >
             <div className="flex items-center gap-x-3">
               <Computer className="w-4" />
-              Register machine key
+              注册设备密钥
             </div>
           </MenuItem>
           <MenuItem
@@ -79,7 +79,7 @@ export default function NewMachine(data: NewMachineProps) {
           >
             <div className="flex items-center gap-x-3">
               <FileKey2 className="w-4" />
-              Create auth key
+              创建认证密钥
             </div>
           </MenuItem>
         </MenuContent>

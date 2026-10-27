@@ -18,29 +18,29 @@ const validateUsername = fieldValidator(username);
 export default function CreateUser({ isOidc, isDisabled }: CreateUserProps) {
   return (
     <ActionDialog
-      description={`The user is listed under Unlinked Headscale Users until they sign in${
-        isOidc ? " through your OIDC provider" : ""
-      }, which links them to a Headplane account.`}
+      description={`在登录之前，用户会显示在“未关联的 Headscale 用户”下，${
+        isOidc ? "通过你的 OIDC 提供商" : ""
+      }登录后即会关联到 Headplane 账户。`}
       intent="create"
-      submitLabel="Create user"
-      title="Create a Headscale user"
+      submitLabel="创建用户"
+      title="创建 Headscale 用户"
       trigger={
         <Button disabled={isDisabled} variant="primary">
           <Plus className="size-3.5" />
-          Add user
+          添加用户
         </Button>
       }
     >
       <Input
         description={USERNAME_RULE}
-        label="Username"
+        label="用户名"
         name="name"
         placeholder="my-new-user"
         required
         validate={validateUsername}
       />
-      <Input label="Display name" name="display_name" placeholder="John Doe" />
-      <Input label="Email" name="email" placeholder="name@example.com" type="email" />
+      <Input label="显示名称" name="display_name" placeholder="张三" />
+      <Input label="邮箱" name="email" placeholder="name@example.com" type="email" />
     </ActionDialog>
   );
 }

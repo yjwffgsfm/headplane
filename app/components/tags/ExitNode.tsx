@@ -10,16 +10,15 @@ export function ExitNodeTag({ isEnabled }: ExitNodeTagProps) {
     <Tooltip
       content={
         isEnabled ? (
-          <>This machine is acting as an exit node.</>
+          <>此设备正在作为出口节点运行。</>
         ) : (
           <>
-            This machine is requesting to be used as an exit node. Review it from "Edit route
-            settings" in the machine's menu.
+            此设备请求作为出口节点使用。请在该设备的菜单中通过“编辑路由设置”进行审核。
           </>
         )
       }
     >
-      <Chip text="Exit node" variant={isEnabled ? "neutral" : "warn"} />
+      <Chip text="出口节点" variant={isEnabled ? "neutral" : "warn"} />
     </Tooltip>
   );
 }

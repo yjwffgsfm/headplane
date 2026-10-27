@@ -9,7 +9,7 @@ export interface ErrorInfo {
   details?: string;
 }
 
-const BUG = "This is probably a bug. Report it on GitHub with the details below.";
+const BUG = "这很可能是程序缺陷。请在 GitHub 上附上下方详情报告问题。";
 
 export function describeError(error: unknown): ErrorInfo {
   if (isRouteErrorResponse(error)) {
@@ -17,8 +17,8 @@ export function describeError(error: unknown): ErrorInfo {
     if (isConnectionError(data)) {
       return {
         kind: "connection",
-        title: "Can't reach Headscale",
-        description: "Check that Headscale is running and that Headplane can connect to it.",
+        title: "无法连接 Headscale",
+        description: "请检查 Headscale 是否正在运行，以及 Headplane 能否连接到它。",
         details: lines(data.requestUrl, data.errorMessage || data.errorCode),
       };
     }
@@ -32,8 +32,8 @@ export function describeError(error: unknown): ErrorInfo {
       if (data.statusCode >= 500) {
         return {
           kind: "headscale",
-          title: "Headscale returned an error",
-          description: `Headscale responded with ${data.statusCode}. Check its logs, then try again.`,
+          title: "Headscale 返回错误",
+          description: `Headscale 返回了 ${data.statusCode}。请检查其日志后重试。`,
           details,
         };
       }
@@ -41,16 +41,16 @@ export function describeError(error: unknown): ErrorInfo {
       if (data.statusCode === 401 || data.statusCode === 403) {
         return {
           kind: "headscale",
-          title: "Headscale rejected the request",
-          description: "Check that the API key in Headplane's config is valid and hasn't expired.",
+          title: "Headscale 拒绝了请求",
+          description: "请检查 Headplane 配置中的 API 密钥是否有效且未过期。",
           details,
         };
       }
 
       return {
         kind: "headscale",
-        title: "Unexpected response from Headscale",
-        description: "Headplane may not support this version of Headscale, or this is a bug.",
+        title: "Headscale 返回了意外的响应",
+        description: "Headplane 可能不支持此版本的 Headscale，或者这是一个程序缺陷。",
         details,
       };
     }
@@ -58,8 +58,8 @@ export function describeError(error: unknown): ErrorInfo {
     if (status === 404) {
       return {
         kind: "not_found",
-        title: "Page not found",
-        description: "There's nothing at this address.",
+        title: "页面不存在",
+        description: "此地址下没有任何内容。",
       };
     }
 
@@ -68,16 +68,16 @@ export function describeError(error: unknown): ErrorInfo {
     if (status === 403) {
       return {
         kind: "forbidden",
-        title: "You don't have access",
-        description: message ?? "Ask an administrator for access.",
+        title: "你没有访问权限",
+        description: message ?? "请联系管理员获取访问权限。",
       };
     }
 
     return {
       kind: "unknown",
-      title: "Something went wrong",
+      title: "出了点问题",
       description:
-        message ?? `The server responded with ${[status, statusText].filter(Boolean).join(" ")}.`,
+        message ?? `服务器返回了 ${[status, statusText].filter(Boolean).join(" ")}。`,
     };
   }
 
@@ -94,13 +94,13 @@ export function describeError(error: unknown): ErrorInfo {
 
     return {
       kind: "unknown",
-      title: "Something went wrong",
+      title: "出了点问题",
       description: BUG,
       details: `${root.name}: ${message}`,
     };
   }
 
-  return { kind: "unknown", title: "Something went wrong", description: BUG, details: json(error) };
+  return { kind: "unknown", title: "出了点问题", description: BUG, details: json(error) };
 }
 
 function messageOf(data: unknown) {

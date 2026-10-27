@@ -80,7 +80,7 @@ export function headscaleErrorMessage(error: unknown): string | undefined {
   }
 
   if (isConnectionError(error.data)) {
-    return "Couldn't reach Headscale. Check that it's running and try again.";
+    return "无法连接 Headscale。请检查其是否正在运行后重试。";
   }
 
   if (!isApiError(error.data)) {
@@ -94,7 +94,7 @@ export function headscaleErrorMessage(error: unknown): string | undefined {
       : rawData;
 
   if (message.length === 0) {
-    return `Headscale rejected the change (${statusCode}).`;
+    return `Headscale 拒绝了此更改（${statusCode}）。`;
   }
 
   return message.charAt(0).toUpperCase() + message.slice(1);

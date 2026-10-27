@@ -10,13 +10,13 @@ interface ExpireAuthKeyProps {
 export default function ExpireAuthKey({ authKey, user }: ExpireAuthKeyProps) {
   return (
     <ActionDialog
-      description="The key stops working for new devices right away."
+      description="该密钥会立即停止对新设备生效。"
       fields={{ key_id: authKey.id, user_id: user.id }}
       intent="expire"
       isDestructive
-      submitLabel="Expire key"
-      title="Expire this auth key?"
-      trigger={<RemoveButton>Expire</RemoveButton>}
+      submitLabel="使密钥过期"
+      title="使此认证密钥过期？"
+      trigger={<RemoveButton>设为过期</RemoveButton>}
     />
   );
 }

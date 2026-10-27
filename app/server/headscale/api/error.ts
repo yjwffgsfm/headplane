@@ -61,7 +61,7 @@ export function undiciToFriendlyError(
   return {
     requestUrl,
     errorCode: "UNKNOWN_ERROR",
-    errorMessage: "An unknown error occured",
+    errorMessage: "发生未知错误",
     extraData: null,
   };
 }

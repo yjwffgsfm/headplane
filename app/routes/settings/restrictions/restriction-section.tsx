@@ -6,19 +6,22 @@ import type { RestrictionType } from "./schemas";
 
 const copy = {
   domain: {
-    title: "Email domains",
-    description: "Only people with an email address at one of these domains can sign in.",
-    empty: "Any email domain can sign in.",
+    title: "邮箱域名",
+    description: "只有邮箱地址属于这些域名之一的人才能登录。",
+    empty: "任何邮箱域名都可以登录。",
+    noun: "域名",
   },
   group: {
-    title: "Groups",
-    description: "Only members of one of these groups in your identity provider can sign in.",
-    empty: "Any group can sign in.",
+    title: "组",
+    description: "只有身份提供方中这些组之一的成员才能登录。",
+    empty: "任何组都可以登录。",
+    noun: "组",
   },
   user: {
-    title: "Users",
-    description: "Only these users in your identity provider can sign in.",
-    empty: "Any user can sign in.",
+    title: "用户",
+    description: "只有身份提供方中的这些用户才能登录。",
+    empty: "任何用户都可以登录。",
+    noun: "用户",
   },
 };
 
@@ -29,7 +32,7 @@ interface Props {
 }
 
 export default function RestrictionSection({ type, values, isDisabled }: Props) {
-  const { title, description, empty } = copy[type];
+  const { title, description, empty, noun } = copy[type];
 
   return (
     <Section
@@ -45,12 +48,12 @@ export default function RestrictionSection({ type, values, isDisabled }: Props) 
             <Row
               action={
                 <ActionDialog
-                  description={`Only the remaining ${type}s can sign in. If none are left, every ${type} can.`}
+                  description={`只有剩余的${noun}可以登录。如果没有剩余，所有${noun}都可以登录。`}
                   fields={{ type, value }}
                   intent="remove"
                   isDestructive
-                  submitLabel="Remove"
-                  title={`Remove ${value}?`}
+                  submitLabel="移除"
+                  title={`移除 ${value}？`}
                   trigger={<RemoveButton disabled={isDisabled} />}
                 />
               }

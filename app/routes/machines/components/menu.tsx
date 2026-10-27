@@ -161,7 +161,7 @@ export default function MachineMenu({
         >
           {isFullButton ? (
             <>
-              Manage
+              管理
               <ChevronDown className="size-3.5" />
             </>
           ) : (
@@ -169,25 +169,25 @@ export default function MachineMenu({
           )}
         </MenuTrigger>
         <MenuContent>
-          <MenuItem onClick={() => setModal("rename")}>Edit machine name</MenuItem>
+          <MenuItem onClick={() => setModal("rename")}>编辑设备名称</MenuItem>
           {supportsDisablingKeyExpiry && (
             <MenuItem onClick={() => setModal("key-expiry")}>
-              {isNoExpiry(node.expiry) ? "Enable" : "Disable"} key expiry
+              {isNoExpiry(node.expiry) ? "启用" : "关闭"}密钥过期
             </MenuItem>
           )}
-          <MenuItem onClick={() => setModal("routes")}>Edit route settings</MenuItem>
-          <MenuItem onClick={() => setModal("tags")}>Edit ACL tags</MenuItem>
+          <MenuItem onClick={() => setModal("routes")}>编辑路由设置</MenuItem>
+          <MenuItem onClick={() => setModal("tags")}>编辑 ACL 标签</MenuItem>
           {supportsNodeOwnerChange && (
-            <MenuItem onClick={() => setModal("move")}>Change owner</MenuItem>
+            <MenuItem onClick={() => setModal("move")}>更改所有者</MenuItem>
           )}
           <MenuSeparator />
           {!isNoExpiry(node.expiry) && (
             <MenuItem variant="danger" disabled={node.expired} onClick={() => setModal("expire")}>
-              Expire
+              立即过期
             </MenuItem>
           )}
           <MenuItem variant="danger" onClick={() => setModal("remove")}>
-            Remove
+            移除
           </MenuItem>
         </MenuContent>
       </Menu>

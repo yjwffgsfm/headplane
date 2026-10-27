@@ -38,7 +38,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const canGenerateAny = auth.can(principal, Capabilities.generate_authkeys);
   const canGenerateOwn = auth.can(principal, Capabilities.generate_own_authkeys);
   if (!canGenerateAny && !canGenerateOwn) {
-    throw data("You don't have permission to do this. Ask your administrator for access.", {
+    throw data("你没有执行此操作的权限。请联系管理员获取访问权限。", {
       status: 403,
     });
   }
@@ -126,10 +126,10 @@ export const action = authKeysAction;
 export const clientAction = toastClientAction;
 
 const STATUS_OPTIONS = [
-  { value: "active", label: "Active" },
-  { value: "expired", label: "Expired" },
-  { value: "reusable", label: "Reusable" },
-  { value: "ephemeral", label: "Ephemeral" },
+  { value: "active", label: "有效" },
+  { value: "expired", label: "已过期" },
+  { value: "reusable", label: "可重复使用" },
+  { value: "ephemeral", label: "临时" },
 ] as const;
 
 type Status = (typeof STATUS_OPTIONS)[number]["value"];
@@ -156,7 +156,7 @@ export default function Page({
     ...keys
       .filter((k): k is { user: User; preAuthKeys: PreAuthKey[] } => k.user !== null)
       .map(({ user }) => ({ value: user.id, label: getUserDisplayName(user) })),
-    ...(keys.some(({ user }) => user === null) ? [{ value: TAG_ONLY, label: "Tags only" }] : []),
+    ...(keys.some(({ user }) => user === null) ? [{ value: TAG_ONLY, label: "仅标签" }] : []),
   ];
 
   const filteredKeys = useMemo(() => {
@@ -210,64 +210,61 @@ export default function Page({
         }
         description={
           <>
-            Register machines without signing in.{" "}
-            <Link external styled to="https://tailscale.com/kb/1085/auth-keys/">
-              Docs
+            无需登录即可注册设备。<Link external styled to="https://tailscale.com/kb/1085/auth-keys/">
+              文档
             </Link>
           </>
         }
-        title="Auth keys"
+        title="认证密钥"
       />
       {!access && (
         <Callout className="mb-6">
-          Your permissions don't allow creating auth keys. Ask an administrator to create one for
-          you.
+          你的权限不允许创建认证密钥。请联系管理员为你创建。
         </Callout>
       )}
       {missing.length > 0 && (
-        <Callout className="mb-6" title="Some keys couldn't be loaded" variant="error">
-          Headplane couldn't fetch the keys for{" "}
-          {missing.map(({ user }) => getUserDisplayName(user)).join(", ")}. Check the server logs
-          for details.
+        <Callout className="mb-6" title="部分密钥无法加载" variant="error">
+          Headplane 无法获取以下用户的密钥：
+          {missing.map(({ user }) => getUserDisplayName(user)).join("，")}。请查看服务器日志了解详情。
         </Callout>
       )}
       {allKeys.length === 0 ? (
-        <p className="text-muted text-sm">No auth keys yet.</p>
+        <p className="text-muted text-sm">暂无认证密钥。</p>
       ) : (
         <>
           <div className="mb-3 flex flex-wrap items-center gap-2">
             {userOptions.length > 1 && (
               <FilterDropdown
-                label="User"
+                label="用户"
                 onChange={setSelectedUser}
                 options={userOptions}
                 value={selectedUser}
               />
             )}
             <FilterDropdown
-              label="Status"
+              label="状态"
               onChange={(value) => setStatus(value as Status | null)}
               options={STATUS_OPTIONS}
               value={status}
             />
             <span className="text-muted ml-auto text-xs tabular-nums">
-              {filteredKeys.length} {filteredKeys.length === 1 ? "key" : "keys"}
+              {filteredKeys.length} 个密钥
             </span>
           </div>
           {filteredKeys.length === 0 ? (
             <p className="text-muted border-line border-t py-2.5 text-sm">
-              No keys match these filters.
+              没有密钥匹配这些筛选条件。
             </p>
           ) : (
             <Table>
               <thead>
                 <tr>
-                  <TableHeader>Key</TableHeader>
-                  <TableHeader>User</TableHeader>
-                  <TableHeader>Expires</TableHeader>
-                  <TableHeader>Created</TableHeader>
+                  <TableHeader>密钥</TableHeader>
+                  <TableHeader>用户</TableHeader>
+                  <TableHeader>到期时间</TableHeader>
+                  <TableHeader>创建时间</TableHeader>
                   <TableHeader className="w-20">
-                    <span className="sr-only">Actions</span>
+                    <span className="sr-only">操作</span>
                   </TableHeader>
                 </tr>
               </thead>
@@ -292,5 +289,5 @@ export default function Page({
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  return <PageError error={error} page="auth keys" />;
+  return <PageError error={error} page="认证密钥" />;
 }

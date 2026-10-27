@@ -15,14 +15,14 @@ export default function TransferOwnership({
 }: TransferOwnershipProps) {
   return (
     <ActionDialog
-      description={`${targetDisplayName} becomes the owner of this Headplane instance and you become an Admin. Only the new owner can transfer it back.`}
+      description={`${targetDisplayName} 将成为此 Headplane 实例的所有者，你将成为管理员。只有新的所有者才能将其转移回来。`}
       fields={{ headplane_user_id: targetHeadplaneUserId }}
       intent="transfer"
       isDestructive
       onOpenChange={setIsOpen}
       open={isOpen}
-      submitLabel="Transfer ownership"
-      title={`Transfer ownership to ${targetDisplayName}?`}
+      submitLabel="转移所有权"
+      title={`将所有权转移给 ${targetDisplayName}？`}
     />
   );
 }

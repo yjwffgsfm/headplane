@@ -18,7 +18,7 @@ const configPaths = {
   user: { path: "oidc.allowed_users", key: "allowedUsers" },
 } as const;
 
-const labels = { domain: "Domain", group: "Group", user: "User" };
+const labels = { domain: "域名", group: "组", user: "用户" };
 
 export const restrictionAction = createAction({
   capability: Capabilities.configure_iam,
@@ -28,7 +28,7 @@ export const restrictionAction = createAction({
     const config = context.get(headscaleConfigContext);
     const integration = context.get(integrationContext);
     if (!config.writable()) {
-      throw new ActionError("The Headscale configuration is read-only.", 403);
+      throw new ActionError("Headscale 配置为只读。", 403);
     }
 
     function current(type: RestrictionType) {
@@ -38,10 +38,7 @@ export const restrictionAction = createAction({
     async function save(type: RestrictionType, values: string[]) {
       await config.patch([{ path: configPaths[type].path, value: values }]);
       if (integration && !(await integration.onConfigChange(headscale))) {
-        throw new ActionError(
-          "Saved, but Headscale didn't come back after restarting. Check its logs.",
-          502,
-        );
+        throw new ActionError("已保存，但 Headscale 重启后未能恢复。请检查其日志。", 502);
       }
     }
 
@@ -58,11 +55,11 @@ export const restrictionAction = createAction({
 
         const values = current(input.type);
         if (values.includes(value.data)) {
-          return invalid({ value: `This ${input.type} is already in the list.` });
+          return invalid({ value: `该${labels[input.type]}已在列表中。` });
         }
 
         await save(input.type, [...values, value.data]);
-        return ok(`${labels[input.type]} added`);
+        return ok(`${labels[input.type]}已添加`);
       },
     },
     remove: {
@@ -70,14 +67,14 @@ export const restrictionAction = createAction({
       async handler(input, { current, save }) {
         const values = current(input.type);
         if (!values.includes(input.value)) {
-          throw new ActionError(`This ${input.type} isn't in the list.`);
+          throw new ActionError(`该${labels[input.type]}不在列表中。`);
         }
 
         await save(
           input.type,
           values.filter((value) => value !== input.value),
         );
-        return ok(`${labels[input.type]} removed`);
+        return ok(`${labels[input.type]}已移除`);
       },
     },
   },

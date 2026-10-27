@@ -22,7 +22,7 @@ export const meta: MetaFunction = () => [
   { title: "Headplane" },
   {
     name: "description",
-    content: "A frontend for the headscale coordination server",
+    content: "Headscale 协调服务器的前端界面",
   },
 ];
 
@@ -40,7 +40,7 @@ export function Layout({ children }: { readonly children: React.ReactNode }) {
   return (
     <LiveDataProvider>
       <html
-        lang="en"
+        lang="zh-CN"
         className={
           loaderData?.colorScheme === "dark"
             ? "dark"

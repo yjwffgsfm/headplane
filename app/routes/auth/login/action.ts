@@ -21,7 +21,7 @@ export async function loginAction({ request, context }: Route.LoaderArgs) {
     );
     return {
       success: false,
-      message: "Enter an API key.",
+      message: "请输入 API 密钥。",
     };
   }
 
@@ -33,7 +33,7 @@ export async function loginAction({ request, context }: Route.LoaderArgs) {
     );
     return {
       success: false,
-      message: "Enter an API key.",
+      message: "请输入 API 密钥。",
     };
   }
 
@@ -41,7 +41,7 @@ export async function loginAction({ request, context }: Route.LoaderArgs) {
   if (!/^[\x21-\x7e]+$/.test(apiKey)) {
     return {
       success: false,
-      message: "That API key is invalid or has expired.",
+      message: "该 API 密钥无效或已过期。",
     };
   }
 
@@ -60,7 +60,7 @@ export async function loginAction({ request, context }: Route.LoaderArgs) {
     if (!lookup) {
       return {
         success: false,
-        message: "That API key doesn't exist on this server.",
+        message: "此服务器上不存在该 API 密钥。",
       };
     }
 
@@ -68,7 +68,7 @@ export async function loginAction({ request, context }: Route.LoaderArgs) {
       log.error("auth", "Got an API key without an expiration");
       return {
         success: false,
-        message: "That API key has no expiration. Create a new one.",
+        message: "该 API 密钥没有过期时间。请创建一个新的。",
       };
     }
 
@@ -76,7 +76,7 @@ export async function loginAction({ request, context }: Route.LoaderArgs) {
     if (expiry.getTime() < Date.now()) {
       return {
         success: false,
-        message: "That API key has expired.",
+        message: "该 API 密钥已过期。",
       };
     }
 
@@ -101,7 +101,7 @@ export async function loginAction({ request, context }: Route.LoaderArgs) {
       ) {
         return {
           success: false,
-          message: "That API key is invalid or has expired.",
+          message: "该 API 密钥无效或已过期。",
         };
       }
     }
@@ -114,7 +114,7 @@ export async function loginAction({ request, context }: Route.LoaderArgs) {
     log.debug("auth", "Error details: %o", error);
     return {
       success: false,
-      message: "Couldn't check the API key. See the server logs.",
+      message: "无法校验 API 密钥。请查看服务器日志。",
     };
   }
 }

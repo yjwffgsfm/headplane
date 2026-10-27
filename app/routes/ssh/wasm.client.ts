@@ -48,7 +48,7 @@ export async function connectTailnet(config: TailnetConfig): Promise<IPN> {
   const module = await WebAssembly.instantiateStreaming(response, go.importObject);
 
   // The Go process parks on a channel forever, so returning means it died.
-  go.run(module.instance).then(() => config.onPanic("Unexpected shutdown"));
+  go.run(module.instance).then(() => config.onPanic("意外关闭"));
 
   const ipn = newIPN({
     controlURL: config.controlURL,
@@ -72,7 +72,7 @@ export async function connectTailnet(config: TailnetConfig): Promise<IPN> {
       },
       notifyNetMap: () => {},
       // Only reached when the auth key was refused and the node wants a human.
-      notifyBrowseToURL: () => reject(new Error("Headscale rejected the auth key")),
+      notifyBrowseToURL: () => reject(new Error("Headscale 拒绝了认证密钥")),
       notifyPanicRecover: (error) => reject(new Error(error)),
     });
   });

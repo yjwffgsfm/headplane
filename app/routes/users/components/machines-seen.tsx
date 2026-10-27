@@ -6,11 +6,11 @@ interface MachinesSeenProps {
 
 export default function MachinesSeen({ machines }: MachinesSeenProps) {
   if (machines.length === 0) {
-    return <span className="text-muted">No machines</span>;
+    return <span className="text-muted">没有设备</span>;
   }
 
   if (machines.some((machine) => machine.online)) {
-    return <span className="text-ok">Connected</span>;
+    return <span className="text-ok">已连接</span>;
   }
 
   const lastSeen = new Date(Math.max(...machines.map((m) => new Date(m.lastSeen).getTime())));

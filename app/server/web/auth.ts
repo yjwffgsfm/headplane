@@ -499,7 +499,7 @@ export function createAuthService(opts: AuthServiceOptions): AuthService {
   ): Promise<Principal> {
     const principal = await require(request);
     if (!can(principal, capabilities)) {
-      throw data("You don't have permission to do this. Ask your administrator for access.", {
+      throw data("你无权执行此操作。请联系管理员获取访问权限。", {
         status: 403,
       });
     }

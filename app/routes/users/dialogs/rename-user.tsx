@@ -17,18 +17,18 @@ const validateUsername = fieldValidator(username);
 export default function RenameUser({ user, isOpen, setIsOpen }: RenameProps) {
   return (
     <ActionDialog
-      description="ACL policies that refer to the old username aren't updated."
+      description="引用旧用户名的 ACL 策略不会随之更新。"
       fields={{ headscale_user_id: user.id }}
       intent="rename"
       onOpenChange={setIsOpen}
       open={isOpen}
-      submitLabel="Rename"
-      title={`Rename ${user.name || user.displayName}`}
+      submitLabel="重命名"
+      title={`重命名 ${user.name || user.displayName}`}
     >
       <Input
         defaultValue={user.name}
         description={USERNAME_RULE}
-        label="Username"
+        label="用户名"
         name="name"
         required
         validate={validateUsername}

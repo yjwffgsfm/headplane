@@ -74,11 +74,10 @@ export default function Page({
         <div className="p-4">
           <Callout
             className="my-4 max-w-2xl"
-            title="Policy cannot be edited visually"
+            title="无法可视化编辑策略"
             variant="error"
           >
-            The policy could not be parsed ({parsed.error}). Fix it in the <Code>Edit file</Code>{" "}
-            tab and the visual editor will come back.
+            无法解析策略（{parsed.error}）。在<Code>编辑文件</Code>标签页中修复后，可视化编辑器就会恢复。
           </Callout>
         </div>
       );
@@ -87,9 +86,8 @@ export default function Page({
     return (
       <div className="flex flex-col gap-4 p-4">
         {parsed.hasComments ? (
-          <Callout className="my-4 max-w-2xl" title="Comments will be removed" variant="warning">
-            This policy contains comments. Saving a change made in the visual editor rewrites the
-            policy and drops them.
+          <Callout className="my-4 max-w-2xl" title="注释将被移除" variant="warning">
+            此策略包含注释。保存可视化编辑器中的更改会重写策略并丢弃这些注释。
           </Callout>
         ) : null}
         {render(parsed.policy)}
@@ -102,68 +100,62 @@ export default function Page({
       <PageHeader
         description={
           <>
-            The ACL file is used to define the access control rules for your network. You can find
-            more information about the ACL file in the{" "}
+            ACL 文件用于定义网络的访问控制规则。有关 ACL 文件的更多信息，请参阅{" "}
             <Link external styled to="https://tailscale.com/kb/1018/acls">
-              Tailscale ACL guide
-            </Link>{" "}
-            and the{" "}
+              Tailscale ACL 指南
+            </Link>和{" "}
             <Link external styled to="https://headscale.net/stable/ref/acls/">
-              Headscale docs
-            </Link>
-            .
+              Headscale 文档
+            </Link>。
           </>
         }
-        title="Access Control List (ACL)"
+        title="访问控制列表 (ACL)"
       />
       {!access ? (
-        <Callout className="my-4 max-w-2xl" title="ACL Policy restricted" variant="warning">
-          You do not have the necessary permissions to edit the Access Control List policy. Please
-          contact your administrator to request access or to make changes to the ACL policy.
+        <Callout className="my-4 max-w-2xl" title="ACL 策略受限" variant="warning">
+          你没有编辑访问控制列表策略所需的权限。请联系管理员申请访问权限或进行更改。
         </Callout>
       ) : !writable ? (
-        <Callout className="my-4 max-w-2xl" title="Read-only ACL Policy" variant="error">
-          The ACL policy mode is most likely set to <Code>file</Code> in your Headscale
-          configuration. This means that the ACL file cannot be edited through the web interface. In
-          order to resolve this, you'll need to set <Code>policy.mode</Code> to{" "}
-          <Code>database</Code> in your Headscale configuration.
+        <Callout className="my-4 max-w-2xl" title="只读 ACL 策略" variant="error">
+          Headscale 配置中的 ACL 策略模式很可能设置为 <Code>file</Code>，这意味着无法通过 Web 界面编辑 ACL 文件。要解决此问题，需要在 Headscale 配置中将{" "}
+          <Code>policy.mode</Code> 设置为 <Code>database</Code>。
         </Callout>
       ) : undefined}
       {fetcher.data?.ok === false && (
-        <Callout className="my-4 max-w-2xl" title="Couldn't save the policy" variant="error">
+        <Callout className="my-4 max-w-2xl" title="无法保存策略" variant="error">
           {fetcher.data.errors.form ?? fetcher.data.errors.policy}
         </Callout>
       )}
-      <Tabs className="mb-4" label="ACL Editor" defaultValue="rules">
+      <Tabs className="mb-4" label="ACL 编辑器" defaultValue="rules">
         <TabsList>
           <TabsTab value="rules">
             <div className="flex items-center gap-2">
               <Shield className="p-1" />
-              <span>Rules</span>
+              <span>规则</span>
             </div>
           </TabsTab>
           <TabsTab value="tags">
             <div className="flex items-center gap-2">
               <TagsIcon className="p-1" />
-              <span>Tags &amp; Groups</span>
+              <span>标签与组</span>
             </div>
           </TabsTab>
           <TabsTab value="edit">
             <div className="flex items-center gap-2">
               <Pencil className="p-1" />
-              <span>Edit file</span>
+              <span>编辑文件</span>
             </div>
           </TabsTab>
           <TabsTab value="diff">
             <div className="flex items-center gap-2">
               <Eye className="p-1" />
-              <span>Preview changes</span>
+              <span>预览更改</span>
             </div>
           </TabsTab>
           <TabsTab value="preview">
             <div className="flex items-center gap-2">
               <FlaskConical className="p-1" />
-              <span>Preview rules</span>
+              <span>预览规则</span>
             </div>
           </TabsTab>
         </TabsList>
@@ -203,8 +195,7 @@ export default function Page({
           <div className="flex flex-col items-center py-8">
             <Construction />
             <p className="mt-4 w-1/2 text-center">
-              Previewing rules is not available yet. This feature is still in development and is
-              pretty complicated to implement. Hopefully I will be able to get to it soon.
+              规则预览功能尚不可用。该功能仍在开发中，实现起来相当复杂，希望很快能够完成。
             </p>
           </div>
         </TabsPanel>
@@ -219,7 +210,7 @@ export default function Page({
         }}
         variant="primary"
       >
-        Save
+        保存
       </Button>
       <Button
         disabled={disabled || fetcher.state !== "idle" || codePolicy === policy}
@@ -228,7 +219,7 @@ export default function Page({
           setCodePolicy(policy);
         }}
       >
-        Discard changes
+        放弃更改
       </Button>
     </div>
   );
@@ -245,16 +236,14 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
       <ErrorState
         description={
           <>
-            Headscale is set to read its policy from a file, and that file doesn't exist. Create it
-            at the path in Headscale's config, or set <Code>policy.mode</Code> to{" "}
-            <Code>database</Code> so Headplane can manage the policy here.
+            Headscale 被设置为从文件读取策略，但该文件不存在。请在 Headscale 配置中的路径创建该文件，或将 <Code>policy.mode</Code> 设置为 <Code>database</Code>，以便 Headplane 在此管理策略。
           </>
         }
         icon={<FileX />}
-        title="The policy file is missing"
+        title="策略文件缺失"
       />
     );
   }
 
-  return <PageError error={error} page="the access control policy" />;
+  return <PageError error={error} page="访问控制策略" />;
 }

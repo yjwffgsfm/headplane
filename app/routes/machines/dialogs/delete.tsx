@@ -10,14 +10,14 @@ interface DeleteProps {
 export default function Delete({ machine, isOpen, setIsOpen }: DeleteProps) {
   return (
     <ActionDialog
-      description="The machine is removed from your tailnet. To add it back, sign in to your tailnet from the device again."
+      description="该设备将从你的 Tailnet 网络中移除。如需重新添加，请在设备上再次登录 Tailnet 网络。"
       fields={{ node_id: machine.id }}
       intent="delete"
       isDestructive
       onOpenChange={setIsOpen}
       open={isOpen}
-      submitLabel="Remove"
-      title={`Remove ${machine.givenName}?`}
+      submitLabel="移除"
+      title={`移除 ${machine.givenName}？`}
     />
   );
 }

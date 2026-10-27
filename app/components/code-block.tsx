@@ -22,13 +22,13 @@ export default function CodeBlock({ children, className }: CodeBlockProps) {
       )}
       onClick={async () => {
         const isCopied = await copyToClipboard(text);
-        toast(isCopied ? "Copied to clipboard" : "Copy failed. Please copy the text manually.");
+        toast(isCopied ? "已复制到剪贴板" : "复制失败，请手动复制文本。");
       }}
     >
       <code className="block px-3 pt-2 pb-1 text-sm break-all">{text}</code>
       <span className="text-muted mt-0.5 flex items-center gap-1 px-3 pb-2 text-xs">
         <Copy className="size-3" />
-        Click to copy
+        点击复制
       </span>
     </button>
   );

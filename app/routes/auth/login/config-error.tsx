@@ -5,22 +5,22 @@ import type { OidcErrorCode } from "~/server/oidc/provider";
 
 export function OidcDiscoveryFailedNotice() {
   return (
-    <Callout className="mb-6" title="Single sign-on is unavailable" variant="warning">
-      Headplane can't reach your identity provider right now. You can still sign in with an API key.
+    <Callout className="mb-6" title="单点登录不可用" variant="warning">
+      Headplane 目前无法连接你的身份提供方。你仍可使用 API 密钥登录。
     </Callout>
   );
 }
 
 export function OidcConfigErrorNotice({ errors }: { errors: OidcErrorCode[] }) {
   return (
-    <Callout className="mb-6" title="Single sign-on is misconfigured" variant="error">
+    <Callout className="mb-6" title="单点登录配置有误" variant="error">
       <ul className="list-inside list-disc">
         {mapOidcErrorsToMessages(errors).map((code) => (
           <li key={code.key}>{code.node}</li>
         ))}
       </ul>
       <Link external styled to="https://headplane.net/features/sso#troubleshooting">
-        Troubleshooting
+        故障排查
       </Link>
     </Callout>
   );
@@ -39,8 +39,8 @@ function mapOidcErrorsToMessages(errors: OidcErrorCode[]) {
           key: error,
           node: (
             <span>
-              The provided API key for OIDC authentication is invalid. Ensure that{" "}
-              <Code>headscale.api_key</Code> is a valid API key.
+              用于 OIDC 认证的 API 密钥无效。请确认{" "}
+              <Code>headscale.api_key</Code> 是有效的 API 密钥。
             </span>
           ),
         });
@@ -52,8 +52,7 @@ function mapOidcErrorsToMessages(errors: OidcErrorCode[]) {
           key: error,
           node: (
             <span>
-              The OIDC provider is missing required endpoints. Ensure the discovery URL is correct
-              or provide manual endpoint overrides in your configuration.
+              OIDC 提供方缺少必需的端点。请确认 OIDC 发现 URL 正确，或在配置中手动指定端点。
             </span>
           ),
         });
@@ -65,8 +64,7 @@ function mapOidcErrorsToMessages(errors: OidcErrorCode[]) {
           key: error,
           node: (
             <span>
-              Unable to reach the OIDC provider for discovery. SSO will retry on the next login
-              attempt.
+              无法连接 OIDC 提供方获取发现配置。SSO 将在下次登录时重试。
             </span>
           ),
         });
@@ -78,8 +76,7 @@ function mapOidcErrorsToMessages(errors: OidcErrorCode[]) {
           key: error,
           node: (
             <span>
-              An unknown OIDC configuration error occurred. Please check the Headplane logs for more
-              information.
+              发生未知的 OIDC 配置错误。请查看 Headplane 日志以获取更多信息。
             </span>
           ),
         });

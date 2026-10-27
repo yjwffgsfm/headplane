@@ -19,7 +19,7 @@ export const aclAction = createAction({
   },
   intents: {
     save: {
-      fields: { policy: v.pipe(v.string(), v.nonEmpty("The policy can't be empty.")) },
+      fields: { policy: v.pipe(v.string(), v.nonEmpty("策略不能为空。")) },
       async handler(input, { api }) {
         try {
           await api.policy.set(input.policy);
@@ -30,7 +30,7 @@ export const aclAction = createAction({
 
           if (error.data.rawData.includes("update is disabled")) {
             throw new ActionError(
-              "The ACL policy is read-only. Set `policy.mode` to `database` in your Headscale configuration to edit it.",
+              "ACL 策略为只读。请在 Headscale 配置中将 `policy.mode` 设置为 `database` 以进行编辑。",
               403,
             );
           }
@@ -41,13 +41,13 @@ export const aclAction = createAction({
           );
           if (typeof message === "string" && prefix) {
             const detail = message.slice(message.indexOf(prefix) + prefix.length).trim();
-            return invalid({ form: `Syntax error: ${detail}` });
+            return invalid({ form: `语法错误：${detail}` });
           }
 
           throw error;
         }
 
-        return ok("Policy updated");
+        return ok("策略已更新");
       },
     },
   },

@@ -33,7 +33,7 @@ export default function Attribute({ name, value, tooltip, isCopyable, isMono }: 
             const svgs = event.currentTarget.querySelectorAll("svg");
             const isCopied = await copyToClipboard(value);
             if (!isCopied) {
-              toast("Copy failed. Please copy the text manually.");
+              toast("复制失败，请手动复制文本。");
               return;
             }
 
@@ -41,7 +41,7 @@ export default function Attribute({ name, value, tooltip, isCopyable, isMono }: 
               svg.toggleAttribute("data-copied", true);
             }
 
-            toast(`Copied ${name}`);
+            toast(`已复制 ${name}`);
 
             setTimeout(() => {
               for (const svg of svgs) {

@@ -34,13 +34,13 @@ export default function AclRuleDialog({
     <EditorDialog
       description={
         <>
-          Access rules allow traffic from a set of sources to a set of destinations. Destinations
-          must include a port, for example <code className="font-mono">tag:web:80,443</code>. If you
-          leave the port out, <code className="font-mono">:*</code> is added for you. See the{" "}
+          访问规则允许流量从一组来源发往一组目标。目标必须包含端口，例如{" "}
+          <code className="font-mono">tag:web:80,443</code>。如果省略端口，将自动添加{" "}
+          <code className="font-mono">:*</code>。完整语法请参阅{" "}
           <Link external styled to="https://tailscale.com/kb/1018/acls">
-            Tailscale ACL guide
-          </Link>{" "}
-          for the full syntax.
+            Tailscale ACL 指南
+          </Link>
+          。
         </>
       }
       isDisabled={isInvalid}
@@ -50,22 +50,22 @@ export default function AclRuleDialog({
         onSave({ ...draft, dst: draft.dst.map(withDefaultPort) });
       }}
       setIsOpen={setIsOpen}
-      submitLabel={rule ? "Update rule" : "Add rule"}
-      title={rule ? "Edit access rule" : "New access rule"}
+      submitLabel={rule ? "更新规则" : "添加规则"}
+      title={rule ? "编辑访问规则" : "新建访问规则"}
     >
       <TokenList
-        description="Groups, tags, hosts, users or autogroups allowed to initiate the connection."
-        emptyText="No sources yet"
-        label="Sources"
+        description="允许发起连接的组、标签、主机、用户或自动组。"
+        emptyText="暂无来源"
+        label="来源"
         onChange={(src) => setDraft({ ...draft, src })}
         placeholder="group:eng"
         suggestions={sources}
         values={draft.src}
       />
       <TokenList
-        description="Where the traffic is allowed to go. A destination without a port becomes :* (all ports)."
-        emptyText="No destinations yet"
-        label="Destinations"
+        description="允许流量前往的目标。未指定端口的目标会变成 :*（所有端口）。"
+        emptyText="暂无目标"
+        label="目标"
         normalize={withDefaultPort}
         onChange={(dst) => setDraft({ ...draft, dst })}
         placeholder="tag:web:80,443"
@@ -73,8 +73,8 @@ export default function AclRuleDialog({
         values={draft.dst}
       />
       <Input
-        description="Optional. Restricts the rule to a single protocol (tcp, udp, icmp, ...)."
-        label="Protocol"
+        description="可选。将规则限制为单一协议（tcp、udp、icmp……）。"
+        label="协议"
         onChange={(proto) => setDraft({ ...draft, proto: proto.length > 0 ? proto : undefined })}
         placeholder="tcp"
         value={draft.proto ?? ""}

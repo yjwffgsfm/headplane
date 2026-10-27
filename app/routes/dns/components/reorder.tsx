@@ -64,7 +64,7 @@ export function useReorder(intent: string, field: string) {
         )}
       >
         <Button
-          aria-label={`Move ${item} up`}
+          aria-label={`上移 ${item}`}
           disabled={isEdge("up")}
           onClick={() => move(item, "up", scope)}
           onFocus={() => setFocusTarget(undefined)}
@@ -75,7 +75,7 @@ export function useReorder(intent: string, field: string) {
           <ArrowUp className="size-4" />
         </Button>
         <Button
-          aria-label={`Move ${item} down`}
+          aria-label={`下移 ${item}`}
           disabled={isEdge("down")}
           onClick={() => move(item, "down", scope)}
           onFocus={() => setFocusTarget(undefined)}
@@ -93,7 +93,7 @@ export function useReorder(intent: string, field: string) {
     order,
     controls,
     error:
-      fetcher.data?.ok === false ? (fetcher.data.errors.form ?? "Couldn't reorder.") : undefined,
+      fetcher.data?.ok === false ? (fetcher.data.errors.form ?? "无法重新排序。") : undefined,
   };
 }
 

@@ -48,7 +48,7 @@ export const userAction = createAction({
           email: input.email,
         });
         await refresh();
-        return ok("User created");
+        return ok("用户已创建");
       },
     },
     delete: {
@@ -62,7 +62,7 @@ export const userAction = createAction({
         }
 
         await refresh();
-        return ok("User deleted");
+        return ok("用户已删除");
       },
     },
     rename: {
@@ -71,70 +71,70 @@ export const userAction = createAction({
         const users = await api.users.list({ id: input.headscale_user_id });
         const user = users.find((user) => user.id === input.headscale_user_id);
         if (!user) {
-          throw new ActionError("This user no longer exists.", 404);
+          throw new ActionError("该用户已不存在。", 404);
         }
 
         if (user.provider === "oidc") {
-          throw new ActionError("Users managed by OIDC can't be renamed.", 403);
+          throw new ActionError("由 OIDC 管理的用户无法重命名。", 403);
         }
 
         await requireFreeName(api, input.name);
         await api.users.rename(user.id, input.name);
         await refresh();
-        return ok("User renamed");
+        return ok("用户已重命名");
       },
     },
     reassign: {
-      fields: { headplane_user_id: id, role: v.picklist(assignableRoles, "Choose a role.") },
+      fields: { headplane_user_id: id, role: v.picklist(assignableRoles, "请选择角色。") },
       async handler(input, { auth }) {
         const user = await requireHeadplaneUser(auth, input.headplane_user_id);
         if (user.role === "owner") {
-          throw new ActionError("Transfer ownership to change the owner's role.", 403);
+          throw new ActionError("请先转移所有权，再更改所有者的角色。", 403);
         }
 
         if (!(await auth.reassignUser(user.id, input.role))) {
-          throw new ActionError("Couldn't change the role. Try again.", 500);
+          throw new ActionError("无法更改角色，请重试。", 500);
         }
 
-        return ok("Role changed");
+        return ok("角色已更改");
       },
     },
     transfer: {
       fields: { headplane_user_id: id },
       async handler(input, { auth, principal }) {
         if (!isUserPrincipal(principal) || principal.user.role !== "owner") {
-          throw new ActionError("Only the owner can transfer ownership.", 403);
+          throw new ActionError("只有所有者可以转移所有权。", 403);
         }
 
         const target = await requireHeadplaneUser(auth, input.headplane_user_id);
         if (target.id === principal.user.id) {
-          throw new ActionError("You already own Headplane.");
+          throw new ActionError("你已经是 Headplane 的所有者。");
         }
 
         if (!(await auth.transferOwnership(principal.user.id, input.headplane_user_id))) {
-          throw new ActionError("Couldn't transfer ownership. Try again.", 500);
+          throw new ActionError("无法转移所有权，请重试。", 500);
         }
 
-        return ok("Ownership transferred");
+        return ok("所有权已转移");
       },
     },
     link: {
       fields: {
         headplane_user_id: id,
-        headscale_user_id: v.pipe(v.string(), v.minLength(1, "Choose a Headscale user.")),
+        headscale_user_id: v.pipe(v.string(), v.minLength(1, "请选择 Headscale 用户。")),
       },
       async handler(input, { api, auth }) {
         const user = await requireHeadplaneUser(auth, input.headplane_user_id);
         const [headscaleUser] = await api.users.list({ id: input.headscale_user_id });
         if (headscaleUser?.id !== input.headscale_user_id) {
-          throw new ActionError("That Headscale user no longer exists.", 404);
+          throw new ActionError("该 Headscale 用户已不存在。", 404);
         }
 
         if (!(await auth.linkHeadscaleUser(user.id, headscaleUser.id))) {
-          throw new ActionError("That Headscale user is already linked to another account.", 409);
+          throw new ActionError("该 Headscale 用户已关联到其他账户。", 409);
         }
 
-        return ok("Headscale user linked");
+        return ok("Headscale 用户已关联");
       },
     },
     update_groups: {
@@ -145,13 +145,13 @@ export const userAction = createAction({
         const groups = input.groups.map((group) => group.trim()).filter((group) => group !== "");
         const invalidGroups = groups.filter((group) => !isValidGroupName(group));
         if (invalidGroups.length > 0) {
-          return invalid({ form: `Invalid group name: ${invalidGroups.join(", ")}` });
+          return invalid({ form: `无效的组名：${invalidGroups.join(", ")}` });
         }
 
         const { policy } = await api.policy.get();
         const parsed = parsePolicy(policy);
         if (!parsed.ok) {
-          throw new ActionError(`The ACL policy couldn't be parsed: ${parsed.error}`);
+          throw new ActionError(`无法解析 ACL 策略：${parsed.error}`);
         }
 
         try {
@@ -163,7 +163,7 @@ export const userAction = createAction({
           // editing then, but a stale page can still get here.
           if (isDataWithApiError(error) && error.data.rawData.includes("update is disabled")) {
             throw new ActionError(
-              "The ACL policy is read-only. Set `policy.mode` to `database` in your Headscale configuration to edit groups.",
+              "ACL 策略为只读。请在 Headscale 配置中将 `policy.mode` 设为 `database` 以编辑组。",
               403,
             );
           }
@@ -171,7 +171,7 @@ export const userAction = createAction({
           throw error;
         }
 
-        return ok("Groups updated");
+        return ok("组已更新");
       },
     },
   },
@@ -180,14 +180,14 @@ export const userAction = createAction({
 async function requireFreeName(api: HeadscaleClient, name: string) {
   const [existing] = await api.users.list({ name });
   if (existing?.name === name) {
-    throw new ActionError(`A user named ${name} already exists.`, 409);
+    throw new ActionError(`名为 ${name} 的用户已存在。`, 409);
   }
 }
 
 async function requireHeadplaneUser(auth: AuthService, id: string) {
   const user = (await auth.listUsers()).find((user) => user.id === id);
   if (!user) {
-    throw new ActionError("This user no longer exists.", 404);
+    throw new ActionError("该用户已不存在。", 404);
   }
 
   return user;

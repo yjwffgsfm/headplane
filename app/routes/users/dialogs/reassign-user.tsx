@@ -27,9 +27,8 @@ export default function ReassignUser({
     <ActionDialog
       description={
         <>
-          Roles decide what the user can access in Headplane.{" "}
-          <Link external styled to="https://tailscale.com/kb/1138/user-roles">
-            Docs
+          角色决定该用户可以在 Headplane 中访问的内容。<Link external styled to="https://tailscale.com/kb/1138/user-roles">
+            文档
           </Link>
         </>
       }
@@ -38,12 +37,12 @@ export default function ReassignUser({
       isDisabled={selected === role}
       onOpenChange={setIsOpen}
       open={isOpen}
-      submitLabel="Change role"
-      title={`Change role for ${displayName}`}
+      submitLabel="更改角色"
+      title={`更改 ${displayName} 的角色`}
     >
       <RadioGroup
         className="gap-4"
-        label="Role"
+        label="角色"
         name="role"
         onValueChange={setSelected}
         value={selected}
@@ -70,38 +69,38 @@ function mapRoleToName(role: string) {
   switch (role) {
     case "admin":
       return {
-        name: "Admin",
-        desc: "Can view the admin console, manage network, machine, and user settings.",
+        name: "管理员",
+        desc: "可以访问管理控制台，管理网络、设备和用户设置。",
       };
     case "network_admin":
       return {
-        name: "Network Admin",
-        desc: "Can view the admin console and manage ACLs and network settings. Cannot manage machines or users.",
+        name: "网络管理员",
+        desc: "可以访问管理控制台，管理 ACL 和网络设置。不能管理设备或用户。",
       };
     case "it_admin":
       return {
-        name: "IT Admin",
-        desc: "Can view the admin console and manage machines and users. Cannot manage ACLs or network settings.",
+        name: "IT 管理员",
+        desc: "可以访问管理控制台，管理设备和用户。不能管理 ACL 或网络设置。",
       };
     case "auditor":
       return {
-        name: "Auditor",
-        desc: "Can view the admin console.",
+        name: "审计员",
+        desc: "可以访问管理控制台。",
       };
     case "viewer":
       return {
-        name: "Viewer",
-        desc: "Can view machines, users, and generate their own auth keys.",
+        name: "查看者",
+        desc: "可以查看设备、用户，并生成自己的认证密钥。",
       };
     case "member":
       return {
-        name: "Member",
-        desc: "Cannot view the admin console.",
+        name: "成员",
+        desc: "不能访问管理控制台。",
       };
     default:
       return {
         name: role,
-        desc: "No description available.",
+        desc: "暂无说明。",
       };
   }
 }

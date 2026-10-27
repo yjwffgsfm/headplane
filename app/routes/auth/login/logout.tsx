@@ -6,14 +6,14 @@ import Shell from "./shell";
 
 export default function Logout() {
   return (
-    <Shell description="You can close this window." title="You're signed out">
+    <Shell description="现在可以关闭此窗口。" title="已退出登录">
       <Button
         className="w-full"
         nativeButton={false}
         render={<RouterLink prefetch="none" reloadDocument to="/login" />}
         variant="primary"
       >
-        Sign in again
+        重新登录
       </Button>
     </Shell>
   );

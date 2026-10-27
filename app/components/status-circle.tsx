@@ -7,7 +7,7 @@ export interface StatusCircleProps {
 }
 
 export default function StatusCircle({ isOnline, isExpired, className }: StatusCircleProps) {
-  const label = isExpired ? "Expired" : isOnline ? "Online" : "Offline";
+  const label = isExpired ? "已过期" : isOnline ? "在线" : "离线";
 
   return (
     <span

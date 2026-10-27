@@ -91,7 +91,7 @@ export default function Select({
               )}
             >
               <Combobox.Empty className="text-muted px-3 py-2 text-sm empty:hidden">
-                No results found.
+                未找到结果。
               </Combobox.Empty>
               <Combobox.List>
                 {(item: SelectItem) => (

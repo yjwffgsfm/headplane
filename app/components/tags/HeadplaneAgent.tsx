@@ -3,7 +3,7 @@ import Tooltip from "../tooltip";
 
 export function HeadplaneAgentTag() {
   return (
-    <Tooltip content="This machine is running the Headplane agent, which allows it to provide host information in the web UI.">
+    <Tooltip content="此设备正在运行 Headplane Agent，因此可以在 Web 界面中提供主机信息。">
       <Chip text="Agent" />
     </Tooltip>
   );

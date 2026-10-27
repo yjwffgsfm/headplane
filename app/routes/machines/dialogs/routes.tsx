@@ -36,18 +36,17 @@ export default function Routes({ node, isOpen, setIsOpen }: RoutesProps) {
 
   return (
     <Dialog onOpenChange={setIsOpen} open={isOpen}>
-      <DialogTitle>Routes for {node.givenName}</DialogTitle>
+      <DialogTitle>{node.givenName} 的路由</DialogTitle>
       <section className="flex flex-col gap-2">
-        <h3 className="font-medium">Subnet routes</h3>
+        <h3 className="font-medium">子网路由</h3>
         <p className="text-muted">
-          Reach devices that can&apos;t run Tailscale through IP ranges this machine advertises.{" "}
-          <Link external styled to="https://tailscale.com/kb/1019/subnets">
-            Docs
+          借助这台设备通告的 IP 范围，访问无法运行 Tailscale 的设备。<Link external styled to="https://tailscale.com/kb/1019/subnets">
+            文档
           </Link>
         </p>
         {subnets.length === 0 ? (
           <p className="text-muted py-2.5 text-sm">
-            This machine doesn&apos;t advertise any routes
+            这台设备没有通告任何路由
           </p>
         ) : (
           <RowList>
@@ -56,7 +55,7 @@ export default function Routes({ node, isOpen, setIsOpen }: RoutesProps) {
                 action={
                   <Switch
                     defaultChecked={node.approvedRoutes.includes(route)}
-                    label={`Approve ${route}`}
+                    label={`批准 ${route}`}
                     onCheckedChange={(checked) => submit([route], checked)}
                   />
                 }
@@ -69,16 +68,15 @@ export default function Routes({ node, isOpen, setIsOpen }: RoutesProps) {
         )}
       </section>
       <section className="flex flex-col gap-2">
-        <h3 className="font-medium">Exit node</h3>
+        <h3 className="font-medium">出口节点</h3>
         <p className="text-muted">
-          Let devices send their internet traffic through this machine.{" "}
-          <Link external styled to="https://tailscale.com/kb/1103/exit-nodes">
-            Docs
+          让设备把它们的互联网流量都经由这台设备转发。<Link external styled to="https://tailscale.com/kb/1103/exit-nodes">
+            文档
           </Link>
         </p>
         {node.customRouting.exitRoutes.length === 0 ? (
           <p className="text-muted py-2.5 text-sm">
-            This machine isn&apos;t advertised as an exit node
+            这台设备没有通告为出口节点
           </p>
         ) : (
           <RowList>
@@ -86,21 +84,21 @@ export default function Routes({ node, isOpen, setIsOpen }: RoutesProps) {
               action={
                 <Switch
                   defaultChecked={node.customRouting.exitApproved}
-                  label="Use as exit node"
+                  label="用作出口节点"
                   onCheckedChange={(checked) => submit(node.customRouting.exitRoutes, checked)}
                 />
               }
             >
-              Use as exit node
+              用作出口节点
             </Row>
           </RowList>
         )}
       </section>
       {fetcher.data?.ok === false && (
-        <Callout variant="error">{fetcher.data.errors.form ?? "Couldn't update routes."}</Callout>
+        <Callout variant="error">{fetcher.data.errors.form ?? "无法更新路由。"}</Callout>
       )}
       <DialogActions>
-        <DialogClose render={<Button>Done</Button>} />
+        <DialogClose render={<Button>完成</Button>} />
       </DialogActions>
     </Dialog>
   );

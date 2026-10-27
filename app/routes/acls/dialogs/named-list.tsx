@@ -22,24 +22,24 @@ interface NamedListDialogProps {
 
 const COPY = {
   group: {
-    title: "group",
+    title: "组",
     prefix: "group:",
-    field: "Members",
-    fieldDescription: "Headscale users that belong to this group.",
-    empty: "No members yet",
+    field: "成员",
+    fieldDescription: "属于该组的 Headscale 用户。",
+    empty: "暂无成员",
     placeholder: "alice@",
     validate: isValidGroupName,
-    hint: "Group names must start with group: and may only contain lowercase letters, numbers and dashes.",
+    hint: "组名称必须以 group: 开头，并且只能包含小写字母、数字和连字符。",
   },
   tag: {
-    title: "tag",
+    title: "标签",
     prefix: "tag:",
-    field: "Tag owners",
-    fieldDescription: "Users and groups allowed to assign this tag to a node.",
-    empty: "No owners yet",
+    field: "标签所有者",
+    fieldDescription: "允许将该标签分配给节点的用户和组。",
+    empty: "暂无所有者",
     placeholder: "group:ops",
     validate: isValidTagName,
-    hint: "Tag names must start with tag: and may only contain lowercase letters, numbers and dashes.",
+    hint: "标签名称必须以 tag: 开头，并且只能包含小写字母、数字和连字符。",
   },
 } as const;
 
@@ -72,13 +72,13 @@ export default function NamedListDialog({
       isOpen={isOpen}
       onSubmit={() => onSave(trimmedName, draftMembers)}
       setIsOpen={setIsOpen}
-      submitLabel={name ? `Update ${copy.title}` : `Add ${copy.title}`}
-      title={name ? `Edit ${copy.title} ${name}` : `New ${copy.title}`}
+      submitLabel={name ? `更新${copy.title}` : `添加${copy.title}`}
+      title={name ? `编辑${copy.title} ${name}` : `新建${copy.title}`}
     >
       <Input
-        errorMessage={isDuplicate ? `A ${copy.title} with this name already exists.` : copy.hint}
+        errorMessage={isDuplicate ? `已存在同名${copy.title}。` : copy.hint}
         invalid={showNameError}
-        label="Name"
+        label="名称"
         onChange={setDraftName}
         placeholder={`${copy.prefix}example`}
         value={draftName}

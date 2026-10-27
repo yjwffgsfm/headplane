@@ -65,12 +65,12 @@ export function parsePolicy(raw: string): ParseResult {
   } catch (error) {
     return {
       ok: false,
-      error: error instanceof Error ? error.message : "The policy is not valid HuJSON",
+      error: error instanceof Error ? `策略不是有效的 HuJSON：${error.message}` : "策略不是有效的 HuJSON",
     };
   }
 
   if (parsed == null || typeof parsed !== "object" || Array.isArray(parsed)) {
-    return { ok: false, error: "The policy must be a JSON object" };
+    return { ok: false, error: "策略必须是一个 JSON 对象" };
   }
 
   const record = parsed as Record<string, unknown>;
